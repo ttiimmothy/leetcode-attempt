@@ -8,7 +8,7 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let interval = intervals[i].clone();
     if interval[0] <= result[result.len() - 1][1] {
       result.last_mut().unwrap()[1] = result.last_mut().unwrap()[1].max(interval[1]);
-    }else{
+    } else {
       result.push(interval);
     }
   }
@@ -24,7 +24,7 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
   for i in 1..intervals.len() {
     if intervals[i][0] <= merged_interval[1] {
       merged_interval[1] = merged_interval[1].max(intervals[i][1]);
-    }else{
+    } else {
       result.push(merged_interval);
       merged_interval = intervals[i].clone();
     }
