@@ -5,5 +5,4 @@ fn main() {
   println!("{:x}", '' as u32);
   // google cloud icon unicode
   println!("{:x}", '' as u32);
-  
 }
