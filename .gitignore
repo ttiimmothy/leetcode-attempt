@@ -1,2 +1,4 @@
 .DS_Store
 node_modules
+algorithm/contexts/rust1
+.vscode/settings.json
