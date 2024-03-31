@@ -98,8 +98,8 @@ int main()
 {
   vector<int> nums = {12, 7, 11, 8, 6, 3, 9};
   int n = nums.size();
-  // mergeSort(nums, 0, n - 1);
-  bubbleSort(nums);
+  mergeSort(nums, 0, n - 1);
+  // bubbleSort(nums);
   cout << "[";
   if (n > 0)
   {
@@ -109,7 +109,6 @@ int main()
       cout << ", " << nums[i];
     }
   }
-
   cout << "]";
   return 0;
 }
