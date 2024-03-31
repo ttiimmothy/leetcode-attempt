@@ -48,7 +48,7 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
     i += 1;
   }
   result.push(merged_interval.to_vec());
-  while(i < intervals.len()){
+  while i < intervals.len() {
     result.push(intervals[i].clone());
     i += 1;
   }
@@ -72,4 +72,84 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   }
   result.push(new_interval);
   result
+}
+
+// Merge Sort
+pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
+  if start < end {
+    let mid = start + (end - start) / 2;
+    merge_sort(nums, start, mid);
+    merge_sort(nums, mid + 1, end);
+    let left_arr = nums[start..=mid].to_vec();
+    let right_arr = nums[mid + 1..=end].to_vec();
+    let (mut i, mut j, mut k) = (0, 0, start);
+    while i < left_arr.len() && j < right_arr.len() {
+      if left_arr[i] < right_arr[j] {
+        nums[k] = left_arr[i];
+        i += 1;
+      } else {
+        nums[k] = right_arr[j];
+        j += 1;
+      }
+      k += 1;
+    }
+    while i < left_arr.len() {
+      nums[k] = left_arr[i];
+      i += 1;
+      k += 1;
+    }
+    while j < right_arr.len() {
+      nums[k] = right_arr[j];
+      j += 1;
+      k += 1;
+    }
+  }
+}
+
+// Quick Sort
+pub fn quick_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
+  if start < end {
+    let pivot = partition(nums, start, end);
+    quick_sort(nums, start, pivot - 1);
+    quick_sort(nums, pivot + 1, end);
+  }
+}
+
+pub fn partition(nums: &mut Vec<i32>, start: usize, end: usize) -> usize {
+  let mut low = start as isize - 1;
+  let pivot = nums[end];
+  for i in start..end {
+    if nums[i] < pivot {
+      low += 1;
+      nums.swap(i, low as usize);
+    }
+  }
+  nums.swap((low + 1) as usize, end);
+  (low + 1) as usize
+}
+
+// Bubble Sort
+pub fn bubble_sort(nums: &mut Vec<i32>) {
+  let n = nums.len();
+  for i in 0..n {
+    let mut swapped = false;
+    // n - i - 1 needs to -1 because j is compared with j+1, if there is not -1, the index will be out of bound
+    for j in 0..n - i - 1 {
+      if nums[j] > nums[j + 1] {
+        nums.swap(j, j + 1);
+        swapped = true;
+      }
+    }
+    if !swapped {
+      break;
+    }
+  }
+}
+
+fn main() {
+  let mut nums = vec![1, 9, 8, 20, 15, 17, 5, 4, 8, 3];
+  let length = nums.len();
+  merge_sort(&mut nums, 0, length - 1);
+  // bubble_sort(&mut nums);
+  println!("{:?}", nums);
 }
