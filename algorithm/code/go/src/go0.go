@@ -1,5 +1,20 @@
 package src
 
+// Two Sum
+//
+//lint:ignore U1000 Function is intentionally left unused
+func twoSum(nums []int, target int) []int {
+	hashMap := make(map[int]int)
+	for i, num := range nums {
+		difference := target - num
+		if index, ok := hashMap[difference]; ok {
+			return []int{index, i}
+		}
+		hashMap[num] = i
+	}
+	return []int{}
+}
+
 // Sort Colors
 //
 //lint:ignore U1000 Function is intentionally left unused
