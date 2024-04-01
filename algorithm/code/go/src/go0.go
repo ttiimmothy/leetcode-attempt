@@ -1,4 +1,4 @@
-package code
+package src
 
 // Sort Colors
 //
@@ -192,5 +192,34 @@ func bubbleSort(nums []int) {
 		if !swapped {
 			break
 		}
+	}
+}
+
+// Heap Sort
+func heapify(nums []int, max int, length int) {
+	largest := max
+	left := 2*max + 1
+	right := 2*max + 2
+	if left < length && nums[left] > nums[largest] {
+		largest = left
+	}
+	if right < length && nums[right] > nums[largest] {
+		largest = right
+	}
+	if largest != max {
+		nums[largest], nums[max] = nums[max], nums[largest]
+		heapify(nums, largest, length)
+	}
+}
+
+//lint:ignore U1000 Function is intentionally left unused
+func HeapSort(nums []int) {
+	n := len(nums)
+	for i := n/2 - 1; i >= 0; i-- {
+		heapify(nums, i, n)
+	}
+	for i := n - 1; i > 0; i-- {
+		nums[0], nums[i] = nums[i], nums[0]
+		heapify(nums, 0, i)
 	}
 }
