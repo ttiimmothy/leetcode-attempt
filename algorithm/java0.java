@@ -416,6 +416,7 @@ public int[] intersection(int[] nums1, int[] nums2) {
 public boolean backspaceCompare(String s, String t) {
   int ps = s.length() - 1;
   int pt = t.length() - 1;
+  // or condition is to ensure that either one is smaller than 0 will still continue the checking
   while(ps >= 0 || pt >= 0){
     ps = findValidCharIndex(s, ps);
     pt = findValidCharIndex(t, pt);
@@ -489,6 +490,48 @@ public void mergeSort(int[] nums, int low, int high) {
       j++;
       k++;
     }
+  }
+}
+
+// Sort an Array
+public int[] sortArray(int[] nums) {
+  heapSort(nums);
+  return nums;
+}
+
+public void swap(int[] nums, int i, int j) {
+  int tmp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = tmp;
+}
+
+public void buildMaxHeap(int[] nums, int maxNode, int length) {
+  int largest = maxNode;
+  int left = 2 * maxNode + 1;
+  int right = 2 * maxNode + 2;
+  if (left < length && nums[left] > nums[largest]) {
+    largest = left;
+  }
+  if (right < length && nums[right] > nums[largest]) {
+    largest = right;
+  }
+  if (largest != maxNode) {
+    swap(nums, largest, maxNode);
+    buildMaxHeap(nums, largest, length);
+  }
+}
+
+public void heapSort(int[] nums) {
+  int n = nums.length;
+  // create max heap
+  for (int i = n / 2 - 1; i >= 0; i--) {
+    buildMaxHeap(nums, i, n);
+  }
+  // extract the maximum node one by one
+  // starting from n - 1 because n index is out of the array bound
+  for (int i = n - 1; i > 0; i--) {
+    swap(nums, 0, i);
+    buildMaxHeap(nums, 0, i);
   }
 }
 
@@ -607,3 +650,43 @@ public void swap(int[] nums, int i, int j){
 }
 
 bubbleSort(array);
+
+// Heap Sort, time complexity O(nlogn), memory complexity O(1)
+public void swap(int[] nums, int i, int j){
+  int tmp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = tmp;
+}
+
+public void buildMaxHeap(int[] nums, int maxNode, int length) {
+  int largest = maxNode;
+  int left = 2 * maxNode + 1;
+  int right = 2 * maxNode + 2;
+  if(left  < length && nums[left] > nums[largest]){
+    largest = left;
+  }
+  if(right < length && nums[right] > nums[largest]){
+    largest = right;
+  }
+  if(largest != maxNode){
+    swap(nums, largest, maxNode);
+    buildMaxHeap(nums, largest, length); // heapify the affected sub tree
+  }
+}
+
+public void heapSort(int[] nums){
+  int n = nums.length;
+  // create max heap
+  for(int i = n / 2 - 1; i >= 0; i--){
+    buildMaxHeap(nums, i, n);
+  }
+  // extract the maximum node one by one
+  // starting from n - 1 because n index is out of the array bound
+  for(int i = n - 1; i > 0; i--){
+    swap(nums, 0, i);
+    buildMaxHeap(nums, 0, i);
+  }
+}
+
+int[] array = new int[]{1, 9, 8, 20, 15, 17, 5, 4, 8, 3};
+heapSort(array);

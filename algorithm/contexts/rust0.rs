@@ -74,6 +74,45 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result
 }
 
+// Sort an Array
+pub fn sort_array(nums: Vec<i32>) -> Vec<i32> {
+  let n = nums.len();
+  let mut nums = nums.clone();
+  Self::merge_sort(&mut nums, 0, n - 1);
+  return nums;
+}
+
+pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
+  if start < end {
+    let mut mid = start + (end - start) / 2;
+    Self::merge_sort(nums, start, mid);
+    Self::merge_sort(nums, mid + 1, end);
+    let left_nums = nums[start..=mid].to_vec();
+    let right_nums = nums[mid + 1..=end].to_vec();
+    let (mut i, mut j, mut k) = (0, 0, start);
+    while i < left_nums.len() && j < right_nums.len() {
+      if left_nums[i] < right_nums[j] {
+        nums[k] = left_nums[i];
+        i += 1;
+      } else {
+        nums[k] = right_nums[j];
+        j += 1;
+      }
+      k += 1;
+    }
+    while i < left_nums.len() {
+      nums[k] = left_nums[i];
+      i += 1;
+      k += 1;
+    }
+    while j < right_nums.len() {
+      nums[k] = right_nums[j];
+      j += 1;
+      k += 1;
+    }
+  }
+}
+
 // Merge Sort
 pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
   if start < end {
