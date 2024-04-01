@@ -118,3 +118,26 @@ def bubble_sort(nums):
 
 
 bubble_sort(array)
+
+
+# Heap sort
+def heapify(nums: List[int], node: int, length: int):
+  largest = node
+  left = 2 * node + 1
+  right = 2 * node + 2
+  if left < length and nums[left] > nums[largest]:
+    largest = left
+  if right < length and nums[right] > nums[largest]:
+    largest = right
+  if largest != node:
+    nums[largest], nums[node] = nums[node], nums[largest]
+    heapify(nums, largest, length)
+
+
+def heap_sort(nums: List[int]):
+  n = len(nums)
+  for i in range(n // 2 - 1, -1, -1):
+    heapify(nums, i, n)
+  for i in range(n - 1, 0, -1):
+    nums[0], nums[i] = nums[i], nums[0]
+    heapify(nums, 0, i)
