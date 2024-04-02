@@ -1,0 +1,3 @@
+[submodule "fish-history"]
+	path = fish-history
+	url = git@github.com:ttiimmothy/fish-history.git
