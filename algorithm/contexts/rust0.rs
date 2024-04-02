@@ -80,11 +80,11 @@ pub fn get_next_valid_character(str: String, mut end: isize) -> isize {
   while end >= 0 {
     if let Some(c) = str.chars().nth(end as usize) {
       if c == '#' {
-          backspace_count += 1;
+        backspace_count += 1;
       } else if backspace_count > 0 {
-          backspace_count -= 1;
+        backspace_count -= 1;
       } else {
-          break;
+        break;
       }
     } else {
       break; // Handle the case when 'end' is out of bounds
