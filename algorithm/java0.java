@@ -138,6 +138,28 @@ public void backtrack(int[] candidates, int target, int index, List<Integer> lis
   }
 }
 
+// Permutations
+public List<List<Integer>> permute(int[] nums) {
+  List<List<Integer>> result = new ArrayList();
+  backtrack(nums, result, new ArrayList());
+  return result;
+}
+
+public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> subList) {
+  if(subList.size() == nums.length){
+    result.add(new ArrayList(subList));
+  }else{
+    for(int num:nums){
+      if(subList.contains(num)){
+        continue;
+      }
+      subList.add(num);
+      backtrack(nums, result, subList);
+      subList.remove(subList.size() - 1);
+    }
+  }
+}
+
 // Merge Intervals
 public int[][] merge(int[][] intervals) {
   List<int[]> result = new ArrayList();
