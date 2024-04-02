@@ -1,5 +1,9 @@
 package src
 
+import (
+	"slices"
+)
+
 // Two Sum
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -13,6 +17,61 @@ func twoSum(nums []int, target int) []int {
 		hashMap[num] = i
 	}
 	return []int{}
+}
+
+// Combination Sum
+//
+//lint:ignore U1000 Function is intentionally left unused
+func combinationSum(candidates []int, target int) [][]int {
+	var result [][]int
+	backtrack(candidates, target, &result, []int{}, 0)
+	return result
+}
+
+func backtrack(candidates []int, target int, result *[][]int, subList []int, index int) {
+	if target < 0 {
+		return
+	} else if target == 0 {
+		temp := make([]int, len(subList))
+		copy(temp, subList)
+		*result = append(*result, temp)
+		return
+	}
+	for i := index; i < len(candidates); i++ {
+		subList = append(subList, candidates[i])
+		backtrack(candidates, target-candidates[i], result, subList, i)
+		subList = subList[:len(subList)-1]
+	}
+}
+
+// Combination Sum 2
+//
+//lint:ignore U1000 Function is intentionally left unused
+func combinationSum2(candidates []int, target int) [][]int {
+	slices.Sort(candidates)
+	result := [][]int{}
+	backtrack_1(candidates, target, &result, []int{}, 0)
+	return result
+}
+
+func backtrack_1(candidates []int, target int, result *[][]int, subList []int, index int) {
+	if target < 0 {
+		return
+	} else if target == 0 {
+		temp := make([]int, len(subList))
+		copy(temp, subList)
+		*result = append(*result, temp)
+		return
+	}
+	for i := index; i < len(candidates); i++ {
+		if i > index && candidates[i] == candidates[i-1] {
+			// return will break the loop, but we don't want to break the loop
+			continue
+		}
+		subList = append(subList, candidates[i])
+		backtrack_1(candidates, target-candidates[i], result, subList, i+1)
+		subList = subList[:len(subList)-1]
+	}
 }
 
 // Sort Colors
