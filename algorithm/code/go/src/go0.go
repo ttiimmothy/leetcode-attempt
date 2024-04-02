@@ -208,7 +208,7 @@ func mergeSort(nums []int, low int, high int) {
 	}
 }
 
-// Merge Sort
+// Merge sort
 //
 //lint:ignore U1000 Function is intentionally left unused
 func mergeSortSample(nums []int, low int, high int) {
@@ -245,7 +245,7 @@ func mergeSortSample(nums []int, low int, high int) {
 	}
 }
 
-// Quick Sort, may cause time limit error
+// Quick sort, may cause time limit error
 //
 //lint:ignore U1000 Function is intentionally left unused
 func quickSort(nums []int, low int, high int) {
@@ -269,7 +269,7 @@ func partition(nums []int, low int, high int) int {
 	return start + 1
 }
 
-// Bubble Sort
+// Bubble sort
 //
 //lint:ignore U1000 Function is intentionally left unused
 func bubbleSort(nums []int) {
@@ -288,7 +288,7 @@ func bubbleSort(nums []int) {
 	}
 }
 
-// Heap Sort
+// Heap sort
 func heapify(nums []int, max int, length int) {
 	largest := max
 	left := 2*max + 1
@@ -306,7 +306,7 @@ func heapify(nums []int, max int, length int) {
 }
 
 //lint:ignore U1000 Function is intentionally left unused
-func HeapSort(nums []int) {
+func heapSort(nums []int) {
 	n := len(nums)
 	for i := n/2 - 1; i >= 0; i-- {
 		heapify(nums, i, n)

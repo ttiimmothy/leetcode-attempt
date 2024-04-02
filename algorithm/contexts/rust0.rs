@@ -75,16 +75,16 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
 }
 
 // Backspace String Compare
-pub fn get_next_valid_character(str: String, mut end: isize) -> isize {
+pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
   let mut backspace_count = 0;
-  while end >= 0 {
-    if let Some(c) = str.chars().nth(end as usize) {
+  while end > 0 {
+    if let Some(c) = str.chars().nth(end - 1) {
       if c == '#' {
-          backspace_count += 1;
+        backspace_count += 1;
       } else if backspace_count > 0 {
-          backspace_count -= 1;
+        backspace_count -= 1;
       } else {
-          break;
+        break;
       }
     } else {
       break; // Handle the case when 'end' is out of bounds
@@ -95,19 +95,16 @@ pub fn get_next_valid_character(str: String, mut end: isize) -> isize {
 }
 
 pub fn backspace_compare(s: String, t: String) -> bool {
-  let mut pS = s.len() as isize;
-  let mut pT = t.len() as isize;
-  pS -= 1;
-  pT -= 1;
-  // ps >= 0, pT >= 0 will always be true if they keep the type as usize, so need to change to isize when initializing the pS and pT
-  while pS >= 0 || pT >= 0 {
+  let mut pS = s.len();
+  let mut pT = t.len();
+  while pS > 0 || pT > 0 {
     pS = Self::get_next_valid_character(s.clone(), pS);
     pT = Self::get_next_valid_character(t.clone(), pT);
-    if pS < 0 && pT < 0 {
+    if pS == 0 && pT == 0 {
       return true;
-    } else if pS < 0 || pT < 0 {
+    } else if pS == 0 || pT == 0 {
       return false;
-    } else if s.chars().nth(pS as usize) != t.chars().nth(pT as usize) {
+    } else if s.chars().nth(pS - 1) != t.chars().nth(pT - 1) {
       return false;
     }
     pS -= 1;
@@ -155,12 +152,12 @@ pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
   }
 }
 
-// Merge Sort
+// Merge sort
 pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
   if start < end {
     let mid = start + (end - start) / 2;
-    merge_sort(nums, start, mid);
-    merge_sort(nums, mid + 1, end);
+    Self::merge_sort(nums, start, mid);
+    Self::merge_sort(nums, mid + 1, end);
     let left_arr = nums[start..=mid].to_vec();
     let right_arr = nums[mid + 1..=end].to_vec();
     let (mut i, mut j, mut k) = (0, 0, start);
@@ -187,12 +184,12 @@ pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
   }
 }
 
-// Quick Sort
+// Quick sort
 pub fn quick_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
   if start < end {
     let pivot = partition(nums, start, end);
-    quick_sort(nums, start, pivot - 1);
-    quick_sort(nums, pivot + 1, end);
+    Self::quick_sort(nums, start, pivot - 1);
+    Self::quick_sort(nums, pivot + 1, end);
   }
 }
 
@@ -209,7 +206,7 @@ pub fn partition(nums: &mut Vec<i32>, start: usize, end: usize) -> usize {
   (low + 1) as usize
 }
 
-// Bubble Sort
+// Bubble sort
 pub fn bubble_sort(nums: &mut Vec<i32>) {
   let n = nums.len();
   for i in 0..n {
@@ -240,18 +237,18 @@ pub fn heapify(nums: &mut Vec<i32>, node: usize, length: usize) {
   }
   if largest != node {
     nums.swap(node, largest);
-    heapify(nums, largest, length);
+    Self::heapify(nums, largest, length);
   }
 }
 
 pub fn heap_sort(nums: &mut Vec<i32>) {
   let n = nums.len();
   for i in (0..n / 2).rev() {
-    heapify(nums, i, n);
+    Self::heapify(nums, i, n);
   }
   for i in (1..n).rev() {
     nums.swap(0, i);
-    heapify(nums, 0, i);
+    Self::heapify(nums, 0, i);
   }
 }
 
