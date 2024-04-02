@@ -1,6 +1,8 @@
 package src
 
-import "slices"
+import (
+	"slices"
+)
 
 // Two Sum
 //
