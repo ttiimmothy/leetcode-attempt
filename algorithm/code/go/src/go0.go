@@ -52,6 +52,25 @@ func productExceptSelf(nums []int) []int {
 	return result
 }
 
+// Intersection of Two Arrays
+//
+//lint:ignore U1000 Function is intentionally left unused
+func intersection(nums1 []int, nums2 []int) []int {
+	// no set in go, so use map
+	hashMap := make(map[int]bool)
+	for _, num := range nums1 {
+		hashMap[num] = true
+	}
+	var result []int
+	for _, num := range nums2 {
+		if hashMap[num] {
+			result = append(result, num)
+			hashMap[num] = false
+		}
+	}
+	return result
+}
+
 // Backspace String Compare
 //
 //lint:ignore U1000 Function is intentionally left unused

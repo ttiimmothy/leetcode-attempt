@@ -74,6 +74,48 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result
 }
 
+// Backspace String Compare
+pub fn get_next_valid_character(str: String, mut end: isize) -> isize {
+  let mut backspace_count = 0;
+  while end >= 0 {
+    if let Some(c) = str.chars().nth(end as usize) {
+      if c == '#' {
+          backspace_count += 1;
+      } else if backspace_count > 0 {
+          backspace_count -= 1;
+      } else {
+          break;
+      }
+    } else {
+      break; // Handle the case when 'end' is out of bounds
+    }
+    end -= 1;
+  }
+  end
+}
+
+pub fn backspace_compare(s: String, t: String) -> bool {
+  let mut pS = s.len() as isize;
+  let mut pT = t.len() as isize;
+  pS -= 1;
+  pT -= 1;
+  // ps >= 0, pT >= 0 will always be true if they keep the type as usize, so need to change to isize when initializing the pS and pT
+  while pS >= 0 || pT >= 0 {
+    pS = Self::get_next_valid_character(s.clone(), pS);
+    pT = Self::get_next_valid_character(t.clone(), pT);
+    if pS < 0 && pT < 0 {
+      return true;
+    } else if pS < 0 || pT < 0 {
+      return false;
+    } else if s.chars().nth(pS as usize) != t.chars().nth(pT as usize) {
+      return false;
+    }
+    pS -= 1;
+    pT -= 1;
+  }
+  return true;
+}
+
 // Sort an Array
 pub fn sort_array(nums: Vec<i32>) -> Vec<i32> {
   let n = nums.len();
@@ -185,10 +227,39 @@ pub fn bubble_sort(nums: &mut Vec<i32>) {
   }
 }
 
+// Heap sort
+pub fn heapify(nums: &mut Vec<i32>, node: usize, length: usize) {
+  let mut largest = node;
+  let left = 2 * node + 1;
+  let right = 2 * node + 2;
+  if left < length && nums[left] > nums[largest] {
+    largest = left;
+  }
+  if right < length && nums[right] > nums[largest] {
+    largest = right;
+  }
+  if largest != node {
+    nums.swap(node, largest);
+    heapify(nums, largest, length);
+  }
+}
+
+pub fn heap_sort(nums: &mut Vec<i32>) {
+  let n = nums.len();
+  for i in (0..n / 2).rev() {
+    heapify(nums, i, n);
+  }
+  for i in (1..n).rev() {
+    nums.swap(0, i);
+    heapify(nums, 0, i);
+  }
+}
+
 fn main() {
   let mut nums = vec![1, 9, 8, 20, 15, 17, 5, 4, 8, 3];
-  let length = nums.len();
-  merge_sort(&mut nums, 0, length - 1);
+  // let length = nums.len();
+  // merge_sort(mut nums, 0, length - 1);
+  heap_sort(&mut nums);
   // bubble_sort(&mut nums);
   println!("{:?}", nums);
 }
