@@ -690,3 +690,18 @@ public void heapSort(int[] nums){
 
 int[] array = new int[]{1, 9, 8, 20, 15, 17, 5, 4, 8, 3};
 heapSort(array);
+
+// Selection sort, time complexity: O(n^2), memory complexity: O(1)
+public void bubbleSort(int[] nums){
+  for(int i = 0; i < nums.length; i++){
+    min = i;
+    for(int j = i + 1; j < nums.length; j++){
+      if(nums[j] < nums[min]){
+        min = j;
+      }
+    }
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+  }
+}
