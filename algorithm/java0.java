@@ -544,34 +544,17 @@ public int[] sortArray(int[] nums) {
   return nums;
 }
 
-<<<<<<< Updated upstream
-public void swap(int[] nums, int i, int j) {
-  int tmp = nums[i];
-  nums[i] = nums[j];
-  nums[j] = tmp;
-}
-
-=======
->>>>>>> Stashed changes
 public void heapify(int[] nums, int maxNode, int length) {
   int largest = maxNode;
   int left = 2 * maxNode + 1;
   int right = 2 * maxNode + 2;
-<<<<<<< Updated upstream
   if (left  < length && nums[left] > nums[largest]) {
-=======
-  if(left  < length && nums[left] > nums[largest]){
->>>>>>> Stashed changes
     largest = left;
   }
   if(right < length && nums[right] > nums[largest]){
     largest = right;
   }
-<<<<<<< Updated upstream
   if (largest != maxNode) {
-=======
-  if(largest != maxNode){
->>>>>>> Stashed changes
     int temp = nums[largest];
     nums[largest] = nums[maxNode];
     nums[maxNode] = temp;
@@ -582,20 +565,12 @@ public void heapify(int[] nums, int maxNode, int length) {
 public void heapSort(int[] nums){
   int n = nums.length;
   // create max heap
-<<<<<<< Updated upstream
   for (int i = n / 2 - 1; i >= 0; i--) {
-=======
-  for(int i = n / 2 - 1; i >= 0; i--){
->>>>>>> Stashed changes
     heapify(nums, i, n);
   }
   // extract the maximum node one by one
   // starting from n - 1 because n index is out of the array bound
-<<<<<<< Updated upstream
   for (int i = n - 1; i > 0; i--) {
-=======
-  for(int i = n - 1; i > 0; i--){
->>>>>>> Stashed changes
     int temp = nums[0];
     nums[0] = nums[i];
     nums[i] = temp;
@@ -641,26 +616,15 @@ public void partition(int[] nums, int low, int high) {
       nums[start] = temp;
     }
   }
-<<<<<<< Updated upstream
-  int temp = nums[i];
-  nums[i] = nums[j];
-  nums[j] = temp;
-=======
   int temp = nums[start + 1];
   nums[start + 1] = nums[high];
   nums[high] = temp;
->>>>>>> Stashed changes
   return start + 1;
 }
 
 // Merge sort, time complexity O(nlogn), memory complexity O(n)
-<<<<<<< Updated upstream
 public void mergeSort(int[] nums, int low, int high) {
   if (low < high) {
-=======
-public void mergeSort(int[] nums, int low, int high){
-  if(low < high){
->>>>>>> Stashed changes
     int mid = low + (high - low) / 2;
     mergeSort(nums, low, mid);
     mergeSort(nums, mid + 1, high);
@@ -698,30 +662,17 @@ public void mergeSort(int[] nums, int low, int high){
   }
 }
 
-<<<<<<< Updated upstream
 // Bubble sort, time complexity O(n^2), memory complexity O(1)
 public void bubbleSort(int[] nums) {
-=======
-// Bubble Sort, time complexity O(n^2), memory complexity O(1)
-public void bubbleSort(int[] nums){
->>>>>>> Stashed changes
   int n = nums.length;
   boolean swapped;
   for (int i = 0; i < n - 1; i++) {
     swapped = false;
-<<<<<<< Updated upstream
     for (int j = 0; j < n - i - 1; j++) {
       if (nums[j] > nums[j + 1]) {
         int temp = nums[j];
         nums[j] = nums[j + 1];
         nums[j + 1] = swap;
-=======
-    for(int j = 0; j < n - i - 1; j++){
-      if(nums[j] > nums[j + 1]){
-        int temp = nums[j];
-        nums[j] = nums[j + 1];
-        nums[j + 1] = temp;
->>>>>>> Stashed changes
         swapped = true;
       }
     }
@@ -742,11 +693,7 @@ public void heapify(int[] nums, int maxNode, int length) {
   if (right < length && nums[right] > nums[largest]) {
     largest = right;
   }
-<<<<<<< Updated upstream
   if (largest != maxNode) {
-=======
-  if(largest != maxNode){
->>>>>>> Stashed changes
     int temp = nums[largest];
     nums[largest] = nums[maxNode];
     nums[maxNode] = temp;
@@ -757,20 +704,12 @@ public void heapify(int[] nums, int maxNode, int length) {
 public void heapSort(int[] nums) {
   int n = nums.length;
   // create max heap
-<<<<<<< Updated upstream
   for (int i = n / 2 - 1; i >= 0; i--) {
-=======
-  for(int i = n / 2 - 1; i >= 0; i--){
->>>>>>> Stashed changes
     heapify(nums, i, n);
   }
   // extract the maximum node one by one
   // starting from n - 1 because n index is out of the array bound
-<<<<<<< Updated upstream
   for (int i = n - 1; i > 0; i--) {
-=======
-  for(int i = n - 1; i > 0; i--){
->>>>>>> Stashed changes
     int temp = nums[0];
     nums[0] = nums[i];
     nums[i] = temp;
