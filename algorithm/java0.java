@@ -506,32 +506,32 @@ public void mergeSort(int[] nums, int low, int high) {
     mergeSort(nums, mid + 1, high);
     int n1 = mid - low + 1;
     int n2 = high - mid;
-    int[] L = new int[n1];
-    int[] R = new int[n2];
+    int[] leftNums = new int[n1];
+    int[] rightNums = new int[n2];
     for (int i = 0; i < n1; i++) {
-      L[i] = nums[low + i];
+      leftNums[i] = nums[low + i];
     }
     for (int i = 0; i < n2; i++) {
-      R[i] = nums[mid + i + 1];
+      rightNums[i] = nums[mid + 1 + i]; // avoid missing the last element of the input nums array by adding 1 to the index
     }
     int i = 0, j = 0, k = low;
     while (i < n1 && j < n2) {
-      if (L[i] < R[j]) {
-        nums[k] = L[i];
+      if (leftNums[i] < rightNums[j]) {
+        nums[k] = leftNums[i];
         i++;
-      } else {
-        nums[k] = R[j];
+      }else{
+        nums[k] = rightNums[j];
         j++;
       }
       k++;
     }
     while (i < n1) {
-      nums[k] = L[i];
+      nums[k] = leftNums[i];
       i++;
       k++;
     }
     while (j < n2) {
-      nums[k] = R[j];
+      nums[k] = rightNums[j];
       j++;
       k++;
     }
@@ -641,10 +641,10 @@ public void mergeSort(int[] nums, int low, int high) {
     int i = 0, j = 0, k = low;
     while (i < n1 && j < n2) {
       if (leftArr[i] < rightArr[j]) {
-        nums[l] = leftArr[i];
+        nums[k] = leftArr[i];
         i++;
       }else{
-        nums[l] = rightArr[j];
+        nums[k] = rightArr[j];
         j++;
       }
       k++;
