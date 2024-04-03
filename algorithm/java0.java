@@ -727,7 +727,7 @@ public void selectionSort(int[] nums) {
       }
     }
     int temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
+    nums[i] = nums[min];
+    nums[min] = temp;
   }
 }
