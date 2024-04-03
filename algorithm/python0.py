@@ -1,16 +1,17 @@
-import array
 from typing import List
 
-
-class Solution:
-  # Combination Sum
-  def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-    result = []
-    # subArray initially is an empty array
-    self.dfs(candidates, target, [], result)
-    return result
-
+# Combination Sum
+<<<<<<< Updated upstream
+def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
+  result = []
+  # subArray initially is an empty array
+  dfs(candidates, target, [], result)
+  def dfs(candidates: List[int], target: int, subArray: List[int], result: List[List[int]]):
+=======
+def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+  result = []
   def dfs(self, candidates: List[int], target: int, subArray: List[int], result: List[List[int]]):
+>>>>>>> Stashed changes
     if target < 0:  # target is negative
       return  # back tracking
     if target == 0:
@@ -19,61 +20,105 @@ class Solution:
     for i in range(len(candidates)):
       if candidates[i] <= target:
         # candidates need to be shorten after finish one iteration
-        self.dfs(candidates[i:], target - candidates[i],
-                 subArray + [candidates[i]], result)
-
-  # Gas Station
-  def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
-    possibleOutcome = 0  # assume the starting point is the result
-    gasTank = 0
-    totalTank = 0
-    for i in range(len(gas)):
-      totalTank += gas[i] - cost[i]
-      gasTank += gas[i] - cost[i]
-      if gasTank < 0:
-        possibleOutcome = i + 1
-        gasTank = 0
-    if totalTank >= 0:
-      return possibleOutcome
-    else:
-      return -1
-
-  # Backspace String Compare, not the optimized solution
-  def backspaceCompare(self, s: str, t: str) -> bool:
-    def checking(str: str):
-      stack = []
-      for i in str:
-        if i != "#":
-          stack.append(i)
-        elif len(stack) > 0:
-          stack.pop()
-      return stack
-    return checking(s) == checking(t)
+<<<<<<< Updated upstream
+        dfs(candidates[i:], target - candidates[i], subArray + [candidates[i]], result)
+  return result
 
 
-# Quick Sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
+
+# Gas Station
+def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
+  possibleOutcome = 0  # assume the starting point is the result
+  gasTank = 0
+  totalTank = 0
+  for i in range(len(gas)):
+    totalTank += gas[i] - cost[i]
+    gasTank += gas[i] - cost[i]
+    if gasTank < 0:
+      possibleOutcome = i + 1
+      gasTank = 0
+  if totalTank >= 0:
+    return possibleOutcome
+  else:
+    return -1
+
+# Backspace String Compare, not the optimized solution
+def backspaceCompare(s: str, t: str) -> bool:
+  def checking(str: str):
+    stack = []
+    for i in str:
+      if i != "#":
+        stack.append(i)
+      elif len(stack) > 0:
+        stack.pop()
+    return stack
+  return checking(s) == checking(t)
+
+=======
+        self.dfs(candidates[i:], target - candidates[i], subArray + [candidates[i]], result)
+  # subArray initially is an empty array
+  self.dfs(candidates, target, [], result)
+  return result
+
+# Gas Station
+def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+  possibleOutcome = 0  # assume the starting point is the result
+  gasTank = 0
+  totalTank = 0
+  for i in range(len(gas)):
+    totalTank += gas[i] - cost[i]
+    gasTank += gas[i] - cost[i]
+    if gasTank < 0:
+      possibleOutcome = i + 1
+      gasTank = 0
+  if totalTank >= 0:
+    return possibleOutcome
+  else:
+    return -1
+
+# Backspace String Compare, not the optimized solution
+def backspaceCompare(self, s: str, t: str) -> bool:
+  def checking(str: str):
+    stack = []
+    for i in str:
+      if i != "#":
+        stack.append(i)
+      elif len(stack) > 0:
+        stack.pop()
+    return stack
+  return checking(s) == checking(t)
+
+>>>>>>> Stashed changes
+# Quick sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
 def quick_sort(nums, low, high):
   if low < high:
     pivot = partition(nums, low, high)
     quick_sort(nums, low, pivot - 1)
     quick_sort(nums, pivot + 1, high)
-
-
-def partition(nums, low, high):
-  start = low - 1
-  pivot = nums[high]
-  for i in range(low, high):
-    if (nums[i] <= pivot):
-      start += 1
-      nums[i], nums[start] = nums[start], nums[i]
-  nums[i + 1], nums[high] = nums[high], nums[i + 1]
-  return i + 1
-
-
+<<<<<<< Updated upstream
+  def partition(nums, low, high):
+    start = low - 1
+    pivot = nums[high]
+    for i in range(low, high):
+      if (nums[i] <= pivot):
+        start += 1
+        nums[i], nums[start] = nums[start], nums[i]
+    nums[i + 1], nums[high] = nums[high], nums[i + 1]
+    return i + 1
 quick_sort(array, 0, len(array) - 1)
+=======
+    def partition(nums, low, high):
+      start = low - 1
+      pivot = nums[high]
+      for i in range(low, high):
+        if (nums[i] <= pivot):
+          start += 1
+          nums[i], nums[start] = nums[start], nums[i]
+      nums[i + 1], nums[high] = nums[high], nums[i + 1]
+      return i + 1
+>>>>>>> Stashed changes
 
-
-# Merge Sort, time complexity O(nlogn), memory complexity O(n)
+# Merge sort, time complexity O(nlogn), memory complexity O(n)
 def merge_sort(nums, low, high):
   if low < high:
     mid = low + (high - low) // 2
@@ -100,11 +145,7 @@ def merge_sort(nums, low, high):
       j += 1
       k += 1
 
-
-merge_sort(array, 0, len(array) - 1)
-
-
-# Bubble Sort, time complexity O(n^2), memory complexity O(1)
+# Bubble sort, time complexity O(n^2), memory complexity O(1)
 def bubble_sort(nums):
   n = len(nums)
   for i in range(n - 1):
@@ -116,26 +157,20 @@ def bubble_sort(nums):
     if swapped == False:
       break
 
-
-bubble_sort(array)
-
-
 # Heap sort
-def heapify(nums: List[int], node: int, length: int):
-  largest = node
-  left = 2 * node + 1
-  right = 2 * node + 2
-  if left < length and nums[left] > nums[largest]:
-    largest = left
-  if right < length and nums[right] > nums[largest]:
-    largest = right
-  if largest != node:
-    nums[largest], nums[node] = nums[node], nums[largest]
-    heapify(nums, largest, length)
-
-
 def heap_sort(nums: List[int]):
   n = len(nums)
+  def heapify(nums: List[int], node: int, length: int):
+    largest = node
+    left = 2 * node + 1
+    right = 2 * node + 2
+    if left < length and nums[left] > nums[largest]:
+      largest = left
+    if right < length and nums[right] > nums[largest]:
+      largest = right
+    if largest != node:
+      nums[largest], nums[node] = nums[node], nums[largest]
+      heapify(nums, largest, length)
   for i in range(n // 2 - 1, -1, -1):
     heapify(nums, i, n)
   for i in range(n - 1, 0, -1):

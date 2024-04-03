@@ -314,6 +314,29 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
   return result;
 }
 
+// Evaluate Reverse Polish Notation
+public int evalRPN(String[] tokens) {
+  Stack<Integer> stack = new Stack();
+  for(String i:tokens){
+    if(i.equals("+")){
+      stack.push(stack.pop() + stack.pop());
+    }else if(i.equals("-")){
+      int right = stack.pop();
+      int left = stack.pop();
+      stack.push(left - right);
+    }else if(i.equals("*")){
+      stack.push(stack.pop() * stack.pop());
+    }else if(i.equals("/")){
+      int right = stack.pop();
+      int left = stack.pop();
+      stack.push(left / right);
+    }else{
+      stack.push(Integer.parseInt(i));
+    }
+  }
+  return stack.pop();
+}
+
 // Two Sum II - Input Array Is Sorted
 public int[] twoSum(int[] numbers, int target) {
   int left = 0, right = numbers.length - 1;
@@ -521,39 +544,62 @@ public int[] sortArray(int[] nums) {
   return nums;
 }
 
+<<<<<<< Updated upstream
 public void swap(int[] nums, int i, int j) {
   int tmp = nums[i];
   nums[i] = nums[j];
   nums[j] = tmp;
 }
 
-public void buildMaxHeap(int[] nums, int maxNode, int length) {
+=======
+>>>>>>> Stashed changes
+public void heapify(int[] nums, int maxNode, int length) {
   int largest = maxNode;
   int left = 2 * maxNode + 1;
   int right = 2 * maxNode + 2;
-  if (left < length && nums[left] > nums[largest]) {
+<<<<<<< Updated upstream
+  if (left  < length && nums[left] > nums[largest]) {
+=======
+  if(left  < length && nums[left] > nums[largest]){
+>>>>>>> Stashed changes
     largest = left;
   }
-  if (right < length && nums[right] > nums[largest]) {
+  if(right < length && nums[right] > nums[largest]){
     largest = right;
   }
+<<<<<<< Updated upstream
   if (largest != maxNode) {
-    swap(nums, largest, maxNode);
-    buildMaxHeap(nums, largest, length);
+=======
+  if(largest != maxNode){
+>>>>>>> Stashed changes
+    int temp = nums[largest];
+    nums[largest] = nums[maxNode];
+    nums[maxNode] = temp;
+    heapify(nums, largest, length); // heapify the affected sub tree
   }
 }
 
-public void heapSort(int[] nums) {
+public void heapSort(int[] nums){
   int n = nums.length;
   // create max heap
+<<<<<<< Updated upstream
   for (int i = n / 2 - 1; i >= 0; i--) {
-    buildMaxHeap(nums, i, n);
+=======
+  for(int i = n / 2 - 1; i >= 0; i--){
+>>>>>>> Stashed changes
+    heapify(nums, i, n);
   }
   // extract the maximum node one by one
   // starting from n - 1 because n index is out of the array bound
+<<<<<<< Updated upstream
   for (int i = n - 1; i > 0; i--) {
-    swap(nums, 0, i);
-    buildMaxHeap(nums, 0, i);
+=======
+  for(int i = n - 1; i > 0; i--){
+>>>>>>> Stashed changes
+    int temp = nums[0];
+    nums[0] = nums[i];
+    nums[i] = temp;
+    heapify(nums, 0, i);
   }
 }
 
@@ -575,8 +621,8 @@ public int maxFrequencyElements(int[] nums) {
   return result;
 }
 
-// Quick Sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
-public void quickSort(int[] nums, int low, int high){
+// Quick sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
+public void quickSort(int[] nums, int low, int high) {
   if(low < high){
     int pivot = partition(nums, low, high);
     quickSort(nums, low, pivot - 1);
@@ -584,30 +630,37 @@ public void quickSort(int[] nums, int low, int high){
   }
 }
 
-public void partition(int[] nums, int low, int high){
+public void partition(int[] nums, int low, int high) {
   int start = low - 1;
   int pivot = nums[high];
   for(int i = low, i < high; i++){
     if(nums[i] < pivot){
       start++;
-      swap(nums, start, i);
+      int temp = nums[i];
+      nums[i] = nums[start];
+      nums[start] = temp;
     }
   }
-  swap(nums, start + 1, high);
-  return start + 1;
-}
-
-public void swap(int[] nums, int i, int j){
+<<<<<<< Updated upstream
   int temp = nums[i];
   nums[i] = nums[j];
   nums[j] = temp;
+=======
+  int temp = nums[start + 1];
+  nums[start + 1] = nums[high];
+  nums[high] = temp;
+>>>>>>> Stashed changes
+  return start + 1;
 }
 
-quickSort(array, 0, array.length - 1);
-
-// Merge Sort, time complexity O(nlogn), memory complexity O(n)
+// Merge sort, time complexity O(nlogn), memory complexity O(n)
+<<<<<<< Updated upstream
+public void mergeSort(int[] nums, int low, int high) {
+  if (low < high) {
+=======
 public void mergeSort(int[] nums, int low, int high){
   if(low < high){
+>>>>>>> Stashed changes
     int mid = low + (high - low) / 2;
     mergeSort(nums, low, mid);
     mergeSort(nums, mid + 1, high);
@@ -615,15 +668,15 @@ public void mergeSort(int[] nums, int low, int high){
     int n2 = high - mid;
     int[] leftArr = new int[n1];
     int[] rightArr = new int[n2];
-    for(int i = 0; i < n1; i++){
+    for (int i = 0; i < n1; i++) {
       leftArr[i] = nums[low + i];
     }
-    for(int i = 0; i < n2; i++){
+    for (int i = 0; i < n2; i++) {
       rightArr[i] = nums[mid + 1 + i]; // avoid missing the last element of the input nums array by adding 1 to the index
     }
     int i = 0, j = 0, k = low;
-    while(i < n1 && j < n2){
-      if(leftArr[i] < rightArr[j]){
+    while (i < n1 && j < n2) {
+      if (leftArr[i] < rightArr[j]) {
         nums[l] = leftArr[i];
         i++;
       }else{
@@ -632,12 +685,12 @@ public void mergeSort(int[] nums, int low, int high){
       }
       k++;
     }
-    while(i < n1){
+    while (i < n1) {
       nums[k] = leftArr[i];
       i++;
       k++;
     }
-    while(j < n2){
+    while (j < n2) {
       nums[k] = rightArr[j];
       j++;
       k++;
@@ -645,17 +698,30 @@ public void mergeSort(int[] nums, int low, int high){
   }
 }
 
-mergeSort(array, 0, array.length - 1)
-
+<<<<<<< Updated upstream
+// Bubble sort, time complexity O(n^2), memory complexity O(1)
+public void bubbleSort(int[] nums) {
+=======
 // Bubble Sort, time complexity O(n^2), memory complexity O(1)
 public void bubbleSort(int[] nums){
+>>>>>>> Stashed changes
   int n = nums.length;
   boolean swapped;
-  for(int i = 0; i < n - 1; i++){
+  for (int i = 0; i < n - 1; i++) {
     swapped = false;
+<<<<<<< Updated upstream
+    for (int j = 0; j < n - i - 1; j++) {
+      if (nums[j] > nums[j + 1]) {
+        int temp = nums[j];
+        nums[j] = nums[j + 1];
+        nums[j + 1] = swap;
+=======
     for(int j = 0; j < n - i - 1; j++){
       if(nums[j] > nums[j + 1]){
-        swap(nums, j, j + 1);
+        int temp = nums[j];
+        nums[j] = nums[j + 1];
+        nums[j + 1] = temp;
+>>>>>>> Stashed changes
         swapped = true;
       }
     }
@@ -665,59 +731,58 @@ public void bubbleSort(int[] nums){
   }
 }
 
-public void swap(int[] nums, int i, int j){
-  int temp = nums[i];
-  nums[i] = nums[j];
-  nums[j] = temp;
-}
-
-bubbleSort(array);
-
-// Heap Sort, time complexity O(nlogn), memory complexity O(1)
-public void swap(int[] nums, int i, int j){
-  int tmp = nums[i];
-  nums[i] = nums[j];
-  nums[j] = tmp;
-}
-
-public void buildMaxHeap(int[] nums, int maxNode, int length) {
+// Heap sort, time complexity O(nlogn), memory complexity O(1)
+public void heapify(int[] nums, int maxNode, int length) {
   int largest = maxNode;
   int left = 2 * maxNode + 1;
   int right = 2 * maxNode + 2;
-  if(left  < length && nums[left] > nums[largest]){
+  if (left  < length && nums[left] > nums[largest]) {
     largest = left;
   }
-  if(right < length && nums[right] > nums[largest]){
+  if (right < length && nums[right] > nums[largest]) {
     largest = right;
   }
+<<<<<<< Updated upstream
+  if (largest != maxNode) {
+=======
   if(largest != maxNode){
-    swap(nums, largest, maxNode);
-    buildMaxHeap(nums, largest, length); // heapify the affected sub tree
+>>>>>>> Stashed changes
+    int temp = nums[largest];
+    nums[largest] = nums[maxNode];
+    nums[maxNode] = temp;
+    heapify(nums, largest, length); // heapify the affected sub tree
   }
 }
 
-public void heapSort(int[] nums){
+public void heapSort(int[] nums) {
   int n = nums.length;
   // create max heap
+<<<<<<< Updated upstream
+  for (int i = n / 2 - 1; i >= 0; i--) {
+=======
   for(int i = n / 2 - 1; i >= 0; i--){
-    buildMaxHeap(nums, i, n);
+>>>>>>> Stashed changes
+    heapify(nums, i, n);
   }
   // extract the maximum node one by one
   // starting from n - 1 because n index is out of the array bound
+<<<<<<< Updated upstream
+  for (int i = n - 1; i > 0; i--) {
+=======
   for(int i = n - 1; i > 0; i--){
-    swap(nums, 0, i);
-    buildMaxHeap(nums, 0, i);
+>>>>>>> Stashed changes
+    int temp = nums[0];
+    nums[0] = nums[i];
+    nums[i] = temp;
+    heapify(nums, 0, i);
   }
 }
 
-int[] array = new int[]{1, 9, 8, 20, 15, 17, 5, 4, 8, 3};
-heapSort(array);
-
 // Selection sort, time complexity: O(n^2), memory complexity: O(1)
-public void bubbleSort(int[] nums){
-  for(int i = 0; i < nums.length; i++){
+public void bubbleSort(int[] nums) {
+  for (int i = 0; i < nums.length; i++) {
     min = i;
-    for(int j = i + 1; j < nums.length; j++){
+    for (int j = i + 1; j < nums.length; j++) {
       if(nums[j] < nums[min]){
         min = j;
       }
