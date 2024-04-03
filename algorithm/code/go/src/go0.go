@@ -294,7 +294,8 @@ func heapify(nums []int, max int, length int) {
   right := 2*max + 2
   if left < length && nums[left] > nums[largest] {
     largest = left
-  } else if right < length && nums[right] > nums[largest] {
+  }
+  if right < length && nums[right] > nums[largest] {
     largest = right
   }
   if largest != max {

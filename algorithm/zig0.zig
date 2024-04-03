@@ -1,7 +1,40 @@
 const std = @import("std");
 
+// Sort an Array
+pub fn sortArray(nums: []i32) []i32 {
+  heapSort(&nums);
+  return nums;
+}
+
+fn heapSort(nums: []i32) void {
+  var n = nums.len;
+  for (std.math.reverseStep(0, n / 2)) |i| {
+    heapify(nums, i, n);
+  }
+  for (std.math.reverseStep(1, n)) |i| {
+    nums.swap(0, i);
+    heapify(nums, 0, i);
+  }
+}
+
+fn heapify(nums: []i32, root i32, length i32) void {
+  var largest = root;
+  var left = 2 * root + 1;
+  var right = 2 * root + 2;
+  if (left < length && nums[left] > nums[largest]) {
+    largest = left;
+  }
+  if (right < length && nums[right] > nums[largest]) {
+    largest = right;
+  }
+  if (largest != root) {
+    nums.swap(largest, root);
+    heapify(nums, largest, length);
+  }
+}
+
 // Merge sort
-pub fn mergeSort(nums: []i32, start: i32, end: i32) {
+fn mergeSort(nums: []i32, start: i32, end: i32) {
   if (start >= end) {
     return
   }
@@ -34,10 +67,36 @@ pub fn mergeSort(nums: []i32, start: i32, end: i32) {
 }
 
 // Heap sort
-pub fn heapSort(nums: []i32) {
-  
+fn heapSort(nums: []i32) void {
+  var n = nums.len;
+  for (std.math.reverseStep(0, n / 2)) |i| {
+    heapify(nums, i, n);
+  }
+  for (std.math.reverseStep(1, n)) |i| {
+    nums.swap(0, i);
+    heapify(nums, 0, i);
+  }
+}
+
+fn heapify(nums: []i32, root i32, length i32) void {
+  var largest = root;
+  var left = 2 * root + 1;
+  var right = 2 * root + 2;
+  if (left < length && nums[left] > nums[largest]) {
+    largest = left;
+  }
+  if (right < length && nums[right] > nums[largest]) {
+    largest = right;
+  }
+  if (largest != root) {
+    nums.swap(largest, root);
+    heapify(nums, largest, length);
+  }
 }
 
 pub fn main() !void {
+  const nums = [_]i32{12, 11, 13, 5, 6, 7};
+  const sorted = sortArray(nums);
+  std.debug.print("{any}\n", .{sorted});
   std.debug.print("hello");
 }
