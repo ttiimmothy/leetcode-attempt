@@ -187,11 +187,7 @@ pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
 // Quick sort
 pub fn quick_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
   if start < end {
-<<<<<<< Updated upstream
-    let pivot = partition(nums, start, end);
-=======
     let pivot = Self::partition(nums, start, end);
->>>>>>> Stashed changes
     Self::quick_sort(nums, start, pivot - 1);
     Self::quick_sort(nums, pivot + 1, end);
   }
