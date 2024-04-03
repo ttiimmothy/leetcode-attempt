@@ -718,7 +718,7 @@ public void heapSort(int[] nums) {
 }
 
 // Selection sort, time complexity: O(n^2), memory complexity: O(1)
-public void bubbleSort(int[] nums) {
+public void selectionSort(int[] nums) {
   for (int i = 0; i < nums.length; i++) {
     min = i;
     for (int j = i + 1; j < nums.length; j++) {
