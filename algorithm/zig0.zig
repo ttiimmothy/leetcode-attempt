@@ -94,6 +94,29 @@ fn heapify(nums: []i32, root i32, length i32) void {
   }
 }
 
+// Quick sort
+fn quickSort(nums: []i32, start: i32, end: i32) void {
+  if (start >= end) {
+    return;
+  }
+  const pivot = partition(nums, start, end);
+  quickSort(nums, start, pivot - 1);
+  quickSort(nums, pivot + 1, end);
+}
+
+fn partition(nums: []i32, start: i32, end: i32) i32 {
+  var index = start - 1;
+  var pivot = nums[end];
+  for (start..<end) |i| {
+    if (nums[i] < pivot) {
+      index += 1;
+      nums.swap(index, i);
+    }
+  }
+  nums.swap(index + 1, end);
+  return index + 1;
+}
+
 pub fn main() !void {
   const nums = [_]i32{12, 11, 13, 5, 6, 7};
   const sorted = sortArray(nums);
