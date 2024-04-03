@@ -43,6 +43,7 @@ public List<List<Integer>> threeSum(int[] nums) {
       }
     }
   }
+  return result;
 }
 
 // Valid Parentheses
@@ -179,7 +180,7 @@ public int[][] merge(int[][] intervals) {
 // Merge Intervals
 public int[][] merge(int[][] intervals) {
   Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-  List<int[]> merged = new ArrayList<>();
+  List<int[]> merged = new ArrayList();
   int[] mergedInterval = intervals[0];
   for (int i = 1; i < intervals.length; i++) {
     int[] interval = intervals[i];
@@ -605,10 +606,10 @@ public void quickSort(int[] nums, int low, int high) {
   }
 }
 
-public void partition(int[] nums, int low, int high) {
+public int partition(int[] nums, int low, int high) {
   int start = low - 1;
   int pivot = nums[high];
-  for(int i = low, i < high; i++){
+  for(int i = low; i < high; i++){
     if(nums[i] < pivot){
       start++;
       int temp = nums[i];
@@ -672,7 +673,7 @@ public void bubbleSort(int[] nums) {
       if (nums[j] > nums[j + 1]) {
         int temp = nums[j];
         nums[j] = nums[j + 1];
-        nums[j + 1] = swap;
+        nums[j + 1] = temp;
         swapped = true;
       }
     }
@@ -720,7 +721,7 @@ public void heapSort(int[] nums) {
 // Selection sort, time complexity: O(n^2), memory complexity: O(1)
 public void selectionSort(int[] nums) {
   for (int i = 0; i < nums.length; i++) {
-    min = i;
+    int min = i;
     for (int j = i + 1; j < nums.length; j++) {
       if(nums[j] < nums[min]){
         min = j;
