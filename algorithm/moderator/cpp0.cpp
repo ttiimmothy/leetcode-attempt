@@ -71,7 +71,7 @@ void heapSort(vector<int>& nums) {
   }
 }
 
-vector<int> sortArray(vector<int>& nums) {
+vector<int> sortArray_1(vector<int>& nums) {
   heapSort(nums);
   return nums;
 }
@@ -99,11 +99,11 @@ void quickSort(vector<int>& nums, int start, int end) {
 }
 
 // Merge sort
-void mergeSort(vector<int>& nums, int start, int end) {
+void mergeSort_1(vector<int>& nums, int start, int end) {
   if (start < end) {
     int mid = start + (end - start) / 2;
-    mergeSort(nums, start, mid);
-    mergeSort(nums, mid + 1, end);
+    mergeSort_1(nums, start, mid);
+    mergeSort_1(nums, mid + 1, end);
     vector<int> leftNums(nums.begin() + start, nums.begin() + mid + 1);
     vector<int> rightNums(nums.begin() + mid + 1, nums.begin() + end + 1);
     int i = 0;
@@ -150,7 +150,7 @@ void bubbleSort(vector<int>& nums) {
 }
 
 // Heap sort
-void heapify(vector<int>& nums, int root, int length) {
+void heapify_1(vector<int>& nums, int root, int length) {
   int largest = root;
   int left = 2 * root + 1;
   int right = 2 * root + 2;
@@ -162,18 +162,18 @@ void heapify(vector<int>& nums, int root, int length) {
   }
   if (largest != root){
     swap(nums[largest], nums[root]);
-    heapify(nums, largest, length);
+    heapify_1(nums, largest, length);
   }
 }
 
-void heapSort(vector<int> &nums) {
+void heapSort_1(vector<int> &nums) {
   int n = nums.size();
   for (int i = n / 2 - 1; i >= 0; i--) {
-    heapify(nums, i, n);
+    heapify_1(nums, i, n);
   }
   for (int i = n - 1; i > 0; i--) {
     swap(nums[0], nums[i]);
-    heapify(nums, 0, i);
+    heapify_1(nums, 0, i);
   }
 }
 
