@@ -161,6 +161,27 @@ public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> subL
   }
 }
 
+// Permutations
+public List<List<Integer>> permute(int[] nums) {
+  List<List<Integer>> result = new ArrayList<>();
+  permute(nums, new ArrayList<>(), result);
+  return result;
+}
+
+public void permute(int[] nums, List<Integer> current, List<List<Integer>> result) {
+  if (current.size() == nums.length) {
+    result.add(current);
+    return;
+  }
+  for (int i = 0; i < nums.length; i++) {
+    if (current.contains(nums[i])) continue;
+    List<Integer> newCurrent = new ArrayList<>(current);
+    newCurrent.add(nums[i]);
+    permute(nums, newCurrent, result);
+    // don't need to run list.remove()  
+  }
+}
+
 // Permutations II
 public List<List<Integer>> permuteUnique(int[] nums) {
   Arrays.sort(nums);
