@@ -44,7 +44,7 @@ func backtrack(candidates []int, target int, result *[][]int, subList []int, ind
   }
 }
 
-// Combination Sum 2
+// Combination Sum II
 //
 //lint:ignore U1000 Function is intentionally left unused
 func combinationSum2(candidates []int, target int) [][]int {
@@ -71,6 +71,34 @@ func backtrack_1(candidates []int, target int, result *[][]int, subList []int, i
     subList = append(subList, candidates[i])
     backtrack_1(candidates, target-candidates[i], result, subList, i+1)
     subList = subList[:len(subList)-1]
+  }
+}
+
+// Permutations II
+func permuteUnique(nums []int) [][]int {
+  slices.Sort(nums)
+  result := [][]int{}
+  visit := make([]bool, len(nums))
+  backtrack_2(nums, &result, []int{}, visit)
+  return result
+}
+
+func backtrack_2(nums []int, result *[][]int, temp []int, visit []bool) {
+  if len(temp) == len(nums) {
+    list := make([]int, len(temp))
+    copy(list, temp)
+    *result = append(*result, list)
+    return
+  }
+  for i := 0; i < len(nums); i++ {
+    if visit[i] || i > 0 && !visit[i - 1] && nums[i - 1] == nums[i] {
+      continue
+    }
+    visit[i] = true
+    temp = append(temp, nums[i])
+    backtrack_2(nums, result, temp, visit)
+    visit[i] = false
+    temp = temp[:len(temp) - 1]
   }
 }
 
