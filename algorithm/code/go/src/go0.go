@@ -75,6 +75,8 @@ func backtrack_1(candidates []int, target int, result *[][]int, subList []int, i
 }
 
 // Permutations II
+//
+//lint:ignore U1000 Function is intentionally left unused
 func permuteUnique(nums []int) [][]int {
   slices.Sort(nums)
   result := [][]int{}
