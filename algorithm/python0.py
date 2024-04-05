@@ -1,9 +1,9 @@
 from typing import List
 
 # Combination Sum
-def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
   result = []
-  def dfs(self, candidates: List[int], target: int, subArray: List[int], result: List[List[int]]):
+  def dfs(candidates: List[int], target: int, subArray: List[int], result: List[List[int]]):
     if target < 0:  # target is negative
       return  # back tracking
     if target == 0:
@@ -12,13 +12,13 @@ def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
     for i in range(len(candidates)):
       if candidates[i] <= target:
         # candidates need to be shorten after finish one iteration
-        self.dfs(candidates[i:], target - candidates[i], subArray + [candidates[i]], result)
+        dfs(candidates[i:], target - candidates[i], subArray + [candidates[i]], result)
   # subArray initially is an empty array
-  self.dfs(candidates, target, [], result)
+  dfs(candidates, target, [], result)
   return result
 
 # Gas Station
-def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
   possibleOutcome = 0  # assume the starting point is the result
   gasTank = 0
   totalTank = 0
@@ -34,7 +34,7 @@ def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
     return -1
 
 # Backspace String Compare, not the optimized solution
-def backspaceCompare(self, s: str, t: str) -> bool:
+def backspaceCompare(s: str, t: str) -> bool:
   def checking(str: str):
     stack = []
     for i in str:
@@ -47,19 +47,20 @@ def backspaceCompare(self, s: str, t: str) -> bool:
 
 # Quick sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
 def quick_sort(nums, low, high):
-  if low < high:
-    pivot = partition(nums, low, high)
-    quick_sort(nums, low, pivot - 1)
-    quick_sort(nums, pivot + 1, high)
-    def partition(nums, low, high):
-      start = low - 1
-      pivot = nums[high]
-      for i in range(low, high):
-        if (nums[i] <= pivot):
-          start += 1
-          nums[i], nums[start] = nums[start], nums[i]
-      nums[i + 1], nums[high] = nums[high], nums[i + 1]
-      return i + 1
+  if low >= high:
+    return
+  def partition(nums, low, high):
+    start = low - 1
+    pivot = nums[high]
+    for i in range(low, high - 1):
+      if (nums[i] < pivot):
+        start += 1
+      nums[i], nums[start] = nums[start], nums[i]
+    nums[start + 1], nums[high] = nums[high], nums[start + 1]
+    return start + 1
+  pivot = partition(nums, low, high)
+  quick_sort(nums, low, pivot - 1)
+  quick_sort(nums, pivot + 1, high)
 
 # Merge sort, time complexity O(nlogn), memory complexity O(n)
 def merge_sort(nums, low, high):
