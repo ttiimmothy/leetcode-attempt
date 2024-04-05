@@ -63,6 +63,41 @@ public boolean isValid(String s) {
   return stack.isEmpty();
 }
 
+// Merge Two Sorted Lists
+public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+  ListNode dummy = new ListNode();
+  ListNode result = dummy;
+  while (list1 != null && list2 != null) {
+    if (list1.val < list2.val) {
+      result.next = list1;
+      list1 = list1.next;
+    } else {
+      result.next = list2;
+      list2 = list2.next;
+    }
+    result = result.next;
+  }
+  if (list1 != null) {
+    result.next = list1;
+  } else {
+    result.next = list2;
+  }
+  return dummy.next;
+}
+
+// Merge Two Sorted Lists
+public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+  if (list1 == null) return list2;
+  if (list2 == null) return list1;
+  if (list1.val < list2.val) {
+    list1.next = mergeTwoLists(list1.next, list2);
+    return list1;
+  } else {
+    list2.next = mergeTwoLists(list1, list2.next);
+    return list2;
+  }
+}
+
 // Combination Sum
 public List<List<Integer>> combinationSum(int[] candidates, int target) {
   List<List<Integer>> result = new ArrayList();
@@ -384,6 +419,37 @@ public int evalRPN(String[] tokens) {
   return stack.pop();
 }
 
+// Min Stack
+class MinStack {
+  Stack<Integer> stack;
+  Stack<Integer> minStack;
+  public MinStack() {
+    this.stack = new Stack<>();
+    this.minStack = new Stack<>();
+  }
+
+  public void push(int val) {
+    stack.push(val);
+    if (!minStack.isEmpty()) {
+      val = Math.min(val, minStack.peek());
+    }
+    minStack.push(val);
+  }
+
+  public void pop() {
+    stack.pop();
+    minStack.pop();
+  }
+
+  public int top() {
+    return stack.peek();
+  }
+
+  public int getMin() {
+    return minStack.peek();
+  }
+}
+
 // Two Sum II - Input Array Is Sorted
 public int[] twoSum(int[] numbers, int target) {
   int left = 0, right = numbers.length - 1;
@@ -439,6 +505,62 @@ public boolean containsDuplicate(int[] nums) {
     set.add(i);
   }
   return false;
+}
+
+// Implement Stack using Queues
+class MyStack {
+  Deque<Integer> queue;
+  public MyStack() {
+    this.queue = new LinkedList<>();
+  }
+  
+  public void push(int x) {
+    queue.add(x);
+    int n = queue.size();
+    for (int i = 0; i < n - 1; i++) {
+      queue.add(queue.poll());
+    }
+  }
+  
+  public int pop() {
+    return queue.poll();
+  }
+  
+  public int top() {
+    return queue.peek();
+  }
+  
+  public boolean empty() {
+    return queue.isEmpty();
+  }
+}
+
+// Implememnt Stack using Queues
+class MyStack {
+  Deque<Integer> queue;
+  public MyStack() {
+    this.queue = new ArrayDeque<>();
+  }
+  
+  public void push(int x) {
+    queue.addLast(x);
+    int n = queue.size();
+    for (int i = 0; i < n - 1; i++) {
+      queue.addLast(queue.pollFirst());
+    }
+  }
+  
+  public int pop() {
+    return queue.pollFirst();
+  }
+  
+  public int top() {
+    return queue.peekFirst();
+  }
+  
+  public boolean empty() {
+    return queue.isEmpty();
+  }
 }
 
 // Implement Queue using Stacks
@@ -538,6 +660,20 @@ public int findValidCharIndex(String str, int end){
     end--;
   }
   return end;
+}
+
+public int[] dailyTemperatures(int[] temperatures) {
+  Stack<Integer> stack = new Stack<>();
+  int n = temperatures.length;
+  int[] result = new int[n];
+  for (int i = 0; i < n; i++) {
+    while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
+      int previousDay = stack.pop();
+      result[previousDay] = i - previousDay;
+    }
+    stack.push(i);
+  }
+  return result;
 }
 
 // Sort an Array
