@@ -120,3 +120,7 @@ def heap_sort(nums: List[int]):
   for i in range(n - 1, 0, -1):
     nums[0], nums[i] = nums[i], nums[0]
     heapify(nums, 0, i)
+
+numbers = [1, 9, 8, 20, 15, 17, 5, 4, 8, 3]
+heap_sort(numbers)
+print(numbers)
