@@ -179,6 +179,23 @@ func sortColors(nums []int) {
   }
 }
 
+// Gas Station
+func canCompleteCircuit(gas []int, cost []int) int {
+  total, current, result := 0, 0, 0
+  for i := 0; i < len(gas); i++ {
+    total += gas[i] - cost[i]
+    current += gas[i] - cost[i]
+    if current < 0 {
+      result = i + 1
+      current = 0
+    }
+  }
+  if total >= 0 {
+    return result
+  }
+  return -1
+}
+
 // Implement Queue using Stacks
 //
 //lint:ignore U1000 Function is intentionally left unused
