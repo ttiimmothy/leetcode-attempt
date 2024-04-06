@@ -45,6 +45,28 @@ def backspaceCompare(s: str, t: str) -> bool:
     return stack
   return checking(s) == checking(t)
 
+def sortArray(nums: List[int]) -> List[int]:
+  def heapSort(nums: List[int]):
+    n = len(nums)
+    def heapify(nums: List[int], root: int, length: int):
+      largest = root
+      left = 2 * root + 1
+      right = 2 * root + 2
+      if left < length and nums[left] > nums[largest]:
+        largest = left
+      if right < length and nums[right] > nums[largest]:
+        largest = right
+      if largest != root:
+        nums[largest], nums[root] = nums[root], nums[largest]
+        heapify(nums, largest, length)
+    for i in range(n // 2 - 1, -1, -1):
+      heapify(nums, i, n)
+    for i in range(n - 1, 0, -1):
+      nums[0], nums[i] = nums[i], nums[0]
+      heapify(nums, 0, i)
+  heapSort(nums)
+  return nums
+
 # Quick sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
 def quick_sort(nums, low, high):
   if low >= high:
