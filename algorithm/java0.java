@@ -2,12 +2,12 @@
 public int maxArea(int[] height) {
   int left = 0, right = height.length - 1;
   int area = 0;
-  while(left < right){
+  while (left < right) {
     int currentArea = (right - left) * Math.min(height[left], height[right]);
     area = Math.max(area, currentArea);
-    if(height[left] < height[right]){
+    if (height[left] < height[right]) {
       left++;
-    }else{
+    } else {
       right--;
     }
   }
@@ -110,8 +110,7 @@ public void backtrack(int index, List<List<Integer>> result, List<Integer> subLi
   if (target == 0) {
     result.add(new ArrayList(subList));
     return;
-  }
-  if (index >= candidates.length || target < 0) {
+  } else if (target < 0) {
     return;
   }
   for (int i = index; i < candidates.length; i++) {
@@ -133,11 +132,11 @@ public List<List<Integer>> combinationSum(int[] candidates, int target) {
 }
 
 public void backtrack(int i, List<List<Integer>> result, List<Integer> subList, int[] candidates, int target, int total) {
-  if(total == target){
+  if (total == target) {
     result.add(new ArrayList(subList));
     return;
   }
-  if(i >= candidates.length || total > target){
+  if (i >= candidates.length || total > target) {
     return;
   }
   subList.add(candidates[i]);
@@ -158,19 +157,16 @@ public void backtrack(int[] candidates, int target, int index, List<Integer> lis
   if (target == 0) {
     result.add(new ArrayList(list));
     return;
-  }
-  if (index >= candidates.length || target < 0) {
+  } else if (target < 0) {
     return;
   }
   for (int i = index; i < candidates.length; i++) {
     if(i > index && candidates[i] == candidates[i - 1]){
       continue; // skip duplicate combinations
     }
-    if (candidates[i] <= target) {
-      list.add(candidates[i]);
-      backtrack(candidates, target - candidates[i], i + 1, list, result); // each number in candidates may only be used once 
-      list.remove(list.size() - 1);
-    }
+    list.add(candidates[i]);
+    backtrack(candidates, target - candidates[i], i + 1, list, result); // each number in candidates may only be used once 
+    list.remove(list.size() - 1);
   }
 }
 

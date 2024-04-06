@@ -1,7 +1,116 @@
+// Two Sum
+pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+  use std::collections::HashMap;
+  let mut map = HashMap::new();
+  for (i, &num) in nums.iter().enumerate() {
+    let difference = target - num;
+    match map.get(&difference) {
+      Some(&j) => return vec![i as i32, j as i32],
+      None => map.insert(num, i)
+    };
+  }
+  Vec::new()
+}
+
+// Combination Sum
+pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+  let mut result = Vec::new();
+  let mut temp = Vec::new();
+  pub fn backtrack(candidates: &Vec<i32>, target: i32, result: &mut Vec<Vec<i32>>, temp: &mut Vec<i32>, index: usize) {
+    if target == 0 {
+      result.push(temp.clone());
+      return;
+    } else if target < 0 {
+      return;
+    }
+    for i in index..candidates.len() {
+      temp.push(candidates[i]);
+      backtrack(candidates, target - candidates[i], result, temp, i);
+      temp.pop();
+    }
+  }
+  backtrack(&candidates, target, &mut result, &mut temp, 0);
+  result
+}
+
+// Combination Sum
+pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+  let mut result = Vec::new();
+  let mut temp = Vec::new();
+  pub fn backtrack(candidates: &[i32], target: i32, result: &mut Vec<Vec<i32>>, temp: &mut Vec<i32>) {
+    if target == 0 {
+      result.push(temp.clone());
+      return;
+    } else if target < 0 {
+      return;
+    }
+    for i in 0..candidates.len() {
+      temp.push(candidates[i]);
+      backtrack(&candidates[i..], target - candidates[i], result, temp);
+      temp.pop();
+    }
+  }
+  backtrack(&candidates, target, &mut result, &mut temp);
+  result
+}
+
+// Combination Sum II
+pub fn combination_sum2(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+  let mut candidates = candidates.clone();
+  candidates.sort();
+  let mut result = Vec::new();
+  let mut temp = Vec::new();
+  fn backtrack(candidates: &Vec<i32>, target: i32, result: &mut Vec<Vec<i32>>, temp: &mut Vec<i32>, current: usize) {
+    if target == 0 {
+      result.push(temp.clone());
+      return;
+    } else if target < 0 {
+      return;
+    }
+    for i in current..candidates.len() {
+      if i > current && candidates[i] == candidates[i - 1] {
+        continue;
+      }
+      temp.push(candidates[i]);
+      backtrack(candidates, target - candidates[i], result, temp, i + 1);
+      temp.pop();
+    }
+  }
+  backtrack(&candidates, target, &mut result, &mut temp, 0);
+  result
+}
+
+// Permutations II
+pub fn permute_unique(nums: Vec<i32>) -> Vec<Vec<i32>> {
+  let mut nums = nums;
+  nums.sort();
+  let mut result = Vec::new();
+  let mut temp = Vec::new();
+  let mut visit = vec![false; nums.len()];
+  fn permutations(nums: &[i32], result: &mut Vec<Vec<i32>>, temp: &mut Vec<i32>, visit: &mut Vec<bool>) {
+    if temp.len() == nums.len() {
+      result.push(temp.clone());
+      return;
+    }
+    for i in 0..nums.len() {
+      if visit[i] || i > 0 && !visit[i - 1] && nums[i - 1] == nums[i] {
+        continue;
+      }
+      temp.push(nums[i]);
+      visit[i] = true;
+      permutations(nums, result, temp, visit);
+      temp.pop();
+      visit[i] = false;
+    }
+  }
+  permutations(&nums, &mut result, &mut temp, &mut visit);
+  result
+}
+
 // Merge Intervals
 pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
   let mut intervals = intervals;
-  intervals.sort_by_key(|a| a[0]);
+  intervals.sort_by(|x, y| x[0].cmp(&y[0]));
   let mut result = Vec::new();
   result.push(intervals[0].clone());
   for i in 1..intervals.len() {
@@ -73,6 +182,25 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result.push(new_interval);
   result
 }
+ 
+// Insert Interval
+pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>> {
+  let mut result = Vec::new();
+  let mut new_interval = new_interval;
+  for i in 0..intervals.len() {
+    if new_interval[1] < intervals[i][0] {
+      result.push(new_interval);
+      result.extend_from_slice(&intervals[i..]);
+      return result;
+    } else if new_interval[0] > intervals[i][1] {
+      result.push(intervals[i].clone());
+    } else {
+      new_interval = vec![new_interval[0].min(intervals[i][0]), new_interval[1].max(intervals[i][1])];
+    }
+  }
+  result.push(new_interval);
+  result
+}
 
 // Backspace String Compare
 pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
@@ -88,6 +216,44 @@ pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
       }
     } else {
       break; // Handle the case when 'end' is out of bounds
+    }
+    end -= 1;
+  }
+  end
+}
+
+pub fn backspace_compare(s: String, t: String) -> bool {
+  let mut pS = s.len();
+  let mut pT = t.len();
+  while pS > 0 || pT > 0 {
+    pS = Self::get_next_valid_character(s.clone(), pS);
+    pT = Self::get_next_valid_character(t.clone(), pT);
+    if pS == 0 && pT == 0 {
+      return true;
+    } else if pS == 0 || pT == 0 {
+      return false;
+    } else if s.chars().nth(pS - 1) != t.chars().nth(pT - 1) {
+      return false;
+    }
+    pS -= 1;
+    pT -= 1;
+  }
+  return true;
+}
+
+// Backspace String Compare
+pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
+  let mut backspace_count = 0;
+  while end > 0 {
+    match str.chars().nth(end - 1) {
+      Some(c) if c == '#' => backspace_count += 1,
+      _ => {
+        if backspace_count > 0 {
+          backspace_count -= 1;
+        } else {
+          break;
+        }
+      }
     }
     end -= 1;
   }
