@@ -202,6 +202,90 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result
 }
 
+// Sort Colors
+pub fn sort_colors(nums: &mut Vec<i32>) {
+  let (mut low, mut mid, mut high) = (0, 0, nums.len() as i32 - 1);
+  while mid <= high {
+    match nums[mid as usize] {
+      0 => {nums.swap(low as usize,mid as usize);low+=1;mid+=1},
+      2 => {nums.swap(mid as usize,high as usize);high-=1},
+      _ => {mid+=1}
+    }
+  }
+}
+
+// Implement Queue using Stacks
+struct MyQueue {
+  input: Vec<i32>,
+  output: Vec<i32>,
+}
+impl MyQueue {
+  fn new() -> Self {
+    return MyQueue{
+      input: Vec::new(),
+      output: Vec::new(),
+    }
+  }
+  
+  fn push(&mut self, x: i32) {
+    self.input.push(x);
+  }
+  
+  fn pop(&mut self) -> i32 {
+    self.peek();
+    self.output.pop().unwrap()
+  }
+  
+  fn peek(&mut self) -> i32 {
+    if self.output.is_empty() {
+      loop {
+        match self.input.pop() {
+          Some(i) => self.output.push(i),
+          None => break
+        }
+      }
+    }
+    *self.output.last().unwrap()
+  }
+  
+  fn empty(&self) -> bool {
+    self.input.is_empty() && self.output.is_empty()
+  }
+}
+
+// Product of Array Except Self
+pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
+  let mut prefix = 1;
+  let mut result = vec![0; nums.len()];
+  for i in 0..nums.len() {
+    result[i] = prefix;
+    prefix *= nums[i];
+  }
+  let mut postfix = 1;
+  for i in (0..nums.len()).rev() {
+    result[i] *= postfix;
+    postfix *= nums[i];
+  }
+  result
+}
+
+// Intersection of Two Arrays
+pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+  use std::collections::HashSet;
+  let mut hash_set = HashSet::new();
+  let mut result = Vec::new();
+  for i in nums1 {
+    hash_set.insert(i);
+  }
+  for i in nums2{
+    if hash_set.contains(&i) {
+      result.push(i);
+      hash_set.remove(&i);
+    }
+  }
+  result
+}
+
 // Backspace String Compare
 pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
   let mut backspace_count = 0;
