@@ -1,7 +1,7 @@
 package src
 
 import (
-  "slices"
+  "sort"
 )
 
 // Two Sum
@@ -48,7 +48,7 @@ func backtrack(candidates []int, target int, result *[][]int, subList []int, ind
 //
 //lint:ignore U1000 Function is intentionally left unused
 func combinationSum2(candidates []int, target int) [][]int {
-  slices.Sort(candidates)
+  sort.Ints(candidates)
   result := [][]int{}
   backtrack_1(candidates, target, &result, []int{}, 0)
   return result
@@ -78,7 +78,7 @@ func backtrack_1(candidates []int, target int, result *[][]int, subList []int, i
 //
 //lint:ignore U1000 Function is intentionally left unused
 func permuteUnique(nums []int) [][]int {
-  slices.Sort(nums)
+  sort.Ints(nums)
   result := [][]int{}
   visit := make([]bool, len(nums))
   backtrack_2(nums, &result, []int{}, visit)
@@ -102,6 +102,62 @@ func backtrack_2(nums []int, result *[][]int, temp []int, visit []bool) {
     visit[i] = false
     temp = temp[:len(temp) - 1]
   }
+}
+
+// Merge Intervals
+func merge(intervals [][]int) [][]int {
+  sort.Slice(intervals, func(i, j int) bool{
+    return intervals[i][0] < intervals[j][0]
+  })
+  result := [][]int{intervals[0]}
+  for i := 1; i < len(intervals); i++ {
+    interval := intervals[i]
+    if interval[0] <= result[len(result) - 1][1] {
+      if interval[1] > result[len(result) - 1][1] {
+        result[len(result) - 1][1] = interval[1]
+      }
+    } else {
+      result = append(result, interval)
+    }
+  }
+  return result
+}
+
+// Insert Interval
+func insert(intervals [][]int, newInterval []int) [][]int {
+  result := [][]int{};
+  for i := 0; i < len(intervals); i++ {
+    if newInterval[1] < intervals[i][0] {
+      result = append(result, newInterval);
+      return append(result, intervals[i:]...)
+    } else if newInterval[0] > intervals[i][1] {
+      result = append(result, intervals[i])
+    } else {
+      newInterval = []int{min(newInterval[0], intervals[i][0]), max(newInterval[1], intervals[i][1])}
+    }
+  }
+  result = append(result, newInterval)
+  return result
+}
+
+// Insert Interval
+func insert_1(intervals [][]int, newInterval []int) [][]int {
+  result := [][]int{};
+  i := 0
+  for i < len(intervals) && intervals[i][1] < newInterval[0] {
+    result = append(result, intervals[i])
+    i++
+  }
+  for i < len(intervals) && intervals[i][0] <= newInterval[1]  {
+    newInterval = []int{min(intervals[i][0], newInterval[0]), max(intervals[i][1], newInterval[1])}
+    i++
+  }
+  result = append(result, newInterval)
+  for i < len(intervals) {
+    result = append(result, intervals[i])
+    i++
+  }
+  return result
 }
 
 // Sort Colors
