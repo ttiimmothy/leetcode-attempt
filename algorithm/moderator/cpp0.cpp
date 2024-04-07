@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// 3 Sum
+// 3Sum
 vector<vector<int>> threeSum(vector<int>& nums) {
   std::sort(nums.begin(), nums.end());
   vector<vector<int>> result;
