@@ -371,6 +371,19 @@ public int maxProfit(int[] prices) {
   return overallProfit;
 }
 
+// Linked List Cycle
+public boolean hasCycle(ListNode head) {
+  ListNode slow = head, fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow == fast) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Gas Station
 public int canCompleteCircuit(int[] gas, int[] cost) {
   int totalGas = 0, totalCost = 0;
@@ -489,6 +502,18 @@ public int majorityElement(int[] nums) {
     }
   }
   return 0;
+}
+
+// Reverse Linked List
+public ListNode reverseList(ListNode head) {
+  ListNode current = head, prev = null;
+  while (current != null) {
+    ListNode next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+  return prev;
 }
 
 // Contains Duplicate

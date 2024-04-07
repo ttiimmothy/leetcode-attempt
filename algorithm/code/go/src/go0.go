@@ -19,6 +19,21 @@ func twoSum(nums []int, target int) []int {
   return []int{}
 }
 
+// Container With Most Water
+func maxArea(height []int) int {
+  result := 0
+  left, right := 0, len(height) - 1
+  for left < right {
+    result = max(result, (right - left) * min(height[left], height[right]))
+    if height[left] < height[right] {
+      left++
+    } else {
+      right--
+    }
+  }
+  return result
+}
+
 // Combination Sum
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -42,6 +57,35 @@ func backtrack(candidates []int, target int, result *[][]int, subList []int, ind
     backtrack(candidates, target-candidates[i], result, subList, i)
     subList = subList[:len(subList)-1]
   }
+}
+
+// 3Sum
+func threeSum(nums []int) [][]int {
+  sort.Ints(nums)
+  result := [][]int{}
+  n := len(nums)
+  for i := 0; i < n - 2; i++ {
+    if i > 0 && nums[i] == nums[i - 1] {
+      continue
+    }
+    low, high := i + 1, n - 1;
+    for low < high {
+      threeSum := nums[i] + nums[low] + nums[high]
+      if threeSum < 0 {
+        low++
+      } else if threeSum > 0 {
+        high--
+      } else {
+        result = append(result, []int{nums[i], nums[low], nums[high]})
+        low++
+        high--
+        for low < high && nums[low] == nums[low - 1] {
+          low++
+        }
+      }
+    }
+  }
+  return result
 }
 
 // Combination Sum II
@@ -148,7 +192,7 @@ func insert_1(intervals [][]int, newInterval []int) [][]int {
     result = append(result, intervals[i])
     i++
   }
-  for i < len(intervals) && intervals[i][0] <= newInterval[1]  {
+  for i < len(intervals) && intervals[i][0] <= newInterval[1] && intervals[i][1] >= newInterval[0]   {
     newInterval = []int{min(intervals[i][0], newInterval[0]), max(intervals[i][1], newInterval[1])}
     i++
   }

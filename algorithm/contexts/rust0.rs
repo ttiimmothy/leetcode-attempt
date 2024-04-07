@@ -12,6 +12,50 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
   Vec::new()
 }
 
+// Container With Most Water
+pub fn max_area(height: Vec<i32>) -> i32 {
+  let (mut left, mut right) = (0, height.len() - 1);
+  let mut result = 0;
+  while left < right {
+    result = result.max((right - left) as i32 * height[left].min(height[right]));
+    if height[left] > height[right] {
+      right -= 1;
+    } else {
+      left += 1;
+    }
+  }
+  result
+}
+
+// 3Sum
+pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
+  let mut nums = nums;
+  nums.sort();
+  let mut result = vec![];
+  for i in 0..nums.len()-2 {
+    if i > 0 && nums[i] == nums[i - 1] {
+      continue;
+    }
+    let (mut low, mut high) = (i + 1, nums.len() - 1);
+    while low < high {
+      let three_sum = nums[i] + nums[low] + nums[high];
+      if three_sum < 0 {
+        low += 1
+      } else if three_sum > 0 {
+        high -= 1
+      } else {
+        result.push(vec![nums[i], nums[low], nums[high]]);
+        low += 1;
+        high -= 1;
+        while low < high && nums[low] == nums[low - 1] {
+          low += 1;
+        }
+      }
+    }
+  }
+  result
+}
+
 // Combination Sum
 pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   let mut result = Vec::new();

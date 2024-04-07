@@ -1,5 +1,38 @@
 from typing import List
 
+# Container With Most Water
+def maxArea(height: List[int]) -> int:
+  result, left, right = 0, 0, len(height) - 1
+  while left < right:
+    result = max(result, min(height[left], height[right]) * (right - left))
+    if height[left] < height[right]:
+      left += 1
+    else:
+      right -= 1
+  return result
+
+# 3Sum
+def threeSum(nums: List[int]) -> List[List[int]]:
+  nums.sort()
+  result = []
+  for i in range(0, len(nums) - 2):
+    if i > 0 and nums[i] == nums[i - 1]:
+      continue
+    mid, high = i + 1, len(nums) - 1
+    while mid < high:
+      total = nums[i] + nums[mid] + nums[high]
+      if total < 0:
+        mid += 1
+      elif total > 0:
+        high -= 1
+      else:
+        result.append([nums[i], nums[mid], nums[high]])
+        mid += 1
+        high -= 1
+      while mid < high and nums[mid] == nums[mid - 1]:
+        mid += 1
+  return result
+
 # Combination Sum
 def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
   result = []
@@ -45,6 +78,34 @@ def backspaceCompare(s: str, t: str) -> bool:
     return stack
   return checking(s) == checking(t)
 
+# Backspace String Compare
+def backspaceCompare_1(s: str, t: str) -> bool:
+    pS, pT = len(s) - 1, len(t) - 1
+    def findNextValidChar(string: str, end: int):
+      backspaceCount = 0
+      while end >= 0:
+        if string[end] == '#':
+          backspaceCount += 1
+        elif backspaceCount > 0:
+          backspaceCount -= 1
+        else:
+          break
+        end -= 1
+      return end
+    while pS >= 0 or pT >= 0:
+      pS = findNextValidChar(s, pS)
+      pT = findNextValidChar(t, pT)
+      if pS < 0 and pT < 0:
+        return True
+      elif pS < 0 or pT < 0:
+        return False
+      elif s[pS] != t[pT]:
+        return False
+      pS -= 1
+      pT -= 1
+    return True
+
+# Sort an Array
 def sortArray(nums: List[int]) -> List[int]:
   def heapSort(nums: List[int]):
     n = len(nums)

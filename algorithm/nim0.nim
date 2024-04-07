@@ -1,3 +1,38 @@
+# Container With Most Water
+proc maxArea(height: seq[int]): int =
+  var result, left, right = 0, 0, height.len - 1
+  while left < right:
+    result = max(result, min(height[left], height[right]) * (right - left))
+    if height[left] < height[right]:
+      inc(left)
+    else:
+      dec(right)
+  result
+
+# 3Sum
+proc threeSum(nums: seq[int]): seq[seq[int]] =
+  nums.sort()
+  var result: seq[seq[int]] = @[]
+  for i in 0 ..< len(nums) - 2:
+    if i > 0 and nums[i] == nums[i - 1]:
+      continue
+    var mid = i + 1
+    var high = len(nums) - 1
+    while mid < high:
+      let total = nums[i] + nums[mid] + nums[high]
+      if total < 0:
+        mid += 1
+      elif total > 0:
+        high -= 1
+      else:
+        result.add @[int](nums[i], nums[mid], nums[high])
+        mid += 1
+        high -= 1
+      while mid < high and nums[mid] == nums[mid - 1]:
+        mid += 1
+  result
+
+
 # Combination Sum
 proc backtrack(candidates: var seq[int], target: int, result: var seq[seq[int]], temp: var seq[int], current: int) =
   if target == 0:
