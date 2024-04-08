@@ -4,6 +4,11 @@ import (
   "sort"
 )
 
+type ListNode struct {
+  Val int
+  Next *ListNode
+}
+
 // Two Sum
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -20,6 +25,8 @@ func twoSum(nums []int, target int) []int {
 }
 
 // Container With Most Water
+//
+//lint:ignore U1000 Function is intentionally left unused
 func maxArea(height []int) int {
   result := 0
   left, right := 0, len(height) - 1
@@ -60,6 +67,8 @@ func backtrack(candidates []int, target int, result *[][]int, subList []int, ind
 }
 
 // 3Sum
+//
+//lint:ignore U1000 Function is intentionally left unused
 func threeSum(nums []int) [][]int {
   sort.Ints(nums)
   result := [][]int{}
@@ -149,6 +158,8 @@ func backtrack_2(nums []int, result *[][]int, temp []int, visit []bool) {
 }
 
 // Merge Intervals
+//
+//lint:ignore U1000 Function is intentionally left unused
 func merge(intervals [][]int) [][]int {
   sort.Slice(intervals, func(i, j int) bool{
     return intervals[i][0] < intervals[j][0]
@@ -168,6 +179,8 @@ func merge(intervals [][]int) [][]int {
 }
 
 // Insert Interval
+//
+//lint:ignore U1000 Function is intentionally left unused
 func insert(intervals [][]int, newInterval []int) [][]int {
   result := [][]int{};
   for i := 0; i < len(intervals); i++ {
@@ -185,6 +198,8 @@ func insert(intervals [][]int, newInterval []int) [][]int {
 }
 
 // Insert Interval
+//
+//lint:ignore U1000 Function is intentionally left unused
 func insert_1(intervals [][]int, newInterval []int) [][]int {
   result := [][]int{};
   i := 0
@@ -197,7 +212,7 @@ func insert_1(intervals [][]int, newInterval []int) [][]int {
     i++
   }
   result = append(result, newInterval)
-  for i < len(intervals) {
+  for i < len(intervals) && intervals[i][0] > newInterval[1] {
     result = append(result, intervals[i])
     i++
   }
@@ -223,7 +238,31 @@ func sortColors(nums []int) {
   }
 }
 
+// Reverse Linked List II
+//
+//lint:ignore U1000 Function is intentionally left unused
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+  result := &ListNode{Val:0, Next:head}
+  leftPrev, current := result, head
+  for i := 0; i < left - 1; i++ {
+    leftPrev = current
+    current = current.Next
+  }
+  node := leftPrev
+  for i := 0; i < right - left + 1; i++ {
+    stored := current.Next
+    current.Next = leftPrev
+    leftPrev = current
+    current = stored
+  }
+  node.Next.Next = current
+  node.Next = leftPrev
+  return result.Next
+}
+
 // Gas Station
+//
+//lint:ignore U1000 Function is intentionally left unused
 func canCompleteCircuit(gas []int, cost []int) int {
   total, current, result := 0, 0, 0
   for i := 0; i < len(gas); i++ {
@@ -470,6 +509,19 @@ func bubbleSort(nums []int) {
 }
 
 // Heap sort
+//
+//lint:ignore U1000 Function is intentionally left unused
+func heapSort(nums []int) {
+  n := len(nums)
+  for i := n/2 - 1; i >= 0; i-- {
+    heapify(nums, i, n)
+  }
+  for i := n - 1; i > 0; i-- {
+    nums[0], nums[i] = nums[i], nums[0]
+    heapify(nums, 0, i)
+  }
+}
+
 func heapify(nums []int, max int, length int) {
   largest := max
   left := 2*max + 1
@@ -483,17 +535,5 @@ func heapify(nums []int, max int, length int) {
   if largest != max {
     nums[largest], nums[max] = nums[max], nums[largest]
     heapify(nums, largest, length)
-  }
-}
-
-//lint:ignore U1000 Function is intentionally left unused
-func heapSort(nums []int) {
-  n := len(nums)
-  for i := n/2 - 1; i >= 0; i-- {
-    heapify(nums, i, n)
-  }
-  for i := n - 1; i > 0; i-- {
-    nums[0], nums[i] = nums[i], nums[0]
-    heapify(nums, 0, i)
   }
 }

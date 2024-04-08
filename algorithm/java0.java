@@ -332,6 +332,27 @@ public void swap(int[] nums, int i, int j) {
   nums[j] = temp;
 }
 
+// Reverse Linked List II
+public ListNode reverseBetween(ListNode head, int left, int right) {
+  ListNode result = new ListNode(0, head);
+  ListNode leftPrev = result;
+  ListNode current = head;
+  for (int i = 0; i < left - 1; i++) {
+    leftPrev = current;
+    current = current.next;
+  }
+  ListNode prev = null;
+  for (int i = 0; i < right - left + 1; i++) {
+    ListNode next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+  leftPrev.next.next = current;
+  leftPrev.next = prev;
+  return result.next;
+}
+
 // Best Time to Buy and Sell Stock
 public int maxProfit(int[] prices) {
   int difference = 0, left = 0, right = 0;
@@ -695,6 +716,16 @@ public int[] dailyTemperatures(int[] temperatures) {
     stack.push(i);
   }
   return result;
+}
+
+// Middle of the Linked List
+public ListNode middleNode(ListNode head) {
+  ListNode slow = head, fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  return slow;
 }
 
 // Sort an Array
