@@ -4,6 +4,11 @@ import (
   "sort"
 )
 
+type ListNode struct {
+  Val int
+  Next *ListNode
+}
+
 // Two Sum
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -17,6 +22,23 @@ func twoSum(nums []int, target int) []int {
     hashMap[num] = i
   }
   return []int{}
+}
+
+// Container With Most Water
+//
+//lint:ignore U1000 Function is intentionally left unused
+func maxArea(height []int) int {
+  result := 0
+  left, right := 0, len(height) - 1
+  for left < right {
+    result = max(result, (right - left) * min(height[left], height[right]))
+    if height[left] < height[right] {
+      left++
+    } else {
+      right--
+    }
+  }
+  return result
 }
 
 // Combination Sum
@@ -42,6 +64,37 @@ func backtrack(candidates []int, target int, result *[][]int, subList []int, ind
     backtrack(candidates, target-candidates[i], result, subList, i)
     subList = subList[:len(subList)-1]
   }
+}
+
+// 3Sum
+//
+//lint:ignore U1000 Function is intentionally left unused
+func threeSum(nums []int) [][]int {
+  sort.Ints(nums)
+  result := [][]int{}
+  n := len(nums)
+  for i := 0; i < n - 2; i++ {
+    if i > 0 && nums[i] == nums[i - 1] {
+      continue
+    }
+    low, high := i + 1, n - 1;
+    for low < high {
+      threeSum := nums[i] + nums[low] + nums[high]
+      if threeSum < 0 {
+        low++
+      } else if threeSum > 0 {
+        high--
+      } else {
+        result = append(result, []int{nums[i], nums[low], nums[high]})
+        low++
+        high--
+        for low < high && nums[low] == nums[low - 1] {
+          low++
+        }
+      }
+    }
+  }
+  return result
 }
 
 // Combination Sum II
@@ -105,6 +158,8 @@ func backtrack_2(nums []int, result *[][]int, temp []int, visit []bool) {
 }
 
 // Merge Intervals
+//
+//lint:ignore U1000 Function is intentionally left unused
 func merge(intervals [][]int) [][]int {
   sort.Slice(intervals, func(i, j int) bool{
     return intervals[i][0] < intervals[j][0]
@@ -124,6 +179,8 @@ func merge(intervals [][]int) [][]int {
 }
 
 // Insert Interval
+//
+//lint:ignore U1000 Function is intentionally left unused
 func insert(intervals [][]int, newInterval []int) [][]int {
   result := [][]int{};
   for i := 0; i < len(intervals); i++ {
@@ -141,6 +198,8 @@ func insert(intervals [][]int, newInterval []int) [][]int {
 }
 
 // Insert Interval
+//
+//lint:ignore U1000 Function is intentionally left unused
 func insert_1(intervals [][]int, newInterval []int) [][]int {
   result := [][]int{};
   i := 0
@@ -148,12 +207,12 @@ func insert_1(intervals [][]int, newInterval []int) [][]int {
     result = append(result, intervals[i])
     i++
   }
-  for i < len(intervals) && intervals[i][0] <= newInterval[1]  {
+  for i < len(intervals) && intervals[i][0] <= newInterval[1] && intervals[i][1] >= newInterval[0]   {
     newInterval = []int{min(intervals[i][0], newInterval[0]), max(intervals[i][1], newInterval[1])}
     i++
   }
   result = append(result, newInterval)
-  for i < len(intervals) {
+  for i < len(intervals) && intervals[i][0] > newInterval[1] {
     result = append(result, intervals[i])
     i++
   }
@@ -177,6 +236,47 @@ func sortColors(nums []int) {
       high--
     }
   }
+}
+
+// Reverse Linked List II
+//
+//lint:ignore U1000 Function is intentionally left unused
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+  result := &ListNode{Val:0, Next:head}
+  leftPrev, current := result, head
+  for i := 0; i < left - 1; i++ {
+    leftPrev = current
+    current = current.Next
+  }
+  node := leftPrev
+  for i := 0; i < right - left + 1; i++ {
+    stored := current.Next
+    current.Next = leftPrev
+    leftPrev = current
+    current = stored
+  }
+  node.Next.Next = current
+  node.Next = leftPrev
+  return result.Next
+}
+
+// Gas Station
+//
+//lint:ignore U1000 Function is intentionally left unused
+func canCompleteCircuit(gas []int, cost []int) int {
+  total, current, result := 0, 0, 0
+  for i := 0; i < len(gas); i++ {
+    total += gas[i] - cost[i]
+    current += gas[i] - cost[i]
+    if current < 0 {
+      result = i + 1
+      current = 0
+    }
+  }
+  if total >= 0 {
+    return result
+  }
+  return -1
 }
 
 // Implement Queue using Stacks
@@ -409,6 +509,19 @@ func bubbleSort(nums []int) {
 }
 
 // Heap sort
+//
+//lint:ignore U1000 Function is intentionally left unused
+func heapSort(nums []int) {
+  n := len(nums)
+  for i := n/2 - 1; i >= 0; i-- {
+    heapify(nums, i, n)
+  }
+  for i := n - 1; i > 0; i-- {
+    nums[0], nums[i] = nums[i], nums[0]
+    heapify(nums, 0, i)
+  }
+}
+
 func heapify(nums []int, max int, length int) {
   largest := max
   left := 2*max + 1
@@ -422,17 +535,5 @@ func heapify(nums []int, max int, length int) {
   if largest != max {
     nums[largest], nums[max] = nums[max], nums[largest]
     heapify(nums, largest, length)
-  }
-}
-
-//lint:ignore U1000 Function is intentionally left unused
-func heapSort(nums []int) {
-  n := len(nums)
-  for i := n/2 - 1; i >= 0; i-- {
-    heapify(nums, i, n)
-  }
-  for i := n - 1; i > 0; i-- {
-    nums[0], nums[i] = nums[i], nums[0]
-    heapify(nums, 0, i)
   }
 }

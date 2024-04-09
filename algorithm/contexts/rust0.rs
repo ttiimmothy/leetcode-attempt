@@ -12,6 +12,50 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
   Vec::new()
 }
 
+// Container With Most Water
+pub fn max_area(height: Vec<i32>) -> i32 {
+  let (mut left, mut right) = (0, height.len() - 1);
+  let mut result = 0;
+  while left < right {
+    result = result.max((right - left) as i32 * height[left].min(height[right]));
+    if height[left] > height[right] {
+      right -= 1;
+    } else {
+      left += 1;
+    }
+  }
+  result
+}
+
+// 3Sum
+pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
+  let mut nums = nums;
+  nums.sort();
+  let mut result = vec![];
+  for i in 0..nums.len()-2 {
+    if i > 0 && nums[i] == nums[i - 1] {
+      continue;
+    }
+    let (mut low, mut high) = (i + 1, nums.len() - 1);
+    while low < high {
+      let three_sum = nums[i] + nums[low] + nums[high];
+      if three_sum < 0 {
+        low += 1
+      } else if three_sum > 0 {
+        high -= 1
+      } else {
+        result.push(vec![nums[i], nums[low], nums[high]]);
+        low += 1;
+        high -= 1;
+        while low < high && nums[low] == nums[low - 1] {
+          low += 1;
+        }
+      }
+    }
+  }
+  result
+}
+
 // Combination Sum
 pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   let mut result = Vec::new();
@@ -199,6 +243,109 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
     }
   }
   result.push(new_interval);
+  result
+}
+
+// Sort Colors
+pub fn sort_colors(nums: &mut Vec<i32>) {
+  let (mut low, mut mid, mut high) = (0, 0, nums.len() as i32 - 1);
+  while mid <= high {
+    match nums[mid as usize] {
+      0 => {nums.swap(low as usize,mid as usize);low+=1;mid+=1},
+      2 => {nums.swap(mid as usize,high as usize);high-=1},
+      _ => {mid+=1}
+    }
+  }
+}
+
+// Gas Station
+pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
+  let mut total = 0;
+  let mut current = 0;
+  let mut result = 0;
+  for i in 0..gas.len() {
+    total += gas[i] - cost[i];
+    current += gas[i] - cost[i];
+    if current < 0 {
+      current = 0;
+      result = i as i32 + 1;
+    }
+  }
+  if total < 0 {
+    return -1;
+  }
+  result
+}
+
+// Implement Queue using Stacks
+struct MyQueue {
+  input: Vec<i32>,
+  output: Vec<i32>,
+}
+impl MyQueue {
+  fn new() -> Self {
+    return MyQueue{
+      input: Vec::new(),
+      output: Vec::new(),
+    }
+  }
+  
+  fn push(&mut self, x: i32) {
+    self.input.push(x);
+  }
+  
+  fn pop(&mut self) -> i32 {
+    self.peek();
+    self.output.pop().unwrap()
+  }
+  
+  fn peek(&mut self) -> i32 {
+    if self.output.is_empty() {
+      loop {
+        match self.input.pop() {
+          Some(i) => self.output.push(i),
+          None => break
+        }
+      }
+    }
+    *self.output.last().unwrap()
+  }
+  
+  fn empty(&self) -> bool {
+    self.input.is_empty() && self.output.is_empty()
+  }
+}
+
+// Product of Array Except Self
+pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
+  let mut prefix = 1;
+  let mut result = vec![0; nums.len()];
+  for i in 0..nums.len() {
+    result[i] = prefix;
+    prefix *= nums[i];
+  }
+  let mut postfix = 1;
+  for i in (0..nums.len()).rev() {
+    result[i] *= postfix;
+    postfix *= nums[i];
+  }
+  result
+}
+
+// Intersection of Two Arrays
+pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+  use std::collections::HashSet;
+  let mut hash_set = HashSet::new();
+  let mut result = Vec::new();
+  for i in nums1 {
+    hash_set.insert(i);
+  }
+  for i in nums2{
+    if hash_set.contains(&i) {
+      result.push(i);
+      hash_set.remove(&i);
+    }
+  }
   result
 }
 

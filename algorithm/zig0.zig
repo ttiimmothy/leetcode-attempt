@@ -1,5 +1,37 @@
 const std = @import("std");
 
+// Backspace String Compare
+fn findNextValidChar(str: []const u8, end: &usize) -> usize {
+  var backspaceCount: usize = 0;
+  while (end.* >= 0) : (end -= 1) {
+    if (str[end] == '#' as u8) {
+      backspaceCount += 1;
+    } else if (backspaceCount > 0) {
+      backspaceCount -= 1;
+    } else {
+      break;
+    }
+  }
+  return end;
+}
+
+fn backspaceCompare(s: []const u8, t: []const u8) -> bool {
+  var pS: usize = @intCast(usize, s.len) - 1;
+  var pT: usize = @intCast(usize, t.len) - 1;
+  while (pS >= 0) || (pT >= 0) : (pS -= 1; pT -= 1) {
+    pS = findNextValidChar(s, &pS);
+    pT = findNextValidChar(t, &pT);
+    if (pS < 0) && (pT < 0) {
+      return true;
+    } else if (pS < 0) || (pT < 0) {
+      return false;
+    } else if (s[pS] != t[pT]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Sort an Array
 pub fn sortArray(nums: []i32) []i32 {
   heapSort(&nums);

@@ -3,6 +3,112 @@
 
 using namespace std;
 
+// 3Sum
+vector<vector<int>> threeSum(vector<int>& nums) {
+  std::sort(nums.begin(), nums.end());
+  vector<vector<int>> result;
+  int n = nums.size();
+  for (int i = 0; i < n - 2; i++) {
+    if (i > 0 && nums[i] == nums[i - 1]) continue;
+    int low = i + 1, high = n - 1;
+    while (low < high) {
+      int total = nums[i] + nums[low] + nums[high];
+      if (total < 0) {
+        low++;
+      } else if (total > 0) {
+        high--;
+      } else {
+        if (total == 0) {
+          result.push_back({nums[i], nums[low], nums[high]});
+          low++;
+          high--;
+          while (low < high && nums[low] == nums[low - 1]) {
+            low++;
+          }
+          while (low < high && nums[high] == nums[high + 1]) {
+            high--;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
+
+// Combination Sum
+void backtrack(vector<int>& candidates, int target, vector<vector<int>>& result, vector<int>& temp, int current) {
+  if (target == 0) {
+    result.push_back(temp);
+  }
+  if (target <= 0) {
+    return;
+  }
+  for (int i = current; i < candidates.size(); i++) {
+    temp.push_back(candidates[i]);
+    backtrack(candidates, target - candidates[i], result, temp, i);
+    temp.pop_back();
+  }
+}
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+  vector<vector<int>> result;
+  vector<int> temp;   
+  backtrack(candidates, target, result, temp, 0);
+  return result;
+}
+
+// Gas Station
+int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+  int current = 0, total = 0, result = 0;
+  for (int i = 0; i < gas.size(); i++) {
+    total += gas[i] - cost[i];
+    current += gas[i] - cost[i];
+    if (current < 0) {
+      current = 0;
+      result = i + 1;
+    }
+  }
+  if (total >= 0) {
+    return result;
+  }
+  return -1;
+}
+
+// Backspace String Compare
+int findNextValidChar(string str, int end) {
+  int backspaceCount = 0;
+  while (end >= 0) {
+    if (str[end] == '#') {
+      backspaceCount++;
+    } else if (backspaceCount > 0) {
+      backspaceCount--;
+    } else {
+      break;
+    }
+    end--;
+  }
+  return end;
+}
+
+bool backspaceCompare(string s, string t) {
+  int pS = s.size() - 1;
+  int pT = t.size() - 1;
+  while (pS >= 0 || pT >= 0) {
+    pS = findNextValidChar(s, pS);
+    pT = findNextValidChar(t, pT);
+    if (pS < 0 && pT < 0) {
+      return true;
+    } else if (pS < 0 || pT < 0) {
+      return false;
+    } else if (s[pS] != t[pT]) {
+      return false;
+    }
+    pS--;
+    pT--;
+  }
+  return true;
+}
+
 // Sort an Array
 void mergeSort(vector<int>& nums, int start, int end) {
   if (start < end) {
