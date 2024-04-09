@@ -4,6 +4,8 @@ algorithm/contexts/rust*
 !algorithm/contexts/rust*.rs
 algorithm/moderator/cpp*
 !algorithm/moderator/cpp*.cpp
+algorithm/moderator/c*
+!algorithm/moderator/c*.c
 .vscode/settings.json
 
 target/
