@@ -337,6 +337,38 @@ func (this *LRUCache) Insert(node *Node) {
   node.prev, node.next = prev, next
 }
 
+// Implement Stack using Queues
+type MyStack struct {
+  queue []int
+}
+
+func Constructor_1() MyStack {
+  return MyStack{}
+}
+
+func (this *MyStack) Push(x int)  {
+  this.queue = append(this.queue, x)
+  for i := 0; i < len(this.queue) - 1; i++ {
+    val := this.queue[0]
+    this.queue = this.queue[1:]
+    this.queue = append(this.queue, val)
+  }
+}
+
+func (this *MyStack) Pop() int {
+  val := this.queue[0]
+  this.queue = this.queue[1:]
+  return val
+}
+
+func (this *MyStack) Top() int {
+  return this.queue[0]
+}
+
+func (this *MyStack) Empty() bool {
+  return len(this.queue) == 0
+}
+
 // Implement Queue using Stacks
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -344,7 +376,7 @@ type MyQueue struct {
   input, output []int
 }
 
-func Constructor_1() MyQueue {
+func Constructor_2() MyQueue {
   return MyQueue{}
 }
 

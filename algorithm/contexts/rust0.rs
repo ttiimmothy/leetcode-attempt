@@ -302,6 +302,76 @@ pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
   result
 }
 
+// Implement Stack using Queues
+use std::collections::VecDeque;
+struct MyStack {
+  queue: VecDeque<i32>
+}
+
+impl MyStack {
+  fn new() -> Self {
+    return MyStack{
+      queue: VecDeque::new()
+    }
+  }
+  
+  fn push(&mut self, x: i32) {
+    self.queue.push_back(x);
+    for i in 0..self.queue.len() - 1 {
+      let val = self.queue.pop_front().unwrap();
+      self.queue.push_back(val)
+    }
+  }
+  
+  fn pop(&mut self) -> i32 {
+    self.queue.pop_front().unwrap()
+  }
+  
+  fn top(&self) -> i32 {
+    *self.queue.front().unwrap()
+  }
+  
+  fn empty(&self) -> bool {
+    self.queue.is_empty()
+  }
+}
+
+// Implement Stack using Queues
+struct MyStack {
+  queue: Vec<i32>
+}
+
+impl MyStack {
+  fn new() -> Self {
+    return MyStack{
+      queue: Vec::new()
+    }
+  }
+  
+  fn push(&mut self, x: i32) {
+    self.queue.push(x);
+    for i in 0..self.queue.len() - 1 {
+      let val = self.queue[0];
+      self.queue = self.queue[1..=self.queue.len() - 1].to_vec();
+      self.queue.push(val)
+    }
+  }
+  
+  fn pop(&mut self) -> i32 {
+    let res = self.queue[0];
+    self.queue = self.queue[1..=self.queue.len() - 1].to_vec();
+    res
+  }
+  
+  fn top(&self) -> i32 {
+    self.queue[0]
+  }
+  
+  fn empty(&self) -> bool {
+    return self.queue.is_empty();
+  }
+}
+
 // Implement Queue using Stacks
 struct MyQueue {
   input: Vec<i32>,
