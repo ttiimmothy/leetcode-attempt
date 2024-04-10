@@ -280,6 +280,8 @@ func canCompleteCircuit(gas []int, cost []int) int {
 }
 
 // LRU Cache
+//
+//lint:ignore U1000 Function is intentionally left unused
 type Node struct {
   key int
   val int
@@ -338,6 +340,8 @@ func (this *LRUCache) Insert(node *Node) {
 }
 
 // Implement Stack using Queues
+//
+//lint:ignore U1000 Function is intentionally left unused
 type MyStack struct {
   queue []int
 }
