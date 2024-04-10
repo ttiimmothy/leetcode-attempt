@@ -258,6 +258,31 @@ pub fn sort_colors(nums: &mut Vec<i32>) {
   }
 }
 
+// Reversed Linked List II
+pub fn reverse_between(head: Option<Box<ListNode>>, left: i32, right: i32) -> Option<Box<ListNode>> {
+  let mut result = Some(Box::new(ListNode { val: 0, next: head }));
+  let mut prev = &mut result;
+  for _ in 0..left-1 {
+    prev = &mut prev.as_mut()?.next;
+  }
+  let mut node = prev.as_mut()?.next.take();
+  let mut current = node.as_mut()?.next.take();
+  for i in 0..right-left {
+    let next = current.as_mut()?.next.take();
+    current.as_mut()?.next = node;
+    node = current;
+    current = next;
+  }
+  // because the reversed list is already reversed
+  let mut rev_tail = &mut node;
+  for _ in 0..right-left {
+    rev_tail = &mut rev_tail.as_mut()?.next;
+  }
+  rev_tail.as_mut()?.next = current;
+  prev.as_mut()?.next = node;
+  result.unwrap().next
+}
+
 // Gas Station
 pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
   let mut total = 0;

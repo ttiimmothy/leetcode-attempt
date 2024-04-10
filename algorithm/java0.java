@@ -392,6 +392,66 @@ public int maxProfit(int[] prices) {
   return overallProfit;
 }
 
+// LRU Cache
+class ListNode {
+  int key, val;
+  ListNode prev, next;
+  public ListNode(int key, int val) {
+    this.key = key;
+    this.val = val;
+  }
+}
+
+class LRUCache {
+  Map<Integer, ListNode> cache;
+  ListNode left, right;
+  int cacheCapacity;
+  public LRUCache(int capacity) {
+    this.cache = new HashMap<>();
+    this.left = new ListNode(0, 0);
+    this.right = new ListNode(0, 0);
+    this.left.next = right;
+    this.right.prev = left;
+    this.cacheCapacity = capacity;
+  }
+
+  public int get(int key) {
+    if (cache.containsKey(key)) {
+      remove(cache.get(key));
+      insert(cache.get(key));
+      return cache.get(key).val;
+    }
+    return -1;
+  }
+
+  public void put(int key, int value) {
+    if (cache.containsKey(key)) {
+      remove(cache.get(key));
+    }
+    cache.put(key, new ListNode(key, value));
+    insert(cache.get(key));
+    if (cache.size() > cacheCapacity) {
+      ListNode lru = left.next;
+      remove(lru);
+      cache.remove(lru.key);
+    }
+  }
+
+  public void remove(ListNode node) {
+    ListNode prev = node.prev, next = node.next;
+    prev.next = next;
+    next.prev = prev;
+  }
+
+  public void insert(ListNode node) {
+    ListNode prev = right.prev, next = right;
+    prev.next = node;
+    next.prev = node;
+    node.prev = prev;
+    node.next = next;
+  }
+}
+
 // Linked List Cycle
 public boolean hasCycle(ListNode head) {
   ListNode slow = head, fast = head;
