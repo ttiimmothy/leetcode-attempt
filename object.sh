@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 for i in {1..180}; do
   printf -v padded "%03d" "$i"  # Format the number with leading zeros
   # echo "object${padded}.mm"

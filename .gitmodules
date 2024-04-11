@@ -1,3 +1,6 @@
-[submodule "fish-shell-history"]
-	path = fish-shell-history
+[submodule "bin/fishShellHistory"]
+	path = bin/fishShellHistory
 	url = git@github.com:ttiimmothy/fish-shell-history.git
+[submodule "bin/zshHistory"]
+	path = bin/zshHistory
+	url = git@github.com:ttiimmothy/zsh-history.git
