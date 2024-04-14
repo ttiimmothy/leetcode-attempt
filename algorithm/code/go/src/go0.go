@@ -339,6 +339,39 @@ func (this *LRUCache) Insert(node *Node) {
   node.prev, node.next = prev, next
 }
 
+// Min Stack
+//
+//lint:ignore U1000 Function is intentionally left unused
+type MinStack struct {
+  stack []int
+  minStack []int
+}
+
+func Constructor_1() MinStack {
+  return MinStack{}
+}
+
+func (this *MinStack) Push(val int)  {
+  this.stack = append(this.stack, val)
+  if len(this.minStack) > 0 {
+    val = min(this.minStack[len(this.minStack) - 1], val)
+  }
+  this.minStack = append(this.minStack, val)
+}
+
+func (this *MinStack) Pop()  {
+  this.stack = this.stack[:len(this.stack) - 1]
+  this.minStack = this.minStack[:len(this.minStack) - 1]
+}
+
+func (this *MinStack) Top() int {
+  return this.stack[len(this.stack) - 1]
+}
+
+func (this *MinStack) GetMin() int {
+  return this.minStack[len(this.minStack) - 1]
+}
+
 // Implement Stack using Queues
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -346,7 +379,7 @@ type MyStack struct {
   queue []int
 }
 
-func Constructor_1() MyStack {
+func Constructor_2() MyStack {
   return MyStack{}
 }
 
@@ -380,7 +413,7 @@ type MyQueue struct {
   input, output []int
 }
 
-func Constructor_2() MyQueue {
+func Constructor_3() MyQueue {
   return MyQueue{}
 }
 

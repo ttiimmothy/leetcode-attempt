@@ -46,6 +46,23 @@ public List<List<Integer>> threeSum(int[] nums) {
   return result;
 }
 
+// Remove Nth Node From End of List
+public ListNode removeNthFromEnd(ListNode head, int n) {
+  ListNode result = new ListNode(0, head);
+  ListNode prev = result, current = head;
+  for (int i = 0; i < n; i++) {
+    if (current != null) {
+      current = current.next;
+    }
+  }
+  while (current != null) {
+    prev = prev.next;
+    current = current.next;
+  }
+  prev.next = prev.next.next;
+  return result.next;
+}
+
 // Valid Parentheses
 public boolean isValid(String s) {
   Stack<Character> stack = new Stack();
@@ -410,8 +427,8 @@ class LRUCache {
     this.cache = new HashMap<>();
     this.left = new ListNode(0, 0);
     this.right = new ListNode(0, 0);
-    this.left.next = right;
-    this.right.prev = left;
+    this.left.next = this.right;
+    this.right.prev = thisleft;
     this.cacheCapacity = capacity;
   }
 
@@ -620,12 +637,12 @@ class MyStack {
     queue.add(x);
     int n = queue.size();
     for (int i = 0; i < n - 1; i++) {
-      queue.add(queue.poll());
+      queue.add(queue.remove());
     }
   }
   
   public int pop() {
-    return queue.poll();
+    return queue.remove();
   }
   
   public int top() {
@@ -648,12 +665,12 @@ class MyStack {
     queue.addLast(x);
     int n = queue.size();
     for (int i = 0; i < n - 1; i++) {
-      queue.addLast(queue.pollFirst());
+      queue.addLast(queue.removeFirst());
     }
   }
   
   public int pop() {
-    return queue.pollFirst();
+    return queue.removeFirst();
   }
   
   public int top() {
@@ -728,6 +745,69 @@ public int[] intersection(int[] nums1, int[] nums2) {
   return result;
 }
 
+// LFU Cache
+class LFUCache {
+  int capacity;
+  int minFreq = 0;
+  Map<Integer, Integer> keyToFreq = new HashMap<>();
+  Map<Integer, Integer> keyToVal = new HashMap<>();
+  Map<Integer, LinkedHashSet<Integer>> freqToLRUKeys = new HashMap<>();
+  public LFUCache(int capacity) {
+    this.capacity = capacity;
+  }
+
+  public int get(int key) {
+    if (!keyToVal.containsKey(key))
+      return -1;
+    final int freq = keyToFreq.get(key);
+    freqToLRUKeys.get(freq).remove(key);
+    if (freq == minFreq && freqToLRUKeys.get(freq).isEmpty()) {
+      freqToLRUKeys.remove(freq);
+      ++minFreq;
+    }
+    putFreq(key, freq + 1);
+    return keyToVal.get(key);
+  }
+
+  public void put(int key, int value) {
+    if (capacity == 0) return;
+    if (keyToVal.containsKey(key)) {
+      keyToVal.put(key, value);
+      get(key);
+      return;
+    }
+    if (keyToVal.size() == capacity) {
+      final int keyToEvict = freqToLRUKeys.get(minFreq).iterator().next();
+      freqToLRUKeys.get(minFreq).remove(keyToEvict);
+      keyToVal.remove(keyToEvict);
+    }
+    minFreq = 1;
+    putFreq(key, minFreq);
+    keyToVal.put(key, value);
+  }
+
+  public void putFreq(int key, int freq) {
+    keyToFreq.put(key, freq);
+    freqToLRUKeys.putIfAbsent(freq, new LinkedHashSet<>());
+    freqToLRUKeys.get(freq).add(key);
+  }
+}
+
+// Daily Temperatures
+public int[] dailyTemperatures(int[] temperatures) {
+  Stack<Integer> stack = new Stack<>();
+  int n = temperatures.length;
+  int[] result = new int[n];
+  for (int i = 0; i < n; i++) {
+    while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
+      int previousDay = stack.pop();
+      result[previousDay] = i - previousDay;
+    }
+    stack.push(i);
+  }
+  return result;
+}
+
 // Backspace String Compare
 public boolean backspaceCompare(String s, String t) {
   int ps = s.length() - 1;
@@ -764,19 +844,6 @@ public int findValidCharIndex(String str, int end){
   return end;
 }
 
-public int[] dailyTemperatures(int[] temperatures) {
-  Stack<Integer> stack = new Stack<>();
-  int n = temperatures.length;
-  int[] result = new int[n];
-  for (int i = 0; i < n; i++) {
-    while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-      int previousDay = stack.pop();
-      result[previousDay] = i - previousDay;
-    }
-    stack.push(i);
-  }
-  return result;
-}
 
 // Middle of the Linked List
 public ListNode middleNode(ListNode head) {
