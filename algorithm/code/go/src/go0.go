@@ -478,6 +478,7 @@ func intersection(nums1 []int, nums2 []int) []int {
   return result
 }
 
+
 // Backspace String Compare
 //
 //lint:ignore U1000 Function is intentionally left unused
