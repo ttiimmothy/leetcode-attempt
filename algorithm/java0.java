@@ -1,3 +1,32 @@
+// Two Sum
+public int[] twoSum(int[] nums, int target){
+  Map<Integer, Integer> preMap = new HashMap();
+  for(var i = 0; i < nums.length; i++){
+    var diff = target - nums[i];
+    if(preMap.containsKey(diff)){
+      return new int[]{preMap.get(diff),i};
+    }
+    preMap.put(nums[i],i);
+  }
+  return new int[]{};
+}
+
+// Longest Substring Without Repeating Characters
+public int lengthOfLongestSubstring(String s) {
+  int left = 0, result = 0;
+  Set<Character> set = new HashSet<>();
+  for (int right = 0; right < s.length(); right++) {
+    char a = s.charAt(right);
+    while (set.contains(a)) {
+      set.remove(s.charAt(left));
+      left++;
+    }
+    set.add(a);
+    result = Math.max(result, right - left + 1);
+  }
+  return result;
+}
+
 // Container With Most Water
 public int maxArea(int[] height) {
   int left = 0, right = height.length - 1;
