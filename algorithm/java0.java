@@ -331,22 +331,56 @@ public void sortColors(int[] nums) {
   int low = 0, mid = 0, high = nums.length - 1;
   while (mid <= high) {
     if (nums[mid] == 0) {
-      swap(nums, low, mid);
+      int temp = nums[low];
+      nums[low] = nums[mid];
+      nums[mid] = temp;
       low++;
       mid++;
     } else if (nums[mid] == 1) {
       mid++;
     } else {
-      swap(nums, mid, high);
+      int temp = nums[mid];
+      nums[mid] = nums[high];
+      nums[high] = temp;
       high--;
     }
   }
 }
 
-public void swap(int[] nums, int i, int j) {
-  int temp = nums[i];
-  nums[i] = nums[j];
-  nums[j] = temp;
+// Subsets
+public List<List<Integer>> subsets(int[] nums) {
+  List<List<Integer>> result = new ArrayList<>();
+  backtrack(nums, result, new ArrayList<>(), 0);
+  return result;
+}
+
+public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> temp, int index) {
+  result.add(new ArrayList(temp));
+  for (int i = index; i < nums.length; i++) {
+    temp.add(nums[i]);
+    backtrack(nums, result, temp, i + 1);
+    temp.remove(temp.size() - 1);
+  }
+}
+
+// Subsets II
+public List<List<Integer>> subsetsWithDup(int[] nums) {
+  Arrays.sort(nums);
+  List<List<Integer>> result = new ArrayList<>();
+  backtrack(nums, result, new ArrayList<>(), 0);
+  return result;
+}
+
+public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> temp, int index) {
+  result.add(new ArrayList(temp));
+  for (int i = index; i < nums.length; i++) {
+    if (i > index && nums[i - 1] == nums[i]) {
+      continue;
+    }
+    temp.add(nums[i]);
+    backtrack(nums, result, temp, i + 1);
+    temp.remove(temp.size() - 1);
+  }
 }
 
 // Reverse Linked List II
@@ -407,6 +441,60 @@ public int maxProfit(int[] prices) {
     overallProfit = Math.max(overallProfit, maxCurrent);
   }
   return overallProfit;
+}
+
+// Valid Palindrome
+public boolean isPalindrome(String s) {
+  int left = 0, right = s.length() - 1;
+  while (left < right) {
+    char charL = s.charAt(left);
+    char charR = s.charAt(right);
+    if (!Character.isLetterOrDigit(charL)) {
+      left++;
+      continue;
+    }
+    if (!Character.isLetterOrDigit(charR)) {
+      right--;
+      continue;
+    }
+    if (Character.toLowerCase(charL) != Character.toLowerCase(charR)) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+  return true;
+}
+
+// Palindrome Patitioning
+public List<List<String>> partition(String s) {
+  List<List<String>> result = new ArrayList<>();
+  backtrack(result, s, new ArrayList<>(), 0);
+  return result;
+}
+
+public void backtrack(List<List<String>> result, String s, List<String> temp, int index) {
+  if (index == s.length()) {
+    result.add(new ArrayList(temp));
+  }
+  for (int i = index; i < s.length(); i++) {
+    if (validPalindrome(s, index, i)) {
+      temp.add(s.substring(index, i + 1));
+      backtrack(result, s, temp, i + 1);
+      temp.remove(temp.size() - 1);
+    }
+  }
+}
+
+public boolean validPalindrome(String s, int start, int end) {
+  while (start < end) {
+    if (s.charAt(start) != s.charAt(end)) {
+      return false;
+    }
+    start++;
+    end--;
+  }
+  return true;
 }
 
 // LRU Cache
@@ -614,6 +702,27 @@ public ListNode reverseList(ListNode head) {
   return prev;
 }
 
+// Combination Sum III
+public List<List<Integer>> combinationSum3(int k, int n) {
+  List<List<Integer>> result = new ArrayList<>();
+  backtrack(result, new ArrayList<>(), 1, k, n);
+  return result;
+}
+
+public void backtrack(List<List<Integer>> result, List<Integer> temp, int index, int length, int target) {
+  if (target == 0 && temp.size() == length) {
+    result.add(new ArrayList(temp));
+  }
+  if (target <= 0 || temp.size() >= length) {
+    return;
+  }
+  for (int i = index; i < 10; i++) {
+    temp.add(i);
+    backtrack(result, temp, i + 1, length, target - i);
+    temp.remove(temp.size() - 1);
+  }
+}
+
 // Contains Duplicate
 public boolean containsDuplicate(int[] nums) {
   Set<Integer> set = new HashSet();
@@ -725,6 +834,40 @@ public int[] productExceptSelf(int[] nums) {
   return result;
 }
 
+// Valid Anagram
+public boolean isAnagram(String s, String t) {
+  Map<Character, Integer> map = new HashMap<>();
+  for (char i:s.toCharArray()) {
+    map.put(i, map.getOrDefault(i, 0) + 1);
+  }
+  for (char i:t.toCharArray()) {
+    if (map.containsKey(i) && map.get(i) > 0) {
+      map.put(i, map.get(i) - 1);
+    } else {
+      return false;
+    }
+  }
+  for (int val:map.values()) {
+    if (val > 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// Valid Anagram
+public boolean isAnagram(String s, String t) {
+  int[] array = new int[26];
+  for (char a:s.toCharArray()) array[a - 'a']++;
+  for (char a:t.toCharArray()) array[a - 'a']--;
+  for (int i:array) {
+    if (i != 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Intersection of Two Arrays
 public int[] intersection(int[] nums1, int[] nums2) {
   Set<Integer> set = new HashSet();
@@ -743,6 +886,47 @@ public int[] intersection(int[] nums1, int[] nums2) {
     result[i] = list.get(i);
   }
   return result;
+}
+
+// Longest Palindrome
+public int longestPalindrome(String s) {
+  int oddCount = 0, total = 0;
+  int[] charArray = new int[128];
+  for (char a:s.toCharArray()) {
+    charArray[a]++;
+  }
+  for(int i:charArray) {
+    if (i % 2 != 0 && oddCount == 0) {
+      total += i;
+      oddCount++;
+    } else if (i % 2 != 0 && oddCount > 0) {
+      total += i - 1;
+    } else {
+      total += i;
+    }
+  }
+  return total;
+}
+
+// Longest Palindrome
+public int longestPalindrome(String s) {
+  Map<Character,Integer> map = new HashMap<>();
+  boolean hasOdd = false;
+  int longest = 0;
+  for (char a:s.toCharArray()) {
+    map.put(a, map.getOrDefault(a, 0) + 1);
+  }
+  for(int value:map.values()) {
+    if (value % 2 != 0 && hasOdd) {
+      longest += value - 1;
+    } else if (value % 2 != 0) {
+      longest += value;
+      hasOdd = true;
+    } else {
+      longest += value;
+    }
+  }
+  return longest;
 }
 
 // LFU Cache

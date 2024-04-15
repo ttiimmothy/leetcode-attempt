@@ -478,6 +478,163 @@ func intersection(nums1 []int, nums2 []int) []int {
   return result
 }
 
+// Longest Palindrome
+//
+//lint:ignore U1000 Function is intentionally left unused
+func longestPalindrome(s string) int {
+  array := make([]int,128)
+  odd := 0
+  result := 0
+  for _,a := range s {
+    array[a]++
+  }
+  for _,i := range array {
+    if i % 2 != 0 && odd == 0 {
+      result += i
+      odd++
+    } else if i % 2 != 0 {
+      result += i - 1
+    } else {
+      result += i
+    }
+  }
+  return result
+}
+
+// Longest Palindrome
+func longestPalindrome_1(s string) int {
+  charMap := make(map[rune]int)
+  odd := 0
+  for _,a := range s {
+    if _,ok := charMap[a]; ok {
+      charMap[a]++
+    } else {
+      charMap[a] = 1
+    }
+    if charMap[a] % 2 != 0 {
+      odd++
+    } else {
+      odd--
+    }
+  }
+  if odd > 0 {
+    return len(s) - odd + 1
+  }
+  return len(s)
+}
+
+// LFU Cache
+//
+//lint:ignore U1000 Function is intentionally left unused
+type Node_1 struct {
+  key   int
+  val   int
+  count int
+  next  *Node_1
+  prev  *Node_1
+}
+
+type LFUCache struct {
+  keyMap   map[int]*Node_1
+  countMap map[int]*Node_1
+  capacity int
+  minF     int
+}
+
+func Constructor_4(capacity int) LFUCache {
+  return LFUCache{
+    make(map[int]*Node_1),
+    make(map[int]*Node_1),
+    capacity,
+    0,
+  }
+}
+
+func (this *LFUCache) Get(key int) int {
+  v, found := this.keyMap[key]
+  if !found {
+    return -1
+  }
+  this.count_remove(v)
+  v.count += 1
+  this.count_insert(v)
+  return v.val
+}
+
+func (this *LFUCache) Put(key int, value int) {
+  v, found := this.keyMap[key]
+  if !found {
+    if len(this.keyMap) >= this.capacity {
+      this.evict()
+    }
+    v = &Node_1{
+      key,
+      value,
+      0,
+      nil,
+      nil,
+    }
+    this.keyMap[key] = v
+    this.minF = 1
+  }
+  v.val = value
+  this.count_remove(v)
+  v.count += 1
+  this.count_insert(v)
+}
+
+func (this *LFUCache) count_remove(node *Node_1) {
+  if node.count == 0 {
+    return
+  }
+  dummy, _ := this.countMap[node.count]
+  if node.next != nil {
+    node.next.prev = node.prev
+  } else {
+    if dummy.next == node {
+      delete(this.countMap, node.count)
+      if node.count == this.minF {
+        this.minF++
+      }
+      return
+    }
+    dummy.prev = node.prev
+  }
+  node.prev.next = node.next
+}
+
+func (this *LFUCache) count_insert(node *Node_1) {
+  dummy, found := this.countMap[node.count]
+  if !found {
+    dummy = &Node_1{
+      0, 0, 0, nil, nil,
+    }
+    this.countMap[node.count] = dummy
+  }
+  last := dummy.prev
+  if last == nil {
+    dummy.next = node
+    node.prev = dummy
+  } else {
+    last.next = node
+    node.prev = last
+  }
+  dummy.prev = node
+  node.next = nil
+}
+
+func (this *LFUCache) evict() {
+  dummy, _ := this.countMap[this.minF]
+  next := dummy.next
+  if next.next == nil {
+    delete(this.countMap, this.minF)
+    this.minF++
+  } else {
+    dummy.next = next.next
+    next.next.prev = dummy
+  }
+  delete(this.keyMap, next.key)
+}
 
 // Backspace String Compare
 //
