@@ -1,3 +1,4 @@
+// 1
 // Two Sum
 public int[] twoSum(int[] nums, int target){
   Map<Integer, Integer> preMap = new HashMap();
@@ -11,6 +12,7 @@ public int[] twoSum(int[] nums, int target){
   return new int[]{};
 }
 
+// 3
 // Longest Substring Without Repeating Characters
 public int lengthOfLongestSubstring(String s) {
   int left = 0, result = 0;
@@ -27,6 +29,63 @@ public int lengthOfLongestSubstring(String s) {
   return result;
 }
 
+// 5
+// Longest Palindromic Substring
+public String longestPalindrome(String s) {
+  String result = "";
+  int resultLength = 0;
+  for (int i = 0; i < s.length(); i++) {
+    int left = i, right = i;
+    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+      if (right - left + 1 > resultLength) {
+        resultLength = right - left + 1;
+        result = s.substring(left, right+1);
+      }
+      left--;
+      right++;
+    }
+    left = i;
+    right = i + 1;
+    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+      if (right - left + 1 > resultLength) {
+        resultLength = right - left + 1;
+        result = s.substring(left, right+1);
+      }
+      left--;
+      right++;
+    }
+  }
+  return result;
+}
+
+// 8
+// String to Integer (atoi) 
+public int myAtoi(String s) {
+  int i = 0, result = 0, sign = 1;
+  while (i < s.length() && s.charAt(i) == ' ') {
+    i++;
+  }
+  if (i < s.length() && (s.charAt(i) == '+' || s.charAt(i) == '-')) {
+    if (s.charAt(i) == '-') {
+      sign = -1;
+    }
+    i++;
+  }
+  while(i < s.length() && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
+    if (result > Integer.MAX_VALUE / 10 || (result == Integer.MAX_VALUE / 10 && s.charAt(i) - '0' > Integer.MAX_VALUE % 10)) {
+      if (sign < 0) {
+        return Integer.MIN_VALUE;
+      } else {
+        return Integer.MAX_VALUE;
+      }
+    }
+    result = result * 10 + (s.charAt(i) - '0');
+    i++;
+  }
+  return result*sign;
+}
+
+// 11
 // Container With Most Water
 public int maxArea(int[] height) {
   int left = 0, right = height.length - 1;
@@ -43,6 +102,7 @@ public int maxArea(int[] height) {
   return area;
 }
 
+// 15
 // 3Sum
 public List<List<Integer>> threeSum(int[] nums) {
   List<List<Integer>> result = new ArrayList();
@@ -75,6 +135,7 @@ public List<List<Integer>> threeSum(int[] nums) {
   return result;
 }
 
+// 19
 // Remove Nth Node From End of List
 public ListNode removeNthFromEnd(ListNode head, int n) {
   ListNode result = new ListNode(0, head);
@@ -92,6 +153,7 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
   return result.next;
 }
 
+// 20
 // Valid Parentheses
 public boolean isValid(String s) {
   Stack<Character> stack = new Stack();
@@ -109,6 +171,7 @@ public boolean isValid(String s) {
   return stack.isEmpty();
 }
 
+// 21
 // Merge Two Sorted Lists
 public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
   ListNode dummy = new ListNode();
@@ -131,6 +194,7 @@ public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
   return dummy.next;
 }
 
+// 21-1
 // Merge Two Sorted Lists
 public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
   if (list1 == null) return list2;
@@ -144,6 +208,7 @@ public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
   }
 }
 
+// 39
 // Combination Sum
 public List<List<Integer>> combinationSum(int[] candidates, int target) {
   List<List<Integer>> result = new ArrayList();
@@ -169,6 +234,7 @@ public void backtrack(int index, List<List<Integer>> result, List<Integer> subLi
   }
 }
 
+// 39-1
 // Combination Sum
 public List<List<Integer>> combinationSum(int[] candidates, int target) {
   List<List<Integer>> result = new ArrayList();
@@ -191,6 +257,7 @@ public void backtrack(int i, List<List<Integer>> result, List<Integer> subList, 
   backtrack(i + 1, result, subList, candidates, target, total);
 }
 
+// 40
 // Combination Sum II
 public List<List<Integer>> combinationSum2(int[] candidates, int target) {
   Arrays.sort(candidates);
@@ -216,6 +283,7 @@ public void backtrack(int[] candidates, int target, int index, List<Integer> lis
   }
 }
 
+// 46
 // Permutations
 public List<List<Integer>> permute(int[] nums) {
   List<List<Integer>> result = new ArrayList();
@@ -238,6 +306,7 @@ public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> subL
   }
 }
 
+// 46-1
 // Permutations
 public List<List<Integer>> permute(int[] nums) {
   List<List<Integer>> result = new ArrayList<>();
@@ -259,6 +328,7 @@ public void permute(int[] nums, List<Integer> current, List<List<Integer>> resul
   }
 }
 
+// 47
 // Permutations II
 public List<List<Integer>> permuteUnique(int[] nums) {
   Arrays.sort(nums);
@@ -284,6 +354,7 @@ public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> temp
   }
 }
 
+// 56
 // Merge Intervals
 public int[][] merge(int[][] intervals) {
   List<int[]> result = new ArrayList();
@@ -300,6 +371,7 @@ public int[][] merge(int[][] intervals) {
   return result.toArray(new int[result.size()][]);
 }
 
+// 56-1
 // Merge Intervals
 public int[][] merge(int[][] intervals) {
   Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
@@ -318,6 +390,7 @@ public int[][] merge(int[][] intervals) {
   return merged.toArray(new int[merged.size()][]);        
 }
 
+// 57
 // Insert Interval
 public int[][] insert(int[][] intervals, int[] newInterval) {
   List<int[]> result = new ArrayList();
@@ -338,6 +411,7 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
   return result.toArray(new int[result.size()][]);
 }
 
+// 57-1
 // Insert Interval
 public int[][] insert(int[][] intervals, int[] newInterval) {
   List<int[]> result = new ArrayList();
@@ -355,6 +429,7 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
   return result.toArray(new int[result.size()][]);
 }
 
+75
 // Sort Colors
 public void sortColors(int[] nums) {
   int low = 0, mid = 0, high = nums.length - 1;
@@ -376,6 +451,7 @@ public void sortColors(int[] nums) {
   }
 }
 
+// 78
 // Subsets
 public List<List<Integer>> subsets(int[] nums) {
   List<List<Integer>> result = new ArrayList<>();
@@ -392,6 +468,7 @@ public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> temp
   }
 }
 
+// 90
 // Subsets II
 public List<List<Integer>> subsetsWithDup(int[] nums) {
   Arrays.sort(nums);
@@ -412,6 +489,7 @@ public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> temp
   }
 }
 
+// 92
 // Reverse Linked List II
 public ListNode reverseBetween(ListNode head, int left, int right) {
   ListNode result = new ListNode(0, head);
@@ -433,6 +511,7 @@ public ListNode reverseBetween(ListNode head, int left, int right) {
   return result.next;
 }
 
+// 121
 // Best Time to Buy and Sell Stock
 public int maxProfit(int[] prices) {
   int difference = 0, left = 0, right = 0;
@@ -447,6 +526,7 @@ public int maxProfit(int[] prices) {
   return difference;
 }
 
+// 121-1
 // Best Time to Buy and Sell Stock
 public int maxProfit(int[] prices) {
   int overallProfit = 0;
@@ -461,6 +541,7 @@ public int maxProfit(int[] prices) {
   return overallProfit;
 }
 
+// 121-2
 // Best Time to Buy and Sell Stock
 public int maxProfit(int[] prices) {
   int overallProfit = 0;
@@ -472,6 +553,7 @@ public int maxProfit(int[] prices) {
   return overallProfit;
 }
 
+// 125
 // Valid Palindrome
 public boolean isPalindrome(String s) {
   int left = 0, right = s.length() - 1;
@@ -495,6 +577,7 @@ public boolean isPalindrome(String s) {
   return true;
 }
 
+// 131
 // Palindrome Patitioning
 public List<List<String>> partition(String s) {
   List<List<String>> result = new ArrayList<>();
@@ -526,6 +609,43 @@ public boolean validPalindrome(String s, int start, int end) {
   return true;
 }
 
+// 134
+// Gas Station
+public int canCompleteCircuit(int[] gas, int[] cost) {
+  int totalGas = 0, totalCost = 0;
+  for(int i = 0; i < gas.length; i++){
+    totalGas += gas[i];
+    totalCost += cost[i];
+  }
+  if(totalGas < totalCost){
+    return -1;
+  }
+  int total = 0, result = 0;
+  for(int i = 0; i < gas.length; i++){
+    total += gas[i] - cost[i];
+    if(total < 0){
+      result = i + 1;
+      total = 0;
+    }
+  }
+  return result;
+}
+
+// 141
+// Linked List Cycle
+public boolean hasCycle(ListNode head) {
+  ListNode slow = head, fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow == fast) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// 146
 // LRU Cache
 class ListNode {
   int key, val;
@@ -586,40 +706,7 @@ class LRUCache {
   }
 }
 
-// Linked List Cycle
-public boolean hasCycle(ListNode head) {
-  ListNode slow = head, fast = head;
-  while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-    if (slow == fast) {
-      return true;
-    }
-  }
-  return false;
-}
-
-// Gas Station
-public int canCompleteCircuit(int[] gas, int[] cost) {
-  int totalGas = 0, totalCost = 0;
-  for(int i = 0; i < gas.length; i++){
-    totalGas += gas[i];
-    totalCost += cost[i];
-  }
-  if(totalGas < totalCost){
-    return -1;
-  }
-  int total = 0, result = 0;
-  for(int i = 0; i < gas.length; i++){
-    total += gas[i] - cost[i];
-    if(total < 0){
-      result = i + 1;
-      total = 0;
-    }
-  }
-  return result;
-}
-
+// 150
 // Evaluate Reverse Polish Notation
 public int evalRPN(String[] tokens) {
   Stack<Integer> stack = new Stack();
@@ -643,6 +730,7 @@ public int evalRPN(String[] tokens) {
   return stack.pop();
 }
 
+// 155
 // Min Stack
 class MinStack {
   Stack<Integer> stack;
@@ -674,6 +762,7 @@ class MinStack {
   }
 }
 
+// 167
 // Two Sum II - Input Array Is Sorted
 public int[] twoSum(int[] numbers, int target) {
   int left = 0, right = numbers.length - 1;
@@ -687,6 +776,7 @@ public int[] twoSum(int[] numbers, int target) {
   return new int[]{left + 1,right + 1};
 }
 
+// 169
 // Majority Element
 public int majorityElement(int[] nums) {
   int result = 0, freq = 0;
@@ -703,6 +793,7 @@ public int majorityElement(int[] nums) {
   return result;             
 }
 
+// 169-1
 // Majority Element
 public int majorityElement(int[] nums) {
   int n = nums.length;
@@ -719,6 +810,7 @@ public int majorityElement(int[] nums) {
   return 0;
 }
 
+// 206
 // Reverse Linked List
 public ListNode reverseList(ListNode head) {
   ListNode current = head, prev = null;
@@ -731,6 +823,7 @@ public ListNode reverseList(ListNode head) {
   return prev;
 }
 
+// 216
 // Combination Sum III
 public List<List<Integer>> combinationSum3(int k, int n) {
   List<List<Integer>> result = new ArrayList<>();
@@ -752,6 +845,7 @@ public void backtrack(List<List<Integer>> result, List<Integer> temp, int index,
   }
 }
 
+// 217
 // Contains Duplicate
 public boolean containsDuplicate(int[] nums) {
   Set<Integer> set = new HashSet();
@@ -764,6 +858,7 @@ public boolean containsDuplicate(int[] nums) {
   return false;
 }
 
+// 225
 // Implement Stack using Queues
 class MyStack {
   Deque<Integer> queue;
@@ -792,6 +887,7 @@ class MyStack {
   }
 }
 
+// 225-1
 // Implememnt Stack using Queues
 class MyStack {
   Deque<Integer> queue;
@@ -820,6 +916,7 @@ class MyStack {
   }
 }
 
+// 232
 // Implement Queue using Stacks
 class MyQueue {
   Stack<Integer> input = new Stack();
@@ -847,6 +944,7 @@ class MyQueue {
   }
 }
 
+// 238
 // Product of Array Except Self
 public int[] productExceptSelf(int[] nums) {
   int[] result = new int[nums.length];
@@ -863,6 +961,7 @@ public int[] productExceptSelf(int[] nums) {
   return result;
 }
 
+// 242
 // Valid Anagram
 public boolean isAnagram(String s, String t) {
   Map<Character, Integer> map = new HashMap<>();
@@ -884,6 +983,7 @@ public boolean isAnagram(String s, String t) {
   return true;
 }
 
+// 242-1
 // Valid Anagram
 public boolean isAnagram(String s, String t) {
   int[] array = new int[26];
@@ -897,6 +997,7 @@ public boolean isAnagram(String s, String t) {
   return true;
 }
 
+// 349
 // Intersection of Two Arrays
 public int[] intersection(int[] nums1, int[] nums2) {
   Set<Integer> set = new HashSet();
@@ -917,6 +1018,7 @@ public int[] intersection(int[] nums1, int[] nums2) {
   return result;
 }
 
+// 409
 // Longest Palindrome
 public int longestPalindrome(String s) {
   int oddCount = 0, total = 0;
@@ -937,6 +1039,7 @@ public int longestPalindrome(String s) {
   return total;
 }
 
+// 409-1
 // Longest Palindrome
 public int longestPalindrome(String s) {
   Map<Character,Integer> map = new HashMap<>();
@@ -958,6 +1061,7 @@ public int longestPalindrome(String s) {
   return longest;
 }
 
+// 460
 // LFU Cache
 class LFUCache {
   int capacity;
@@ -1006,6 +1110,32 @@ class LFUCache {
   }
 }
 
+// 680
+// Valid Palindrome II
+public boolean validPalindrome(String s) {
+  int left = 0, right = s.length() - 1;
+  while (left < right) {
+    if (s.charAt(left) != s.charAt(right)) {
+      return validSubPalindrome(s, left + 1, right) || validSubPalindrome(s, left, right - 1);
+    } 
+    left++;
+    right--;
+  }
+  return true;
+}
+
+public boolean validSubPalindrome(String s, int left, int right) {
+  while (left < right) {
+    if (s.charAt(left) != s.charAt(right)) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+  return true;
+}
+
+// 739
 // Daily Temperatures
 public int[] dailyTemperatures(int[] temperatures) {
   Stack<Integer> stack = new Stack<>();
@@ -1021,6 +1151,7 @@ public int[] dailyTemperatures(int[] temperatures) {
   return result;
 }
 
+// 844
 // Backspace String Compare
 public boolean backspaceCompare(String s, String t) {
   int ps = s.length() - 1;
@@ -1057,7 +1188,7 @@ public int findValidCharIndex(String str, int end){
   return end;
 }
 
-
+// 876
 // Middle of the Linked List
 public ListNode middleNode(ListNode head) {
   ListNode slow = head, fast = head;
@@ -1068,6 +1199,7 @@ public ListNode middleNode(ListNode head) {
   return slow;
 }
 
+// 912
 // Sort an Array
 public int[] sortArray(int[] nums) {
   mergeSort(nums, 0, nums.length - 1);
@@ -1113,6 +1245,7 @@ public void mergeSort(int[] nums, int low, int high) {
   }
 }
 
+// 912-1
 // Sort an Array
 public int[] sortArray(int[] nums) {
   heapSort(nums);
@@ -1153,6 +1286,7 @@ public void heapSort(int[] nums){
   }
 }
 
+// 3005
 // Count Elements With Maximum Frequency
 public int maxFrequencyElements(int[] nums) {
   int maxFrequency = 0, result = 0;

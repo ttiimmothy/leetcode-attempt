@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// 15
 // 3Sum
 vector<vector<int>> threeSum(vector<int>& nums) {
   std::sort(nums.begin(), nums.end());
@@ -35,6 +36,7 @@ vector<vector<int>> threeSum(vector<int>& nums) {
   return result;
 }
 
+// 39
 // Combination Sum
 void backtrack(vector<int>& candidates, int target, vector<vector<int>>& result, vector<int>& temp, int current) {
   if (target == 0) {
@@ -57,6 +59,7 @@ vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
   return result;
 }
 
+// 134
 // Gas Station
 int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
   int current = 0, total = 0, result = 0;
@@ -74,6 +77,7 @@ int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
   return -1;
 }
 
+// 844
 // Backspace String Compare
 int findNextValidChar(string str, int end) {
   int backspaceCount = 0;
@@ -109,6 +113,7 @@ bool backspaceCompare(string s, string t) {
   return true;
 }
 
+// 912
 // Sort an Array
 void mergeSort(vector<int>& nums, int start, int end) {
   if (start < end) {
@@ -149,6 +154,7 @@ vector<int> sortArray(vector<int>& nums) {
   return nums;
 }
 
+// 912-1
 // Sort an Array
 void heapify(vector<int>& nums, int root, int length) {
   int largest = root;

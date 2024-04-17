@@ -1,5 +1,7 @@
 from typing import List
+from collections import defaultdict, OrderedDict
 
+# 11
 # Container With Most Water
 def maxArea(height: List[int]) -> int:
   result, left, right = 0, 0, len(height) - 1
@@ -11,6 +13,7 @@ def maxArea(height: List[int]) -> int:
       right -= 1
   return result
 
+# 15
 # 3Sum
 def threeSum(nums: List[int]) -> List[List[int]]:
   nums.sort()
@@ -33,6 +36,7 @@ def threeSum(nums: List[int]) -> List[List[int]]:
         mid += 1
   return result
 
+# 39
 # Combination Sum
 def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
   result = []
@@ -50,6 +54,7 @@ def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
   dfs(candidates, target, [], result)
   return result
 
+# 134
 # Gas Station
 def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
   possibleOutcome = 0  # assume the starting point is the result
@@ -66,6 +71,41 @@ def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
   else:
     return -1
 
+# 460
+# LFU Cache
+class LFUCache:
+  def __init__(self, capacity: int):
+    self.capacity = capacity
+    self.items = defaultdict(int)
+    self.freqs = defaultdict(OrderedDict)
+    self.min_freq = 0 
+
+  def update_freq(self, key, value = None):
+    f = self.items[key]
+    v = self.freqs[f].pop(key)
+    v = value if value else v
+    self.freqs[f+1][key] = v
+    self.items[key] += 1
+    if self.min_freq == f and not self.freqs[f]:
+      self.min_freq += 1
+    return v
+
+  def get(self, key: int) -> int:
+    if key in self.items:
+      return self.update_freq(key)
+    return -1
+      
+  def put(self, key: int, value: int) -> None:
+    if key in self.items:
+      self.update_freq(key, value)
+    else:
+      if len(self.items) == self.capacity:
+        self.items.pop(self.freqs[self.min_freq].popitem(last=False)[0])
+      self.min_freq = 1
+      self.items[key] = 1
+      self.freqs[1][key] = value
+
+# 844
 # Backspace String Compare, not the optimized solution
 def backspaceCompare(s: str, t: str) -> bool:
   def checking(str: str):
@@ -78,6 +118,7 @@ def backspaceCompare(s: str, t: str) -> bool:
     return stack
   return checking(s) == checking(t)
 
+# 844-1
 # Backspace String Compare
 def backspaceCompare_1(s: str, t: str) -> bool:
     pS, pT = len(s) - 1, len(t) - 1
@@ -105,6 +146,7 @@ def backspaceCompare_1(s: str, t: str) -> bool:
       pT -= 1
     return True
 
+# 912
 # Sort an Array
 def sortArray(nums: List[int]) -> List[int]:
   def heapSort(nums: List[int]):

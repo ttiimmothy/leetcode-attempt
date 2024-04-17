@@ -1,3 +1,4 @@
+# 11
 # Container With Most Water
 proc maxArea(height: seq[int]): int =
   var result, left, right = 0, 0, height.len - 1
@@ -9,6 +10,7 @@ proc maxArea(height: seq[int]): int =
       dec(right)
   result
 
+# 15
 # 3Sum
 proc threeSum(nums: seq[int]): seq[seq[int]] =
   nums.sort()
@@ -32,7 +34,7 @@ proc threeSum(nums: seq[int]): seq[seq[int]] =
         mid += 1
   result
 
-
+# 39
 # Combination Sum
 proc backtrack(candidates: var seq[int], target: int, result: var seq[seq[int]], temp: var seq[int], current: int) =
   if target == 0:
@@ -50,7 +52,7 @@ func combinationSum(candidates: seq[int], target: int): seq[seq[int]] =
   backtrack(candidates, target, result, temp, 0)
   result
 
-
+# 134
 # Gas Station
 proc canCompleteCircuit(gas, cost: seq[int]): int =
   var result = 0
@@ -67,6 +69,58 @@ proc canCompleteCircuit(gas, cost: seq[int]): int =
   else:
     return -1
 
+# 460
+# LFU Cache
+import tables
+type
+  LFUCache = object
+    capacity: int
+    items: Table[int, int]
+    freqs: Table[int, OrderedTable[int, int]]
+    minFreq: int
+
+proc newLFUCache(capacity: int): LFUCache =
+  result.capacity = capacity
+  initTable(result.items)
+  initTable(result.freqs)
+  result.minFreq = 0
+
+proc updateFreq(cache: var LFUCache, key: int, value: int = 0): int =
+  let f = cache.items.getOrDefault(key, 0)
+  var v: int
+  if f > 0:
+    v = cache.freqs[f][key]
+    cache.freqs[f].remove(key)
+    v = if value != 0: value else: v
+    cache.freqs[f + 1][key] = v
+    inc(cache.items[key])
+    if cache.minFreq == f and cache.freqs[f].isEmpty:
+      inc(cache.minFreq)
+  else:
+    v = value
+    cache.freqs[1][key] = v
+    cache.items[key] = 1
+    cache.minFreq = 1
+  result = v
+
+proc get(cache: var LFUCache, key: int): int =
+  if cache.items.contains(key):
+    result = updateFreq(cache, key)
+  else:
+    result = -1
+
+proc put(cache: var LFUCache, key, value: int) =
+  if cache.capacity > 0:
+    if not cache.items.contains(key):
+      if cache.items.len >= cache.capacity:
+        let minFreqItems = cache.freqs[cache.minFreq]
+        if minFreqItems.len > 0:
+          let lruKey = minFreqItems.frontKey
+          minFreqItems.remove(lruKey)
+          cache.items.remove(lruKey)
+    updateFreq(cache, key, value)
+
+# 844
 # Backspace String Compare
 proc findNextValidChar(str: string, end: int): int =
   var backspaceCount = 0
@@ -96,6 +150,7 @@ proc backspaceCompare(s: string, t: string): bool =
     dec(pT)
   return true
 
+# 912
 # Sort an Array
 proc sortArray(nums: seq[int]): seq[int] =
   heapSort(nums)

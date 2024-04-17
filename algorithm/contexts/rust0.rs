@@ -1,3 +1,4 @@
+// 1
 // Two Sum
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
   use std::collections::HashMap;
@@ -12,6 +13,33 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
   Vec::new()
 }
 
+// 8
+// String to Integer (atoi)
+pub fn my_atoi(s: String) -> i32 {
+  let mut result:i32 = 0;
+  let (mut sign,mut started) = (1, false);
+  for c in s.chars() {
+    match c {
+      ' ' if !started => continue,
+      '+' if !started => started = true,
+      '-' if !started => {
+        started = true;
+        sign = -1;
+      }
+      '0'..='9' => {
+        started = true;
+        result = match result.checked_mul(10).and_then(|result| result.checked_add(c as i32 - '0' as i32)) {
+          Some(v) => v,
+          None => return if sign == -1 { i32::MIN } else { i32::MAX },
+        };
+      }
+      _ => break,
+    }
+  }
+  result * sign
+}
+
+// 11
 // Container With Most Water
 pub fn max_area(height: Vec<i32>) -> i32 {
   let (mut left, mut right) = (0, height.len() - 1);
@@ -27,6 +55,7 @@ pub fn max_area(height: Vec<i32>) -> i32 {
   result
 }
 
+// 15
 // 3Sum
 pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
   let mut nums = nums;
@@ -56,6 +85,7 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
   result
 }
 
+// 39
 // Combination Sum
 pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   let mut result = Vec::new();
@@ -77,6 +107,7 @@ pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   result
 }
 
+// 39-1
 // Combination Sum
 pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   let mut result = Vec::new();
@@ -98,6 +129,7 @@ pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   result
 }
 
+// 40
 // Combination Sum II
 pub fn combination_sum2(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   let mut candidates = candidates.clone();
@@ -124,6 +156,7 @@ pub fn combination_sum2(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
   result
 }
 
+// 47
 // Permutations II
 pub fn permute_unique(nums: Vec<i32>) -> Vec<Vec<i32>> {
   let mut nums = nums;
@@ -151,6 +184,7 @@ pub fn permute_unique(nums: Vec<i32>) -> Vec<Vec<i32>> {
   result
 }
 
+// 56
 // Merge Intervals
 pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
   let mut intervals = intervals;
@@ -168,6 +202,7 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
   result
 }
 
+// 56-1
 // Merge Intervals
 pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
   let mut intervals = intervals;
@@ -186,6 +221,7 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
   result
 }
 
+// 57
 // Insert Interval
 pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>> {
   let mut i = 0;
@@ -208,6 +244,7 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result
 }
 
+// 57-1
 // Insert Interval
 pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>> {
   let mut result = Vec::new();
@@ -226,7 +263,8 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result.push(new_interval);
   result
 }
- 
+
+// 57-2
 // Insert Interval
 pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>> {
   let mut result = Vec::new();
@@ -246,6 +284,7 @@ pub fn insert(intervals: Vec<Vec<i32>>, new_interval: Vec<i32>) -> Vec<Vec<i32>>
   result
 }
 
+// 75
 // Sort Colors
 pub fn sort_colors(nums: &mut Vec<i32>) {
   let (mut low, mut mid, mut high) = (0, 0, nums.len() as i32 - 1);
@@ -258,6 +297,7 @@ pub fn sort_colors(nums: &mut Vec<i32>) {
   }
 }
 
+// 92
 // Reversed Linked List II
 pub fn reverse_between(head: Option<Box<ListNode>>, left: i32, right: i32) -> Option<Box<ListNode>> {
   let mut result = Some(Box::new(ListNode { val: 0, next: head }));
@@ -283,6 +323,40 @@ pub fn reverse_between(head: Option<Box<ListNode>>, left: i32, right: i32) -> Op
   result.unwrap().next
 }
 
+// 131
+// Palindrome Partitioning
+pub fn partition(s: String) -> Vec<Vec<String>> {
+  let mut result = Vec::new();
+  let mut temp = Vec::new();
+  pub fn is_palindrome(s: &String, start: usize, end: usize) -> bool {
+    let (mut start, mut end) = (start, end);
+    while start < end {
+      if s.chars().nth(start) != s.chars().nth(end){
+        return false;
+      }
+      start += 1;
+      end -= 1;
+    }
+    return true;
+  }
+  pub fn backtrack(s: &String, result: &mut Vec<Vec<String>>, temp: &mut Vec<String>, index: usize) {
+    if index >= s.len() {
+      result.push(temp.clone());
+      return;
+    }
+    for i in index..s.len() {
+      if (is_palindrome(s, index, i)) {
+        temp.push(s[index..i+1].to_string());
+        backtrack(s, result, temp, i+1);
+        temp.pop();
+      }
+    }
+  }
+  backtrack(&s, &mut result, &mut temp, 0);
+  result
+}
+
+// 134
 // Gas Station
 pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
   let mut total = 0;
@@ -302,6 +376,126 @@ pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
   result
 }
 
+// 146
+// LFU Cache
+use std::collections::HashMap;
+struct LRUCache{
+  capacity: usize,
+  list: LinkedList,
+  map: HashMap<i32, (i32, *mut Node)>,
+}
+
+struct Node {
+  data: i32,
+  next: Option<Box<Node>>,
+  prev: Option<*mut Node>,
+}
+
+struct LinkedList {
+  head: Option<Box<Node>>,
+  tail: Option<*mut Node>,
+}
+
+impl LinkedList {
+  fn new() -> Self {
+    Self { head: None, tail: None }
+  }
+
+  fn push_front(&mut self, value: i32) -> *mut Node {
+    let mut new_node = Box::new(Node {
+      data: value,
+      next: None,
+      prev: None,
+    });
+    let mut head = self.head.take();
+    if let Some(ref mut head) = head {
+      head.prev = Some(&mut *new_node as *mut Node);
+    } else {
+      self.tail = Some(&mut *new_node as *mut Node);
+    }
+    new_node.next = head;
+    let a = &mut *new_node as *mut Node;
+    self.head = Some(new_node);
+    a
+  }
+
+  fn pop_back(&mut self) -> Option<i32> {
+    self.tail.take().map(|tail| unsafe {
+      let tail = &*tail;
+      if let Some(prev) = tail.prev {
+        (*prev).next = None;
+        self.tail = Some(prev);
+      } else {
+        self.head = None;
+      }
+      tail.data
+    })
+  }
+
+  fn remove(&mut self, node: *mut Node) {
+    let mut node = unsafe { &mut *node };
+    match (node.prev.take(), node.next.take()) {
+      (Some(prev), Some(mut next)) => unsafe {
+        next.prev = Some(prev);
+        (*prev).next = Some(next);
+      }
+      (Some(prev), None) => {
+        unsafe { (*prev).next = None; }
+        self.tail = Some(prev);
+      }
+      (None, Some(mut next)) => {
+        next.prev = None;
+        self.head = Some(next);
+      }
+      (None, None) => {
+        self.head = None;
+        self.tail = None;
+      }
+    }
+  }
+}
+
+impl LRUCache {
+  fn new(capacity: i32) -> Self {
+    Self {
+      capacity: capacity as usize,
+      list: LinkedList::new(),
+      map: HashMap::new(),
+    }
+  }
+  
+  fn get(&mut self, key: i32) -> i32 {
+    match self.map.remove(&key) {
+      Some((value, node)) => {
+        self.list.remove(node);
+        let node = self.list.push_front(key);
+        self.map.insert(key, (value, node));
+        value
+      },
+      _ => -1
+    }
+  }
+  
+  fn put(&mut self, key: i32, value: i32) {
+    match self.map.remove(&key) {
+      Some((_, node)) => {
+        self.list.remove(node);
+      },
+      _ => {
+        if self.map.len() == self.capacity {
+          match self.list.pop_back() {
+            Some(key) => { self.map.remove(&key); }
+            None => {}
+          }
+        }
+      }
+    }
+    let node = self.list.push_front(key);
+    self.map.insert(key, (value, node));
+  }
+}
+
+// 155
 // Min Stack
 struct MinStack {
   stack: Vec<i32>,
@@ -339,6 +533,7 @@ impl MinStack {
   }
 }
 
+// 225
 // Implement Stack using Queues
 use std::collections::VecDeque;
 struct MyStack {
@@ -481,6 +676,87 @@ pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
   result
 }
 
+// Longest Palindrome
+pub fn longest_palindrome(s: String) -> i32 {
+  let mut array = [0;128];
+  let mut odd_count = 0;
+  let mut result = 0;
+  for &a in s.as_bytes() {
+    array[a as usize] += 1;
+  }
+  for i in array {
+    if i % 2 != 0 && odd_count == 0 {
+      result += i;
+      odd_count += 1;
+    } else if i % 2 != 0 {
+      result += i - 1;
+    } else {
+      result += i
+    }
+  }
+  result
+}
+
+// LFU Cache
+use std::collections::BinaryHeap;
+use std::cmp::Reverse;
+
+struct LFUCache {
+  capacity: i32,
+  cache: [(i32, i32, i32); 100001],
+  history: BinaryHeap<Reverse<(i32, i32, usize)>>,
+  time: i32,
+}
+
+impl LFUCache {
+  fn new(capacity: i32) -> Self {
+    LFUCache {
+      capacity,
+      cache: [(-1, -1, -1); 100001],
+      history: BinaryHeap::new(),
+      time: 0i32,
+    }
+  }
+  
+  fn get(&mut self, key: i32) -> i32 {
+    let key = key as usize;
+    if self.cache[key].1 == -1 {
+      return -1;
+    }
+    self.time += 1;
+    self.cache[key].2 += 1;
+    self.history.push(Reverse((self.cache[key].2, self.time, key)));
+    self.cache[key].1 = self.time;
+    self.cache[key].0
+  }
+    
+  fn put(&mut self, key: i32, value: i32) {
+    let key = key as usize;
+    self.time += 1;
+    if self.cache[key].1 != -1 {
+      self.cache[key] = (value, self.time, self.cache[key].2 + 1);
+      self.history.push(Reverse((self.cache[key].2, self.time, key)));
+      return;
+    }
+    if self.capacity > 0 {
+      self.cache[key] = (value, self.time, 1);
+      self.capacity -= 1;
+      self.history.push(Reverse((1, self.time, key)));
+      return;
+    }
+    while !self.history.is_empty() {
+      let history_item = self.history.pop().unwrap().0;
+      let cache_item = self.cache[history_item.2 as usize];
+      if history_item.0 == cache_item.2 {
+        self.cache[history_item.2 as usize] = (-1, -1, -1);
+        self.cache[key] = (value, self.time, 1);
+        self.history.push(Reverse((1, self.time, key)));
+        return;
+      }
+    }
+  }
+}
+
 // Backspace String Compare
 pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
   let mut backspace_count = 0;
@@ -603,8 +879,8 @@ pub fn merge_sort(nums: &mut Vec<i32>, start: usize, end: usize) {
     let mid = start + (end - start) / 2;
     Self::merge_sort(nums, start, mid);
     Self::merge_sort(nums, mid + 1, end);
-    let left_arr = nums[start..=mid].to_vec();
-    let right_arr = nums[mid + 1..=end].to_vec();
+    let left_arr = nums[start..mid + 1].to_vec();
+    let right_arr = nums[mid + 1..end + 1].to_vec();
     let (mut i, mut j, mut k) = (0, 0, start);
     while i < left_arr.len() && j < right_arr.len() {
       if left_arr[i] < right_arr[j] {

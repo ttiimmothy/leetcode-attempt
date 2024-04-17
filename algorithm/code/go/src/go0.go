@@ -2,6 +2,7 @@ package src
 
 import (
   "sort"
+  "math"
 )
 
 type ListNode struct {
@@ -9,6 +10,7 @@ type ListNode struct {
   Next *ListNode
 }
 
+// 1
 // Two Sum
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -24,6 +26,33 @@ func twoSum(nums []int, target int) []int {
   return []int{}
 }
 
+// 3
+// String to Integer (atoi)
+func myAtoi(s string) int {
+  i, result, sign := 0, 0, 1
+  for i < len(s) && s[i] == ' ' {
+    i++
+  }
+  if i < len(s) && (s[i] == '-' || s[i] == '+') {
+    if (s[i] == '-') {
+      sign = -1
+    }
+    i++
+  }
+  for i < len(s) && s[i] >= '0' && s[i] <='9' {
+    if result > math.MaxInt32/10 || (result == math.MaxInt32/10 && int(s[i])-'0' > math.MaxInt32%10) {
+      if sign == -1 {
+        return math.MinInt32
+      }
+      return math.MaxInt32
+    }
+    result = result*10+int(s[i])-'0'
+    i++
+  }
+  return result*sign
+}
+
+// 11
 // Container With Most Water
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -41,31 +70,7 @@ func maxArea(height []int) int {
   return result
 }
 
-// Combination Sum
-//
-//lint:ignore U1000 Function is intentionally left unused
-func combinationSum(candidates []int, target int) [][]int {
-  var result [][]int
-  backtrack(candidates, target, &result, []int{}, 0)
-  return result
-}
-
-func backtrack(candidates []int, target int, result *[][]int, subList []int, index int) {
-  if target < 0 {
-    return
-  } else if target == 0 {
-    temp := make([]int, len(subList))
-    copy(temp, subList)
-    *result = append(*result, temp)
-    return
-  }
-  for i := index; i < len(candidates); i++ {
-    subList = append(subList, candidates[i])
-    backtrack(candidates, target-candidates[i], result, subList, i)
-    subList = subList[:len(subList)-1]
-  }
-}
-
+// 15
 // 3Sum
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -97,6 +102,33 @@ func threeSum(nums []int) [][]int {
   return result
 }
 
+// 39
+// Combination Sum
+//
+//lint:ignore U1000 Function is intentionally left unused
+func combinationSum(candidates []int, target int) [][]int {
+  var result [][]int
+  backtrack(candidates, target, &result, []int{}, 0)
+  return result
+}
+
+func backtrack(candidates []int, target int, result *[][]int, subList []int, index int) {
+  if target < 0 {
+    return
+  } else if target == 0 {
+    temp := make([]int, len(subList))
+    copy(temp, subList)
+    *result = append(*result, temp)
+    return
+  }
+  for i := index; i < len(candidates); i++ {
+    subList = append(subList, candidates[i])
+    backtrack(candidates, target-candidates[i], result, subList, i)
+    subList = subList[:len(subList)-1]
+  }
+}
+
+// 40
 // Combination Sum II
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -127,6 +159,7 @@ func backtrack_1(candidates []int, target int, result *[][]int, subList []int, i
   }
 }
 
+// 47
 // Permutations II
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -157,6 +190,7 @@ func backtrack_2(nums []int, result *[][]int, temp []int, visit []bool) {
   }
 }
 
+// 56
 // Merge Intervals
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -178,6 +212,7 @@ func merge(intervals [][]int) [][]int {
   return result
 }
 
+// 57
 // Insert Interval
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -197,6 +232,7 @@ func insert(intervals [][]int, newInterval []int) [][]int {
   return result
 }
 
+// 57-1
 // Insert Interval
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -219,6 +255,7 @@ func insert_1(intervals [][]int, newInterval []int) [][]int {
   return result
 }
 
+// 75
 // Sort Colors
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -238,6 +275,7 @@ func sortColors(nums []int) {
   }
 }
 
+// 92
 // Reverse Linked List II
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -260,6 +298,44 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
   return result.Next
 }
 
+// 131
+// Palindrome Partitioning
+//
+//lint:ignore U1000 Function is intentionally left unused
+func partition(s string) [][]string {
+  result := [][]string{}
+  backtrack_3(s, &result, []string{}, 0)
+  return result
+}
+
+func backtrack_3(s string, result *[][]string, temp []string, index int) {
+  if index >= len(s) {
+    array := make([]string, len(temp))
+    copy(array, temp)
+    *result = append(*result, array)
+    return
+  }
+  for i := index; i < len(s); i++ {
+    if isPalindrome(s, index, i) {
+      temp = append(temp, s[index:i+1])
+      backtrack_3(s, result, temp, i+1)
+      temp = temp[:len(temp)-1]
+    }
+  }
+}
+
+func isPalindrome(s string, start int, end int) bool {
+  for start < end {
+    if s[start] != s[end] {
+      return false
+    }
+    start++
+    end--
+  }
+  return true
+}
+
+// 134
 // Gas Station
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -279,6 +355,7 @@ func canCompleteCircuit(gas []int, cost []int) int {
   return -1
 }
 
+// 146
 // LRU Cache
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -339,6 +416,7 @@ func (this *LRUCache) Insert(node *Node) {
   node.prev, node.next = prev, next
 }
 
+// 155
 // Min Stack
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -372,6 +450,7 @@ func (this *MinStack) GetMin() int {
   return this.minStack[len(this.minStack) - 1]
 }
 
+// 225
 // Implement Stack using Queues
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -406,6 +485,7 @@ func (this *MyStack) Empty() bool {
   return len(this.queue) == 0
 }
 
+// 232
 // Implement Queue using Stacks
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -441,6 +521,7 @@ func (this *MyQueue) Empty() bool {
   return len(this.input) == 0 && len(this.output) == 0
 }
 
+// 238
 // Product of Array Except Self
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -459,6 +540,7 @@ func productExceptSelf(nums []int) []int {
   return result
 }
 
+// 349
 // Intersection of Two Arrays
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -478,6 +560,7 @@ func intersection(nums1 []int, nums2 []int) []int {
   return result
 }
 
+// 409
 // Longest Palindrome
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -501,7 +584,10 @@ func longestPalindrome(s string) int {
   return result
 }
 
+// 409-1
 // Longest Palindrome
+//
+//lint:ignore U1000 Function is intentionally left unused
 func longestPalindrome_1(s string) int {
   charMap := make(map[rune]int)
   odd := 0
@@ -523,6 +609,7 @@ func longestPalindrome_1(s string) int {
   return len(s)
 }
 
+// 460
 // LFU Cache
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -636,6 +723,7 @@ func (this *LFUCache) evict() {
   delete(this.keyMap, next.key)
 }
 
+// 844
 // Backspace String Compare
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -673,6 +761,7 @@ func findValidCharIndex(str string, end int) int {
   return end
 }
 
+// 912
 // Sort an Array
 //
 //lint:ignore U1000 Function is intentionally left unused
@@ -755,13 +844,13 @@ func mergeSortSample(nums []int, low int, high int) {
 //lint:ignore U1000 Function is intentionally left unused
 func quickSort(nums []int, low int, high int) {
   if low < high {
-    pivot := partition(nums, low, high)
+    pivot := partition_1(nums, low, high)
     quickSort(nums, low, pivot-1)
     quickSort(nums, pivot+1, high)
   }
 }
 
-func partition(nums []int, low int, high int) int {
+func partition_1(nums []int, low int, high int) int {
   start := low - 1
   pivot := nums[high]
   for i := low; i < high; i++ {
