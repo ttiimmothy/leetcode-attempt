@@ -727,7 +727,7 @@ public int evalRPN(String[] tokens) {
       stack.push(Integer.parseInt(i));
     }
   }
-  return stack.pop();
+  return stack.get(0);
 }
 
 // 155

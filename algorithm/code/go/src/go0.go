@@ -3,6 +3,7 @@ package src
 import (
   "sort"
   "math"
+  "strconv"
 )
 
 type ListNode struct {
@@ -414,6 +415,38 @@ func (this *LRUCache) Insert(node *Node) {
   prev, next := this.right.prev, this.right
   prev.next, next.prev = node, node
   node.prev, node.next = prev, next
+}
+
+// 150
+// Evaluate Reverse Polish Notation
+//
+//lint:ignore U1000 Function is intentionally left unused
+func evalRPN(tokens []string) int {
+  stack := []int{}
+  for _,a := range tokens {
+    switch a {
+    case "+":
+      a, b := stack[len(stack)-1], stack[len(stack)-2]
+      stack = stack[:len(stack)-2]
+      stack = append(stack, a+b)
+    case "-":
+      a, b := stack[len(stack)-1], stack[len(stack)-2]
+      stack = stack[:len(stack)-2]
+      stack = append(stack, b-a)
+    case "*":
+      a, b := stack[len(stack)-1], stack[len(stack)-2]
+      stack = stack[:len(stack)-2]
+      stack = append(stack, a*b)
+    case "/":
+      a, b := stack[len(stack)-1], stack[len(stack)-2]
+      stack = stack[:len(stack)-2]
+      stack = append(stack, b/a)
+    default:
+      num, _ := strconv.Atoi(a)
+      stack = append(stack, num)
+    }
+  }
+  return stack[0]
 }
 
 // 155

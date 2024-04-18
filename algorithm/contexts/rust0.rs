@@ -377,7 +377,7 @@ pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
 }
 
 // 146
-// LFU Cache
+// LRU Cache
 use std::collections::HashMap;
 struct LRUCache{
   capacity: usize,
@@ -495,6 +495,44 @@ impl LRUCache {
   }
 }
 
+// 150
+// Evaluate Reverse Polish Notation
+pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+  let mut stack = Vec::new();
+  for token in tokens {
+    match token.as_str() {
+      "+" => {
+        let b = stack.pop().unwrap();
+        let a = stack.pop().unwrap();
+        stack.push(a+b);
+      },
+      "-" => {
+        let b = stack.pop().unwrap();
+        let a = stack.pop().unwrap();
+        stack.push(a-b);
+      },
+      "*" => {
+        let b = stack.pop().unwrap();
+        let a = stack.pop().unwrap();
+        stack.push(a*b);
+      },
+      "/" => {
+        let b = stack.pop().unwrap();
+        let a = stack.pop().unwrap();
+        stack.push(a/b);
+      },
+      _ => {
+        let n = token.parse();
+        match n {
+          Ok(num) => stack.push(num),
+          Err(e) => {}
+        }
+      }
+    }
+  }
+  stack[0]
+}
+
 // 155
 // Min Stack
 struct MinStack {
@@ -568,6 +606,7 @@ impl MyStack {
   }
 }
 
+// 225-1
 // Implement Stack using Queues
 struct MyStack {
   queue: Vec<i32>
@@ -604,6 +643,7 @@ impl MyStack {
   }
 }
 
+// 232
 // Implement Queue using Stacks
 struct MyQueue {
   input: Vec<i32>,
@@ -643,6 +683,7 @@ impl MyQueue {
   }
 }
 
+// 238
 // Product of Array Except Self
 pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
   let mut prefix = 1;
@@ -659,6 +700,7 @@ pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
   result
 }
 
+// 349
 // Intersection of Two Arrays
 pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
   use std::collections::HashSet;
@@ -676,6 +718,7 @@ pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
   result
 }
 
+// 409
 // Longest Palindrome
 pub fn longest_palindrome(s: String) -> i32 {
   let mut array = [0;128];
@@ -697,6 +740,7 @@ pub fn longest_palindrome(s: String) -> i32 {
   result
 }
 
+// 460
 // LFU Cache
 use std::collections::BinaryHeap;
 use std::cmp::Reverse;
@@ -757,6 +801,7 @@ impl LFUCache {
   }
 }
 
+// 844
 // Backspace String Compare
 pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
   let mut backspace_count = 0;
@@ -796,6 +841,7 @@ pub fn backspace_compare(s: String, t: String) -> bool {
   return true;
 }
 
+// 844-1
 // Backspace String Compare
 pub fn get_next_valid_character(str: String, mut end: usize) -> usize {
   let mut backspace_count = 0;
@@ -834,6 +880,7 @@ pub fn backspace_compare(s: String, t: String) -> bool {
   return true;
 }
 
+// 912
 // Sort an Array
 pub fn sort_array(nums: Vec<i32>) -> Vec<i32> {
   let n = nums.len();
