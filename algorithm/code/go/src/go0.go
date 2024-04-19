@@ -299,6 +299,37 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
   return result.Next
 }
 
+// 110
+// Balanced Binary Tree
+//
+//lint:ignore U1000 Function is intentionally left unused
+type TreeNode struct {
+  Val int
+  Left *TreeNode
+  Right *TreeNode
+}
+func isBalanced(root *TreeNode) bool {
+  result,_ := dfs(root)
+  return result
+}
+
+func dfs(node *TreeNode) (bool,int) {
+  if node == nil {
+    return true,0
+  }
+  left,depthL := dfs(node.Left)
+  right,depthR := dfs(node.Right)
+  difference := depthL-depthR
+  if difference < 0 {
+    difference = -difference
+  }
+  height := max(depthL,depthR)+1
+  if !left || !right || difference > 1 {
+    return false,height
+  }
+  return true,height
+}
+
 // 131
 // Palindrome Partitioning
 //

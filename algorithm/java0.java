@@ -354,6 +354,22 @@ public void backtrack(int[] nums, List<List<Integer>> result, List<Integer> temp
   }
 }
 
+// 49
+// Group Anagrams
+public List<List<String>> groupAnagrams(String[] strs) {
+  Map<String, List<String>> map = new HashMap<>();
+  for (String str:strs) {
+    char[] charArray = str.toCharArray();
+    Arrays.sort(charArray);
+    String sortedWords = new String(charArray);
+    if (!map.containsKey(sortedWords)) {
+      map.put(sortedWords, new ArrayList<>());
+    }
+    map.get(sortedWords).add(str);
+  }
+  return new ArrayList<>(map.values());
+}
+
 // 56
 // Merge Intervals
 public int[][] merge(int[][] intervals) {
@@ -916,6 +932,20 @@ class MyStack {
   }
 }
 
+// 226
+// Invert Binary Tree
+public TreeNode invertTree(TreeNode root) {
+  if (root == null) {
+    return null;
+  }
+  TreeNode temp = root.left;
+  root.left = root.right;
+  root.right = temp;
+  invertTree(root.left);
+  invertTree(root.right);
+  return root;
+}
+
 // 232
 // Implement Queue using Stacks
 class MyQueue {
@@ -1059,6 +1089,83 @@ public int longestPalindrome(String s) {
     }
   }
   return longest;
+}
+
+// 438
+// Find All Anagrams in a String
+public List<Integer> findAnagrams(String s, String p) {
+  int left = 0;
+  int[] sArray = new int[26], pArray = new int[26];
+  List<Integer> result = new ArrayList<>();
+  for (char a:p.toCharArray()) {
+    pArray[a - 'a']++;
+  }
+  for (int r = 0; r < s.length(); r++) {
+    sArray[s.charAt(r) - 'a']++;
+    if (r >= p.length() - 1) {
+      boolean isAnagram = true;
+      for (int i = 0; i < sArray.length; i++) {
+        if (pArray[i] != sArray[i]) {
+          isAnagram = false;
+        }
+      }
+      if (isAnagram) {
+        result.add(left);
+      }
+      sArray[s.charAt(left) - 'a']--;
+      left++;
+    }
+  }
+  return result;
+}
+
+// 438-1
+// Find All Anagrams in a String
+public List<Integer> findAnagrams(String s, String p) {
+  int left = 0;
+  int[] sArray = new int[26], pArray = new int[26];
+  List<Integer> result = new ArrayList<>();
+  for (char a:p.toCharArray()) {
+    pArray[a - 'a']++;
+  }
+  for (int r = 0; r < s.length(); r++) {
+    sArray[s.charAt(r) - 'a']++;
+    if (r >= p.length() - 1) {
+      if (Arrays.equals(pArray,sArray)) {
+        result.add(left);
+      }
+      sArray[s.charAt(left) - 'a']--;
+      left++;
+    }
+  }
+  return result;
+}
+
+// 438-2
+// Find All Anagrams in a String
+public List<Integer> findAnagrams(String s, String p) {
+  int left = 0;
+  Map<Character, Integer> sMap = new HashMap<>(), pMap = new HashMap<>();
+  List<Integer> result = new ArrayList<>();
+  for (char a:p.toCharArray()) {
+    pMap.put(a, pMap.getOrDefault(a, 0) + 1);
+  }
+  for (int r = 0; r < s.length(); r++) {
+    sMap.put(s.charAt(r), sMap.getOrDefault(s.charAt(r), 0) + 1);
+    if (r >= p.length() - 1) {
+      if (sMap.equals(pMap)) {
+        result.add(left);
+      }
+      if (sMap.containsKey(s.charAt(left))) {
+        sMap.put(s.charAt(left), sMap.get(s.charAt(left)) - 1);
+        if (sMap.get(s.charAt(left)) == 0) {
+          sMap.remove(s.charAt(left));
+        }
+      }
+      left++;
+    }
+  }
+  return result;
 }
 
 // 460
