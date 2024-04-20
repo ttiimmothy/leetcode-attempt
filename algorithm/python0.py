@@ -1,5 +1,5 @@
 from typing import List
-from collections import defaultdict, OrderedDict
+from collections import deque, defaultdict, OrderedDict
 
 # 11
 # Container With Most Water
@@ -70,6 +70,28 @@ def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
     return possibleOutcome
   else:
     return -1
+
+# 200
+# Number of Islands
+def numIslands(grid: List[List[str]]) -> int:
+  q = deque()
+  count = 0
+  row, col = len(grid), len(grid[0])
+  def coordinates(r,c):
+    return [(r-1,c),(r+1,c),(r,c-1),(r,c+1)]
+  for i in range(len(grid)):
+    for j in range(len(grid[i])):
+      if grid[i][j] == "1":
+        grid[i][j] = "#"
+        q.append((i, j))
+        count += 1
+        while q:
+          x, y = q.popleft()
+          for r,c in coordinates(x,y):
+            if 0 <= r < row and 0 <= c < col and grid[r][c] == "1":
+              grid[r][c] = "#"
+              q.append((r, c))
+  return count
 
 # 460
 # LFU Cache

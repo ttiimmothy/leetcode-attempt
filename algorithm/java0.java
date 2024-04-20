@@ -527,6 +527,53 @@ public ListNode reverseBetween(ListNode head, int left, int right) {
   return result.next;
 }
 
+// 102
+// Binary Tree Level Order Traversal
+public List<List<Integer>> levelOrder(TreeNode root) {
+  List<List<Integer>> result = new ArrayList<>();
+  Queue<TreeNode> queue = new LinkedList<>();
+  if (root == null) {
+    return result;
+  }
+  queue.add(root);
+  while (!queue.isEmpty()) {
+    int size = queue.size();
+    List<Integer> temp = new ArrayList<>();
+    for (int i = 0; i < size; i++) {
+      TreeNode node = queue.remove();
+      temp.add(node.val);
+      if (node.left != null) {
+        queue.add(node.left);
+      }
+      if (node.right != null) {
+        queue.add(node.right);
+      }
+    }
+    result.add(temp);
+  }
+  return result;
+}
+
+// 102-1
+// Binary Tree Level Order Traversal
+public List<List<Integer>> levelOrder(TreeNode root) {
+  List<List<Integer>> result = new ArrayList<>();
+  dfs(root, result, 0);
+  return result;
+}
+
+public void dfs(TreeNode node, List<List<Integer>> result, int level) {
+  if (node == null) {
+    return;
+  }
+  if (result.size() == level) {
+    result.add(new ArrayList<>());
+  }
+  result.get(level).add(node.val);
+  dfs(node.left, result, level + 1);
+  dfs(node.right, result, level + 1);
+}
+
 // 104
 // Maximum Depth of Bianry Tree
 public int maxDepth(TreeNode root) {
@@ -878,6 +925,32 @@ public int majorityElement(int[] nums) {
     }
   }
   return 0;
+}
+
+// 200
+// Number of Islands
+public int numIslands(char[][] grid) {
+  int result = 0;
+  for(int i = 0; i < grid.length; i++) {
+    for (int j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] == '1' && dfs(grid, i, j)) {
+        result++;
+      }
+    }
+  }
+  return result;
+}
+
+public boolean dfs(char[][] grid, int i, int j) {
+  if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length || grid[i][j] != '1') {
+    return false;
+  }
+  grid[i][j] = '#';
+  dfs(grid, i - 1, j);
+  dfs(grid, i + 1, j);
+  dfs(grid, i, j - 1);
+  dfs(grid, i, j + 1);
+  return true;
 }
 
 // 206
@@ -1287,6 +1360,26 @@ public int dfs(TreeNode node) {
   int right = dfs(node.right);
   result = Math.max(result, left + right);
   return Math.max(left, right) + 1;
+}
+
+// 543-1
+// Diameter of Binary Tree
+public int diameterOfBinaryTree(TreeNode root) {
+  int[] result = dfs(root);
+  return result[0];
+}
+
+public int[] dfs(TreeNode node) {
+  if (node == null) {
+    return new int[]{0,0};
+  }
+  int[] left = dfs(node.left);
+  int[] right = dfs(node.right);
+  int[] array = new int[2];
+  int maxCurrent = Math.max(left[0], right[0]);
+  array[0] = Math.max(left[1] + right[1], maxCurrent);
+  array[1] = Math.max(left[1], right[1]) + 1;
+  return array;
 }
 
 // 680

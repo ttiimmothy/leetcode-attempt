@@ -514,6 +514,34 @@ func (this *MinStack) GetMin() int {
   return this.minStack[len(this.minStack) - 1]
 }
 
+// 200
+// Number of Islands
+//
+//lint:ignore U1000 Function is intentionally left unused
+func numIslands(grid [][]byte) int {
+  result := 0
+  for i := 0; i < len(grid); i++ {
+    for j := 0; j < len(grid[0]); j++ {
+      if grid[i][j] == '1' {
+        dfs_1(grid, i, j)
+        result++
+      }
+    }
+  }
+  return result
+}
+
+func dfs_1(grid [][]byte, i int, j int) {
+  if i < 0 || i >= len(grid) || j < 0 || j >= len(grid[0]) || grid[i][j] != '1' {
+    return
+  }
+  grid[i][j] = '#'
+  dfs_1(grid, i-1, j)
+  dfs_1(grid, i+1, j)
+  dfs_1(grid, i, j-1)
+  dfs_1(grid, i, j+1)
+}
+
 // 225
 // Implement Stack using Queues
 //
