@@ -527,6 +527,60 @@ public ListNode reverseBetween(ListNode head, int left, int right) {
   return result.next;
 }
 
+// 104
+// Maximum Depth of Bianry Tree
+public int maxDepth(TreeNode root) {
+  if (root == null) {
+    return 0;
+  }
+  int left = maxDepth(root.left);
+  int right = maxDepth(root.right);
+  return Math.max(left, right) + 1;
+}
+
+// 104-1
+// Maximum Depth of Bianry Tree
+public int maxDepth(TreeNode root) {
+  if (root == null) {
+    return 0;
+  }
+  Queue<TreeNode> queue = new LinkedList<>();
+  queue.add(root);
+  int result = 0;
+  while (!queue.isEmpty()) {
+    int size = queue.size();
+    for (int i = 0; i < size; i++) {
+      TreeNode node = queue.remove();
+      if (node.left != null) {
+        queue.add(node.left);
+      }
+      if (node.right != null) {
+        queue.add(node.right);
+      }
+    }
+    result++;
+  }
+  return result;
+}
+
+// 110
+// Balanced Binary Tree
+public boolean isBalanced(TreeNode root) {
+  return dfs(root) != -1;
+}
+
+public int dfs(TreeNode node) {
+  if (node == null) {
+    return 0;
+  }
+  int left = dfs(node.left);
+  int right = dfs(node.right);
+  if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
+    return -1;
+  }
+  return Math.max(left, right) + 1;
+}
+
 // 121
 // Best Time to Buy and Sell Stock
 public int maxProfit(int[] prices) {
@@ -1215,6 +1269,24 @@ class LFUCache {
     freqToLRUKeys.putIfAbsent(freq, new LinkedHashSet<>());
     freqToLRUKeys.get(freq).add(key);
   }
+}
+
+// 543
+// Diameter of Binary Tree
+int result = 0;
+public int diameterOfBinaryTree(TreeNode root) {
+  dfs(root);
+  return result;
+}
+
+public int dfs(TreeNode node) {
+  if (node == null) {
+    return 0;
+  }
+  int left = dfs(node.left);
+  int right = dfs(node.right);
+  result = Math.max(result, left + right);
+  return Math.max(left, right) + 1;
 }
 
 // 680
