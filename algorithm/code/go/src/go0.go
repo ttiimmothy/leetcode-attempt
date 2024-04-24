@@ -613,6 +613,26 @@ func (this *MyQueue) Empty() bool {
   return len(this.input) == 0 && len(this.output) == 0
 }
 
+// 236
+// Lowest Common Ancestor of a Binary Tree
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+  if root == nil {
+    return nil
+  }
+  if root == p || root == q {
+    return root
+  }
+  left := lowestCommonAncestor(root.Left, p, q)
+  right := lowestCommonAncestor(root.Right, p, q)
+  if left == nil {
+    return right
+  } else if right == nil {
+    return left
+  } else {
+    return root
+  }
+}
+
 // 238
 // Product of Array Except Self
 //

@@ -93,6 +93,19 @@ def numIslands(grid: List[List[str]]) -> int:
               q.append((r, c))
   return count
 
+# 236
+# Lowest Common Ancestor of a Binary Tree
+def lowestCommonAncestor(root, p, q):
+  if not root:
+    return None
+  if root == p or root == q:
+    return root
+  l = lowestCommonAncestor(root.left, p, q)
+  r = lowestCommonAncestor(root.right, p, q)
+  if l and r:
+    return root
+  return l or r
+
 # 460
 # LFU Cache
 class LFUCache:
