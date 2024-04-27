@@ -1117,15 +1117,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 }
 
 // 236
-// 
-
-public class TreeNode {
-  int val;
-  TreeNode left;
-  TreeNode right;
-  TreeNode(int x) { val = x; }
-}
-
+// Lowest Common Ancestor of a Binary Tree
 public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
   if (root == null) {
     return null;

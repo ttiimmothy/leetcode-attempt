@@ -323,6 +323,13 @@ pub fn reverse_between(head: Option<Box<ListNode>>, left: i32, right: i32) -> Op
   result.unwrap().next
 }
 
+// 125
+// Valid Palindrome
+pub fn is_palindrome(s: String) -> bool {
+  let iter = s.chars().filter(|c| c.is_ascii_alphanumeric()).map(|c| c.to_ascii_lowercase());
+  iter.clone().eq(iter.rev())
+}
+
 // 131
 // Palindrome Partitioning
 pub fn partition(s: String) -> Vec<Vec<String>> {
