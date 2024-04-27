@@ -4,6 +4,8 @@ import (
   "sort"
   "math"
   "strconv"
+  "unicode"
+  "strings"
 )
 
 type ListNode struct {
@@ -330,6 +332,50 @@ func dfs(node *TreeNode) (bool,int) {
   return true,height
 }
 
+// 125
+// Valid Palindrome
+//
+//lint:ignore U1000 Function is intentionally left unused
+func isPalindrome(s string) bool {
+  array := []rune{}
+  for _,i := range s {
+    if unicode.IsLetter(i) || unicode.IsNumber(i) {
+      array = append(array, unicode.ToLower(i))
+    }
+  }
+  left, right := 0, len(array)-1
+  for left < right {
+    if array[left] != array[right] {
+      return false
+    }
+    left++
+    right--
+  }
+  return true
+}
+
+
+// 125-1
+// Valid Palindrome
+//
+//lint:ignore U1000 Function is intentionally left unused
+func isPalindrome_1(s string) bool {
+  left, right := 0, len(s)-1
+  for left < right {
+    if !unicode.IsLetter(rune(s[left])) && !unicode.IsNumber(rune(s[left])) {
+      left++
+    } else if !unicode.IsLetter(rune(s[right])) && !unicode.IsNumber(rune(s[right])) {
+      right--
+    } else if strings.ToLower(string(s[left])) != strings.ToLower(string(s[right])) {
+      return false
+    } else {
+      left++
+      right--
+    }
+  }
+  return true
+}
+
 // 131
 // Palindrome Partitioning
 //
@@ -348,7 +394,7 @@ func backtrack_3(s string, result *[][]string, temp []string, index int) {
     return
   }
   for i := index; i < len(s); i++ {
-    if isPalindrome(s, index, i) {
+    if isPalindrome_2(s, index, i) {
       temp = append(temp, s[index:i+1])
       backtrack_3(s, result, temp, i+1)
       temp = temp[:len(temp)-1]
@@ -356,7 +402,7 @@ func backtrack_3(s string, result *[][]string, temp []string, index int) {
   }
 }
 
-func isPalindrome(s string, start int, end int) bool {
+func isPalindrome_2(s string, start int, end int) bool {
   for start < end {
     if s[start] != s[end] {
       return false
@@ -542,6 +588,22 @@ func dfs_1(grid [][]byte, i int, j int) {
   dfs_1(grid, i, j+1)
 }
 
+// 206
+// Reversed Linked List
+//
+//lint:ignore U1000 Function is intentionally left unused
+func reverseList(head *ListNode) *ListNode {
+  var prev *ListNode
+  current := head
+  for current != nil {
+    temp := current.Next
+    current.Next = prev
+    prev = current
+    current = temp
+  }
+  return prev
+}
+
 // 225
 // Implement Stack using Queues
 //
@@ -650,6 +712,49 @@ func productExceptSelf(nums []int) []int {
     postfix *= nums[i]
   }
   return result
+}
+
+// 242
+// Valid Anagram
+//
+//lint:ignore U1000 Function is intentionally left unused
+func isAnagram(s string, t string) bool {
+  array := make([]int, 26)
+  for _,i := range s {
+    array[i-'a']++
+  }
+  for _,i := range t {
+    array[i-'a']--
+  }
+  for i := 0; i < len(array); i++ {
+    if array[i] != 0 {
+      return false
+    }
+  }
+  return true
+}
+
+// 242-1
+// Valid Anagram
+//
+//lint:ignore U1000 Function is intentionally left unused
+func isAnagram_1(s string, t string) bool {
+  charMap := make(map[rune]int)
+  for _,i := range s {
+    charMap[i]++
+  }
+  for _,i := range t {
+    if charMap[i] == 0 {
+      return false
+    }
+    charMap[i]--
+  }
+  for _,i := range charMap {
+    if i > 0 {
+      return false
+    }
+  }
+  return true
 }
 
 // 349
