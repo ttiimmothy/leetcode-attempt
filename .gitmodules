@@ -4,6 +4,3 @@
 [submodule "bin/zshHistory"]
 	path = bin/zshHistory
 	url = git@github.com:ttiimmothy/zsh-history.git
-[submodule "algorithm/coverage/gens"]
-	path = algorithm/coverage/gens
-	url = git@github.com:ttiimmothy/codeforces-code.git
