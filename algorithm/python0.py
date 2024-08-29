@@ -1,5 +1,25 @@
-from typing import List
+from typing import List, Optional
 from collections import deque, defaultdict, OrderedDict
+
+class TreeNode:
+  def __init__(self, val=0, left=None, right=None):
+    self.val = val
+    self.left = left
+    self.right = right
+
+# 3
+# Longest Substring Without Repeating Characters
+def lengthOfLongestSubstring(s: str) -> int:
+  longest = 0
+  l = 0
+  charSet = set()
+  for r in range(len(s)):
+    while s[r] in charSet:
+      charSet.remove(s[l])
+      l += 1
+    charSet.add(s[r])
+    longest = max(longest, r - l + 1)
+  return longest
 
 # 11
 # Container With Most Water
@@ -71,6 +91,43 @@ def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
   else:
     return -1
 
+# 102
+# Binary Tree Level Order Traversal
+def levelOrder(root: Optional[TreeNode]):
+  if root == None:
+    return None
+  result = []
+  queue = [root]
+  while len(queue) > 0:
+    size = len(queue)
+    temp = []
+    # size will not change after the queue.append
+    for _ in range(size):
+      node = queue.pop(0)
+      temp.append(node.val)
+      if node.left:
+        queue.append(node.left)
+      if node.right:
+        queue.append(node.right)
+    result.append(temp)
+  return result
+
+# 102
+# Binary Tree Level Order Traversal
+def levelOrder_1(root: Optional[TreeNode]):
+  result = []
+  def dfs(node, level):
+    if not node:
+      return None
+    nonlocal result
+    if level == len(result):
+      result.append([])
+    result[level].append(node.val)
+    dfs(node.left, level + 1)
+    dfs(node.right, level + 1)
+  dfs(root, 0)
+  return result
+
 # 200
 # Number of Islands
 def numIslands(grid: List[List[str]]) -> int:
@@ -92,6 +149,18 @@ def numIslands(grid: List[List[str]]) -> int:
               grid[r][c] = "#"
               q.append((r, c))
   return count
+
+# 226
+# Invert Binary Tree
+def invertTree(root: Optional[TreeNode]) -> Optional[TreeNode]:
+  # base case and edge case
+  # will keep going when it breaks one recursive function after it touches the leaf node (line 14, 15)
+  if root == None:
+    return None
+  root.left, root.right = root.right, root.left
+  invertTree(root.right)
+  invertTree(root.left)
+  return root
 
 # 236
 # Lowest Common Ancestor of a Binary Tree
@@ -139,6 +208,22 @@ class LFUCache:
       self.min_freq = 1
       self.items[key] = 1
       self.freqs[1][key] = value
+
+# 543
+# Diameter of Binary Tree
+def diameterOfBinaryTree(root: Optional[TreeNode]) -> int:
+  diameter = 0
+  # return height
+  def dfs(root):
+    if not root:
+      return 0
+    left = dfs(root.left)
+    right = dfs(root.right)
+    nonlocal diameter
+    diameter = max(diameter, left + right)
+    return max(left, right) + 1
+  dfs(root)
+  return diameter
 
 # 844
 # Backspace String Compare, not the optimized solution

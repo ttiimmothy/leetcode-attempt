@@ -43,13 +43,13 @@ func myAtoi(s string) int {
     i++
   }
   for i < len(s) && s[i] >= '0' && s[i] <='9' {
-    if result > math.MaxInt32/10 || (result == math.MaxInt32/10 && int(s[i])-'0' > math.MaxInt32%10) {
+    if result > math.MaxInt32 / 10 || (result == math.MaxInt32 / 10 && int(s[i] - '0') > math.MaxInt32 % 10) {
       if sign == -1 {
         return math.MinInt32
       }
       return math.MaxInt32
     }
-    result = result*10+int(s[i])-'0'
+    result = result * 10 + int(s[i] - '0')
     i++
   }
   return result*sign
@@ -826,6 +826,30 @@ func longestPalindrome_1(s string) int {
   return len(s)
 }
 
+// 438
+// Find All Anagrams in a String
+//
+//lint:ignore U1000 Function is intentionally left unused
+func findAnagrams(s string, p string) []int {
+  sCount, pCount := [26]int{}, [26]int{}
+  result := []int{}
+  l := 0
+  for _, ch := range p {
+    pCount[ch - 'a']++
+  }
+  for r := 0; r < len(s); r++ {
+    sCount[s[r] - 'a']++
+    if r >= len(p) - 1 {
+      if sCount == pCount {
+        result = append(result, l)
+      }
+      sCount[s[l] - 'a']--
+      l++
+    }
+  }
+  return result
+}
+
 // 460
 // LFU Cache
 //
@@ -1126,5 +1150,36 @@ func heapify(nums []int, max int, length int) {
   if largest != max {
     nums[largest], nums[max] = nums[max], nums[largest]
     heapify(nums, largest, length)
+  }
+}
+
+
+// Heap sort
+//
+//lint:ignore U1000 Function is intentionally left unused
+func heapSort_1(nums []int) {
+  n := len(nums)
+  for i := n / 2 - 1; i >= 0; i-- {
+    heapify_1(nums, i, n)
+  }
+  for i := n - 1; i > 0; i-- {
+    nums[0], nums[i] = nums[i], nums[0]
+    heapify_1(nums, 0, i)
+  }
+}
+
+func heapify_1(nums []int, root int, length int) {
+  largest := root
+  left := 2 * root + 1
+  right := 2 * root + 2
+  if left < length && nums[left] > nums[largest] {
+    largest = left
+  }
+  if right < length && nums[right] > nums[largest] {
+    largest = right
+  }
+  if largest != root {
+    nums[largest], nums[root] = nums[root], nums[largest]
+    heapify_1(nums, largest, length)
   }
 }

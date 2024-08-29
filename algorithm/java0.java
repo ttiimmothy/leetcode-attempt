@@ -1318,11 +1318,9 @@ public List<Integer> findAnagrams(String s, String p) {
       if (sMap.equals(pMap)) {
         result.add(left);
       }
-      if (sMap.containsKey(s.charAt(left))) {
-        sMap.put(s.charAt(left), sMap.get(s.charAt(left)) - 1);
-        if (sMap.get(s.charAt(left)) == 0) {
-          sMap.remove(s.charAt(left));
-        }
+      sMap.put(s.charAt(left), sMap.get(s.charAt(left)) - 1);
+      if (sMap.get(s.charAt(left)) == 0) {
+        sMap.remove(s.charAt(left));
       }
       left++;
     }
@@ -1598,14 +1596,14 @@ public void heapSort(int[] nums){
 public int maxFrequencyElements(int[] nums) {
   int maxFrequency = 0, result = 0;
   Map<Integer,Integer> map = new HashMap();
-  for(int i = 0; i < nums.length; i++){
+  for (int i = 0; i < nums.length; i++) {
     map.put(nums[i],map.getOrDefault(nums[i], 0) + 1);
   }
-  for(int value:map.values()){
+  for (int value:map.values()) {
     maxFrequency = Math.max(maxFrequency,value);
   }
-  for(int value:map.values()){
-    if(value == maxFrequency){
+  for (int value:map.values()) {
+    if (value == maxFrequency) {
       result += maxFrequency;
     }
   }
@@ -1614,7 +1612,7 @@ public int maxFrequencyElements(int[] nums) {
 
 // Quick sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
 public void quickSort(int[] nums, int low, int high) {
-  if(low < high){
+  if (low < high) {
     int pivot = partition(nums, low, high);
     quickSort(nums, low, pivot - 1);
     quickSort(nums, pivot + 1, high);
@@ -1624,8 +1622,8 @@ public void quickSort(int[] nums, int low, int high) {
 public int partition(int[] nums, int low, int high) {
   int start = low - 1;
   int pivot = nums[high];
-  for(int i = low; i < high; i++){
-    if(nums[i] < pivot){
+  for (int i = low; i < high; i++) {
+    if (nums[i] < pivot) {
       start++;
       int temp = nums[i];
       nums[i] = nums[start];
@@ -1636,6 +1634,32 @@ public int partition(int[] nums, int low, int high) {
   nums[start + 1] = nums[high];
   nums[high] = temp;
   return start + 1;
+}
+
+// Quick sort
+public void quickSort (int[] num, int start, int end) {
+  if (start < end) {
+    int pivot = partition(num, start, end);
+    quickSort(num, start, pivot - 1);
+    quickSort(num, pivot + 1, end);
+  }
+}
+
+public int partition (int[] num, int start, int end) {
+  int pivot = num[end];
+  int j = start - 1;
+  for (int i = start; i < end; i++) {
+    if (num[i] < pivot) {
+      j++;
+      int temp = num[i];
+      num[i] = num[j];
+      num[j] = temp;
+    }
+  }
+  int temp = num[end];
+  num[end] = num[j + 1];
+  num[j + 1] = temp;
+  return j + 1;
 }
 
 // Merge sort, time complexity O(nlogn), memory complexity O(n)
@@ -1659,7 +1683,7 @@ public void mergeSort(int[] nums, int low, int high) {
       if (leftArr[i] < rightArr[j]) {
         nums[k] = leftArr[i];
         i++;
-      }else{
+      } else {
         nums[k] = rightArr[j];
         j++;
       }
@@ -1672,6 +1696,46 @@ public void mergeSort(int[] nums, int low, int high) {
     }
     while (j < n2) {
       nums[k] = rightArr[j];
+      j++;
+      k++;
+    }
+  }
+}
+
+// Merge sort
+public void mergeSort(int[] nums, int start, int end) {
+  if (start <= end) {
+    int mid = (start + end) / 2;
+    mergeSort(nums, start, mid - 1);
+    mergeSort(nums, mid, end);
+    int n1 = mid - start;
+    int n2 = end - mid + 1;
+    int[] left = new int[n1];
+    int[] right = new int[n2];
+    for (int i = 0; i < n1; i++) {
+      left[i] = nums[start + i];
+    }
+    for (int i = 0; i < n2; i++) {
+      right[i] = nums[mid + i];
+    }
+    int i = 0, j = 0, k = start;
+    while (i < n1 && j < n2) {
+      if (left[n1] < right[n2]) {
+        nums[k] = left[i];
+        i++;
+      } else {
+        nums[k] = right[j];
+        j++;
+      }
+      k++;
+    }
+    while (i < n1) {
+      nums[k] = left[i];
+      i++;
+      k++;
+    }
+    while (j < n2) {
+      nums[k] = right[j];
       j++;
       k++;
     }
@@ -1703,7 +1767,7 @@ public void heapify(int[] nums, int maxNode, int length) {
   int largest = maxNode;
   int left = 2 * maxNode + 1;
   int right = 2 * maxNode + 2;
-  if (left  < length && nums[left] > nums[largest]) {
+  if (left < length && nums[left] > nums[largest]) {
     largest = left;
   }
   if (right < length && nums[right] > nums[largest]) {
@@ -1730,6 +1794,40 @@ public void heapSort(int[] nums) {
     nums[0] = nums[i];
     nums[i] = temp;
     heapify(nums, 0, i);
+  }
+}
+
+// Heap sort
+public void sort(int[] nums) {
+  int n = nums.length;
+  for (int i = n / 2 - 1; i >= 0; i--) {
+    heapify(nums, i, n);
+  }
+  // the 0-th index will be sorted, so don't need to include i = 0 case to be i >= 0
+  for (int i = n - 1; i > 0; i--) {
+    // put the largest number to the back one by one and extract it from the nums array
+    int swap = nums[0];
+    nums[0] = nums[i];
+    nums[i] = swap;
+    heapify(nums, 0, i);
+  }
+}
+
+public void heapify(int[] nums, int root, int n) {
+  int largest = root;
+  int left = 2 * root + 1;
+  int right = 2 * root + 2;
+  if (left < n && nums[left] > nums[largest]) {
+    largest = left;
+  }
+  if (right < n && nums[right] > nums[largest]) {
+    largest = right;
+  }
+  if (largest != root) {
+    int swap = nums[largest];
+    nums[largest] = nums[root];
+    nums[root] = swap;
+    heapify(nums, largest, n);
   }
 }
 
