@@ -610,6 +610,48 @@ public int maxDepth(TreeNode root) {
   return result;
 }
 
+// 105
+// Construct Binary Tree from Preorder and Inorder Traversal
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+  // if (preorder == null || inorder == null) // wrong condition
+  if (preorder == null || inorder == null || preorder.length == 0 || inorder.length == 0) {
+    return null;
+  }
+  TreeNode root = new TreeNode(preorder[0]);
+  int m = 0;
+  for (int i = 0; i < inorder.length; i++) {
+    if (inorder[i] == preorder[0]) {
+      m = i;
+    }
+  }
+  root.left = buildTree(Arrays.copyOfRange(preorder, 1, m + 1), Arrays.copyOfRange(inorder, 0, m));
+  root.right = buildTree(Arrays.copyOfRange(preorder, m + 1, preorder.length), Arrays.copyOfRange(inorder, m + 1, inorder.length));
+  return root;
+}
+
+// 105-1
+// Construct Binary Tree from Preorder and Inorder Traversal
+public int current = 0;
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+  Map<Integer, Integer> inOrderMap = new HashMap<>();
+  for (int i = 0; i < inorder.length; i++) {
+    inOrderMap.put(inorder[i], i);
+  }
+  return build(0, preorder.length - 1, preorder, inOrderMap);
+}
+
+public TreeNode build(int l, int r, int[] preorder, Map<Integer, Integer> map) {
+  if (l > r) {
+    return null;
+  }
+  int rootVal = preorder[current++];
+  TreeNode root = new TreeNode(rootVal);
+  int m = map.get(rootVal);
+  root.left = build(l, m - 1, preorder, map);
+  root.right = build(m + 1, r, preorder, map);
+  return root;
+}
+
 // 110
 // Balanced Binary Tree
 public boolean isBalanced(TreeNode root) {
@@ -927,6 +969,60 @@ public int majorityElement(int[] nums) {
   return 0;
 }
 
+// 199
+// Binary Tree Right Side View
+public List<Integer> rightSideView(TreeNode root) {
+  if (root == null) {
+    return new ArrayList();
+  }
+  LinkedList<TreeNode> q = new LinkedList<>();
+  List<Integer> result = new ArrayList<>();
+  q.add(root);
+  while (!q.isEmpty()) {
+    int size = q.size();
+    result.add(q.getLast().val);
+    for (int i = 0; i < size; i++) {
+      // remove is getting the first element
+      TreeNode node = q.remove();
+      if (node.left != null) {
+        q.add(node.left);
+      }
+      if (node.right != null) {
+        q.add(node.right);
+      }
+    }
+  }
+  return result;
+}
+
+// 199-1
+// Binary Tree Right Side View
+public List<Integer> rightSideView(TreeNode root) {
+  if (root == null) {
+    return new ArrayList();
+  }
+  Queue<TreeNode> q = new LinkedList<>();
+  List<Integer> result = new ArrayList<>();
+  q.add(root);
+  while (!q.isEmpty()) {
+    int size = q.size();
+    for (int i = 0; i < size; i++) {
+      // remove is getting the first element
+      TreeNode node = q.remove();
+      if (i == size - 1) {
+        result.add(node.val);
+      }
+      if (node.left != null) {
+        q.add(node.left);
+      }
+      if (node.right != null) {
+        q.add(node.right);
+      }
+    }
+  }
+  return result;
+}
+
 // 200
 // Number of Islands
 public int numIslands(char[][] grid) {
@@ -1107,7 +1203,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
   while (root != null) {
     if (p.val > root.val && q.val > root.val) {
       root = root.right;
-    } else if(p.val < root.val && q.val < root.val) {
+    } else if (p.val < root.val && q.val < root.val) {
       root = root.left;
     } else {
       return root;
@@ -1187,6 +1283,40 @@ public boolean isAnagram(String s, String t) {
     }
   }
   return true;
+}
+
+// 278
+// First Bad Version
+public int firstBadVersion(int n) {
+  int l = 1, r = n;
+  while (l < r) {
+    int m = l + (r - l) / 2;
+    if (!isBadVersion(m)) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return r;
+}
+
+// 278-1
+// First Bad Version
+public int firstBadVersion(int n) {
+  int l = 1, r = n;
+  while (l <= r) {
+    int m = l + (r - l) / 2;
+    if (!isBadVersion(m)) {
+      l = m + 1;
+    } else {
+      if (!isBadVersion(m - 1)) {
+        return m;
+      } else {
+        r = m - 1;
+      }
+    }
+  }
+  return 0;
 }
 
 // 349
@@ -1440,6 +1570,50 @@ public boolean validSubPalindrome(String s, int left, int right) {
   return true;
 }
 
+// 704
+// Binary Search
+public int search(int[] nums, int target) {
+  int l = 0, r = nums.length - 1;
+  while (l <= r) {
+    // prevent integer overflow
+    int m = l + (r - l) / 2;
+    if (nums[m] == target) {
+      return m;
+    } else if (nums[m] < target) {
+      l = m + 1;
+    } else {
+      r = m - 1;
+    }
+  }
+  return -1;
+}
+
+// 704-1
+// Binary Search
+public int search(int[] nums, int target) {
+  return helper(nums, target, 0, nums.length - 1);
+}
+
+public int helper(int[] nums, int target, int left, int right) {
+  // not the same as merge sort
+  // because when merge sort in an array with length of 1
+  // it does not need to run the function below
+  // but this function requires to run the function below
+  // like nums = [5], target = 5 the case
+  // prevent integer overflow
+  if (left <= right) {
+    int m = left + (right - left) / 2;
+    if (nums[m] == target) {
+      return m;
+    } else if (nums[m] < target) {
+      return helper(nums, target, m + 1, right);
+    } else {
+      return helper(nums, target, left, m - 1);
+    }
+  }
+  return -1;
+}
+
 // 739
 // Daily Temperatures
 public int[] dailyTemperatures(int[] temperatures) {
@@ -1462,14 +1636,14 @@ public boolean backspaceCompare(String s, String t) {
   int ps = s.length() - 1;
   int pt = t.length() - 1;
   // or condition is to ensure that either one is smaller than 0 will still continue the checking
-  while(ps >= 0 || pt >= 0){
+  while (ps >= 0 || pt >= 0) {
     ps = findValidCharIndex(s, ps);
     pt = findValidCharIndex(t, pt);
     if(ps < 0 && pt < 0){
       return true;
-    }else if(ps < 0 || pt < 0){
+    } else if (ps < 0 || pt < 0) {
       return false;
-    }else if(s.charAt(ps) != t.charAt(pt)){
+    } else if (s.charAt(ps) != t.charAt(pt)) {
       return false;
     }
     ps--;
@@ -1478,19 +1652,37 @@ public boolean backspaceCompare(String s, String t) {
   return true;
 }
 
-public int findValidCharIndex(String str, int end){
+public int findValidCharIndex(String str, int end) {
   int backspaceNum = 0;
-  while(end >= 0){
-    if(str.charAt(end) == '#'){
+  while (end >= 0) {
+    if (str.charAt(end) == '#') {
       backspaceNum++;
-    }else if(backspaceNum > 0){
+    } else if (backspaceNum > 0) {
       backspaceNum--;
-    }else{
+    } else {
       break;
     }
     end--;
   }
   return end;
+}
+
+// 844-1
+// Backspace String Compare
+public boolean backspaceCompare(String s, String t) {
+  return checking(s).equals(checking(t));
+}
+
+public Stack checking(String str) {
+  Stack stack = new Stack<>();
+  for (char ch:str.toCharArray()) {
+    if (ch != '#') {
+      stack.push(ch);
+    } else if (stack.size() > 0) {
+      stack.pop();
+    }
+  }
+  return stack;
 }
 
 // 876

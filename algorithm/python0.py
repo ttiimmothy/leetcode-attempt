@@ -1,6 +1,11 @@
 from typing import List, Optional
 from collections import deque, defaultdict, OrderedDict
 
+class ListNode:
+  def __init__(self, val=0, next=None):
+    self.val = val
+    self.next = next
+
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
     self.val = val
@@ -56,6 +61,22 @@ def threeSum(nums: List[int]) -> List[List[int]]:
         mid += 1
   return result
 
+# 21
+# Merge Two Sorted Lists
+def mergeTwoLists(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+  result = ListNode()
+  current = result
+  while list1 and list2:
+    if list1.val < list2.val:
+      current.next = list1
+      list1 = list1.next
+    else:
+      current.next = list2
+      list2 = list2.next
+    current = current.next
+  current.next = list1 if list1 else list2
+  return result.next
+
 # 39
 # Combination Sum
 def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
@@ -73,6 +94,24 @@ def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
   # subArray initially is an empty array
   dfs(candidates, target, [], result)
   return result
+
+# 92
+# Reversed Linked List II
+def reverseBetween(head, left, right):
+  result = ListNode(0, head)
+  current, leftPrev = head, result
+  for _ in range(left - 1):
+    leftPrev = current
+    current = current.next
+  prev = None
+  for _ in range(right - left + 1):
+    next = current.next
+    current.next = prev
+    prev = current
+    current = next
+  lef_Prev.next.next = current # at right + 1 posiiton
+  leftPrev.next = prev # at right position
+  return result.next
 
 # 134
 # Gas Station
@@ -112,7 +151,7 @@ def levelOrder(root: Optional[TreeNode]):
     result.append(temp)
   return result
 
-# 102
+# 102-1
 # Binary Tree Level Order Traversal
 def levelOrder_1(root: Optional[TreeNode]):
   result = []
@@ -125,6 +164,40 @@ def levelOrder_1(root: Optional[TreeNode]):
     result[level].append(node.val)
     dfs(node.left, level + 1)
     dfs(node.right, level + 1)
+  dfs(root, 0)
+  return result
+
+# 199
+# Binary Tree Right Side View
+def rightSideView(root: Optional[TreeNode]) -> List[int]:
+  if root == None:
+    return []
+  q = [root]
+  result = []
+  while q:
+    size = len(q)
+    result.append(q[len(q) - 1].val)
+    for _ in range(size):
+      node = q.pop(0)
+      if node.left:
+        q.append(node.left)
+      if node.right:
+        q.append(node.right)
+  return result
+
+# 199-1
+# Binary Tree Right Side View
+def rightSideView_1(root: Optional[TreeNode]) -> List[int]:
+  result = []
+  def dfs(root, level):
+    if root == None:
+      return None
+    nonlocal result
+    if level == len(result):
+      result.append(root.val)
+    # need to be right first and need left because we are doing right side view
+    dfs(root.right, level + 1)
+    dfs(root.left, level + 1)
   dfs(root, 0)
   return result
 
@@ -162,18 +235,45 @@ def invertTree(root: Optional[TreeNode]) -> Optional[TreeNode]:
   invertTree(root.left)
   return root
 
+# 235
+# Lowest Common Ancestor of a Binary Search Tree
+def lowestCommonAncestor(root, p, q):
+  while root:
+    if p.val > root.val and q.val > root.val:
+      root = root.right
+    elif p.val < root.val and q.val < root.val:
+      root = root.left
+    else:
+      return root
+
 # 236
 # Lowest Common Ancestor of a Binary Tree
-def lowestCommonAncestor(root, p, q):
+def lowestCommonAncestor_1(root, p, q):
   if not root:
     return None
   if root == p or root == q:
     return root
-  l = lowestCommonAncestor(root.left, p, q)
-  r = lowestCommonAncestor(root.right, p, q)
+  l = lowestCommonAncestor_1(root.left, p, q)
+  r = lowestCommonAncestor_1(root.right, p, q)
   if l and r:
     return root
   return l or r
+
+# 278
+# First Bad Version
+def firstBadVersion(n: int) -> int:
+  l, r = 1, n
+  while l < r:
+    m = l + (r - l) // 2
+    if not isBadVersion(m):
+      l = m + 1
+    else:
+      r = m
+  return l
+
+def isBadVersion(version: int) -> bool:
+  if version > 0: return True
+  return False
 
 # 460
 # LFU Cache
@@ -224,6 +324,22 @@ def diameterOfBinaryTree(root: Optional[TreeNode]) -> int:
     return max(left, right) + 1
   dfs(root)
   return diameter
+
+# 704
+# Binary Search
+def search(nums: List[int], target: int) -> int:
+  l, r = 0, len(nums) - 1
+  while l <= r:
+    # lead to overflow
+    # m = (l + r) // 2
+    m = l + (r - l) // 2
+    if target == nums[m]:
+      return m
+    elif target < nums[m]:
+      r = m - 1
+    else:
+      l = m + 1
+  return -1
 
 # 844
 # Backspace String Compare, not the optimized solution
