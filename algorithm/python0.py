@@ -77,6 +77,26 @@ def mergeTwoLists(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optio
   current.next = list1 if list1 else list2
   return result.next
 
+# 33
+# Search in Rotated Sorted Array
+def search(nums: List[int], target: int) -> int:
+  l, r = 0, len(nums) - 1
+  while l <= r:
+    m = l + (r - l) // 2
+    if nums[m] == target:
+      return m
+    if nums[l] <= nums[m]:
+      if nums[l] <= target < nums[m]:
+        r = m - 1
+      else:
+        l = m + 1
+    else:
+      if nums[m] < target <= nums[r]:
+        l = m + 1
+      else:
+        r = m - 1
+  return -1
+
 # 39
 # Combination Sum
 def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
@@ -325,9 +345,40 @@ def diameterOfBinaryTree(root: Optional[TreeNode]) -> int:
   dfs(root)
   return diameter
 
+# 680
+# Valid Palindrome II
+def validPalindrome(s: str) -> bool:
+  l, r = 0, len(s) - 1
+  while l < r:
+    if s[l] != s[r]:
+      string1 = s[l:r]
+      string2 = s[l + 1:r + 1]
+      return string1 == string1[::-1] or string2 == string2[::-1]
+    l += 1
+    r -= 1
+  return True
+
+# 680-1
+# Valid Palindrome II
+def validPalindrome_1(s: str) -> bool:
+  l, r = 0, len(s) - 1
+  def verify(s, l, r):
+    while l < r:
+      if s[l] != s[r]:
+        return False
+      l += 1
+      r -= 1
+    return True
+  while l < r:
+    if s[l] != s[r]:
+      return verify(s, l + 1, r) or verify(s, l, r - 1)
+    l += 1
+    r -= 1
+  return True
+
 # 704
 # Binary Search
-def search(nums: List[int], target: int) -> int:
+def search_1(nums: List[int], target: int) -> int:
   l, r = 0, len(nums) - 1
   while l <= r:
     # lead to overflow
@@ -340,6 +391,22 @@ def search(nums: List[int], target: int) -> int:
     else:
       l = m + 1
   return -1
+
+# 733
+# Flood Fill
+def floodFill(image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+  if image[sr][sc] == color: return image
+  def dfs(image, sr, sc, color, reference):
+    if sr < 0 or sr > len(image) - 1 or sc < 0 or sc > len(image[0]) - 1:
+      return
+    if image[sr][sc] == reference:
+      image[sr][sc] = color
+      dfs(image, sr - 1, sc, color, reference)
+      dfs(image, sr + 1, sc, color, reference)
+      dfs(image, sr, sc - 1, color, reference)
+      dfs(image, sr, sc + 1, color, reference)
+  dfs(image, sr, sc, color, image[sr][sc])
+  return image
 
 # 844
 # Backspace String Compare, not the optimized solution
@@ -406,6 +473,33 @@ def sortArray(nums: List[int]) -> List[int]:
   heapSort(nums)
   return nums
 
+# 981
+# Time Based Key-Value Store
+class TimeMap:
+  def __init__(self):
+    self.map = {}
+
+  def set(self, key: str, value: str, timestamp: int) -> None:
+    if key not in self.map:
+      self.map[key] = []
+    self.map[key].append([value, timestamp])
+
+  def get(self, key: str, timestamp: int) -> str:
+    result = ""
+    if key in self.map:
+      pair = self.map[key]
+      l, r = 0, len(pair) - 1
+      while l <= r:
+        m = l + (r - l) // 2
+        if pair[m][1] == timestamp:
+          return pair[m][0]
+        if pair[m][1] < timestamp:
+          result = pair[m][0]
+          l = m + 1
+        else:
+          r = m - 1
+    return result
+
 # Quick sort, time complexity O(nlogn), memory complexity O(1), may cause time limit error
 def quick_sort(nums, low, high):
   if low >= high:
@@ -422,6 +516,23 @@ def quick_sort(nums, low, high):
   pivot = partition(nums, low, high)
   quick_sort(nums, low, pivot - 1)
   quick_sort(nums, pivot + 1, high)
+
+# Quick sort
+def quickSort(nums, start, end):
+  if start < end:
+    pivot = partition(nums, start, end)
+    quickSort(nums, start, pivot - 1)
+    quickSort(nums, pivot + 1, end)
+
+def partition(nums, start, end):
+  pivot = nums[end]
+  j = start - 1
+  for i in range(start, end):
+    if nums[i] < pivot:
+      j += 1
+      nums[i], nums[j] = nums[j], nums[i]
+  nums[j + 1], nums[end] = nums[end], nums[j + 1]
+  return j + 1
 
 # Merge sort, time complexity O(nlogn), memory complexity O(n)
 def merge_sort(nums, low, high):

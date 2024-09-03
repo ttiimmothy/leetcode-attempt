@@ -208,6 +208,32 @@ public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
   }
 }
 
+// 33
+// Search in Rotated Sorted Array
+public int search(int[] nums, int target) {
+  int left = 0, right = nums.length - 1;
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (nums[mid] == target) {
+      return mid;
+    } 
+    if (nums[left] <= nums[mid]) {
+      if (nums[left] <= target && target < nums[mid]) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    } else {
+      if (nums[mid] < target && target <= nums[right]) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+  }
+  return -1;
+}
+
 // 39
 // Combination Sum
 public List<List<Integer>> combinationSum(int[] candidates, int target) {
@@ -1614,6 +1640,27 @@ public int helper(int[] nums, int target, int left, int right) {
   return -1;
 }
 
+// 733
+// Flood Fill
+public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+  if(image[sr][sc] == color) return image;
+  dfs(image, color, sr, sc, image[sr][sc]);
+  return image;
+}
+
+public void dfs(int[][] image, int color, int i, int j, int reference) {
+  if (i < 0 || i > image.length - 1 || j < 0 || j > image[0].length - 1) {
+    return;
+  }
+  if (image[i][j] == reference) {
+    image[i][j] = color;
+    dfs(image, color, i - 1, j, reference);
+    dfs(image, color, i + 1, j, reference);
+    dfs(image, color, i, j - 1, reference);
+    dfs(image, color, i, j + 1, reference);
+  }
+}
+
 // 739
 // Daily Temperatures
 public int[] dailyTemperatures(int[] temperatures) {
@@ -1780,6 +1827,52 @@ public void heapSort(int[] nums){
     nums[0] = nums[i];
     nums[i] = temp;
     heapify(nums, 0, i);
+  }
+}
+
+// 981
+// Time Based Key-Value Store
+class Pair {
+  public String value;
+  public int timestamp;
+  public Pair(String value, int timestamp) {
+    this.value = value;
+    this.timestamp = timestamp;
+  }
+}
+
+class TimeMap {
+  public Map<String, List<Pair>> map;
+  public TimeMap() {
+    map = new HashMap<>();
+  }
+  
+  public void set(String key, String value, int timestamp) {
+    if (!map.containsKey(key)) {
+      map.put(key, new ArrayList());
+    }
+    map.get(key).add(new Pair(value, timestamp));
+  }
+  
+  public String get(String key, int timestamp) {
+    String result = "";
+    if (map.containsKey(key)) {
+      List<Pair> list = map.get(key);
+      int l = 0, r = list.size() - 1;
+      while (l <= r) {
+        int m = l + (r - l) / 2;
+        if (list.get(m).timestamp == timestamp) {
+          return list.get(m).value;
+        }
+        if (list.get(m).timestamp < timestamp) {
+          result = list.get(m).value;
+          l = m + 1;
+        } else {
+          r = m - 1;
+        }
+      }
+    }
+    return result;
   }
 }
 
