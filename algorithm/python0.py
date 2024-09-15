@@ -187,6 +187,48 @@ def levelOrder_1(root: Optional[TreeNode]):
   dfs(root, 0)
   return result
 
+# 105
+# Construct Binary Tree from Preorder and Inorder Traversal
+def buildTree(preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+  if not preorder or not inorder:
+    return None
+  root = TreeNode(preorder[0])
+  m = inorder.index(preorder[0])
+  root.left = buildTree(preorder[1:m + 1], inorder[:m])
+  root.right = buildTree(preorder[m + 1:], inorder[m + 1:])
+  return root
+
+# 105-1
+# Construct Binary Tree from Preorder and Inorder Traversal
+def buildTree1(preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+  imap = {val:i for i, val in enumerate(inorder)}
+  # current put outside the recursive so it will not decrease unintentionally
+  # current initialize in the build function, current will decrease unintentionally
+  current = 0
+  def build(l, r):
+    if l > r:
+      return None
+    nonlocal current
+    root = TreeNode(preorder[current])
+    m = imap[preorder[current]]
+    current += 1
+    root.left = build(l, m - 1)
+    root.right = build(m + 1, r)
+    return root
+  return build(0, len(inorder) - 1)
+
+# 110
+# Balanced Binary Tree
+def isBalanced(root: Optional[TreeNode]) -> bool:
+  def dfs(root):
+    if not root:
+      return [True, 0]
+    left = dfs(root.left)
+    right = dfs(root.right)
+    balanced = left[0] and right[0] and abs(left[1] - right[1]) <= 1
+    return [balanced, max(left[1], right[1]) + 1]
+  return dfs(root)[0]
+
 # 199
 # Binary Tree Right Side View
 def rightSideView(root: Optional[TreeNode]) -> List[int]:
@@ -328,6 +370,30 @@ class LFUCache:
       self.min_freq = 1
       self.items[key] = 1
       self.freqs[1][key] = value
+
+# 542
+# 01 Matrix
+def updateMatrix(mat: List[List[int]]) -> List[List[int]]:
+  m = len(mat)
+  n = len(mat[0])
+  max = m * n
+  q = deque()
+  for i in range(len(mat)):
+    for j in range(len(mat[i])):
+      if mat[i][j] == 0:
+        q.append([i, j])
+      else:
+        mat[i][j] = max
+  directions = [[-1,0],[1,0],[0,-1],[0,1]]
+  while q:
+    r, c = q.popleft()
+    for i, j in directions:
+      dr = r + i
+      dc = c + j
+      if 0 <= dr < len(mat) and 0 <= dc < len(mat[0]) and mat[dr][dc] > mat[r][c] + 1:
+        q.append([dr, dc])
+        mat[dr][dc] = mat[r][c] + 1
+  return mat
 
 # 543
 # Diameter of Binary Tree
@@ -558,6 +624,35 @@ def merge_sort(nums, low, high):
       k += 1
     while j < len(R):
       nums[k] = R[j]
+      j += 1
+      k += 1
+
+# merge sort
+def mergeSort(nums:List[int], start: int, end:int):
+  if start < end:
+    mid = start + (end - start) // 2
+    mergeSort(nums, start, mid)
+    mergeSort(nums, mid + 1, end)
+    l = nums[start:mid + 1]
+    r = nums[mid + 1:end + 1]
+    i = 0
+    j = 0
+    k = start
+    while i < len(l) and j < len(r):
+      if l[i] < r[j]:
+        nums[k] = l[i]
+        i += 1
+        k += 1
+      else:
+        nums[k] = r[j]
+        j += 1
+        k += 1
+    while i < len(l):
+      nums[k] = l[i]
+      i += 1
+      k += 1
+    while j < len(r):
+      nums[k] = r[j]
       j += 1
       k += 1
 
